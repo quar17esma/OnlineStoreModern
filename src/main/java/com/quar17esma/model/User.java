@@ -1,16 +1,43 @@
-package com.serhii.shutyi.entity;
+package com.quar17esma.model;
 
-import com.serhii.shutyi.enums.Role;
+import com.quar17esma.enums.Role;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.annotations.Parameter;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "USER")
 public class User {
-    private int id;
-    private String email;
-    private String password;
-    private boolean enabled;
-    private Role role;
 
-    public User() {
-    }
+    @GenericGenerator(name = "generator",
+            strategy = "foreign",
+            parameters = @Parameter(name = "property", value = "client"))
+    @Id
+    @GeneratedValue(generator = "generator")
+    private int id;
+
+    @NotEmpty
+    @Column(name = "EMAIL", unique = true, nullable = false, length = 50)
+    private String email;
+
+    @NotEmpty
+    @Column(name = "PASSWORD", nullable = false, length = 50)
+    private String password;
+
+    @NotEmpty
+    @Column(name = "ENABLED", nullable = false)
+    private boolean enabled = true;
+
+    @NotEmpty
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE", nullable = false)
+    private Role role = Role.USER;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Client client;
 
     public int getId() {
         return id;
@@ -52,19 +79,16 @@ public class User {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
-                ", role=" + role +
-                '}';
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public static class Builder {
-        private  User user;
+        private User user;
 
         public Builder() {
             this.user = new User();
@@ -96,6 +120,11 @@ public class User {
 
         public Builder setRole(final Role role) {
             user.setRole(role);
+            return this;
+        }
+
+        public Builder setClient(final Client client) {
+            user.setClient(client);
             return this;
         }
     }

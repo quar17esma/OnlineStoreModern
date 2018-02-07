@@ -1,16 +1,37 @@
-package com.serhii.shutyi.entity;
+package com.quar17esma.model;
 
-import com.serhii.shutyi.enums.OrderStatus;
+import com.quar17esma.enums.OrderStatus;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "ORDER")
 public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", unique = true, nullable = false)
     private int id;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ORDERED_AT", nullable = false)
     private LocalDateTime orderedAt;
-    private OrderStatus status;
+
+    @NotEmpty
+    @Enumerated
+    @Column(name = "STATUS", nullable = false)
+    private OrderStatus status = OrderStatus.NEW;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID", nullable = false)
     private Client client;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="ID")
     private List<Good> goods;
 
     public Order() {

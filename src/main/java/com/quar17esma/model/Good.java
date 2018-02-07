@@ -1,15 +1,30 @@
-package com.serhii.shutyi.entity;
+package com.quar17esma.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+
+@Entity
+@Table(name = "GOOD")
 public class Good {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", unique = true, nullable = false)
     private int id;
+
+    @Column(name = "NAME", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "DESCRIPTION", nullable = false, length = 1000)
     private String description;
-    private int price;
+
+    @Min(0)
+    @Column(name = "PRICE", nullable = false)
+    private long price;
+
+    @Min(0)
+    @Column(name = "QUANTITY", nullable = false)
     private int quantity;
-
-    public Good() {
-
-    }
 
     public int getId() {
         return id;
@@ -35,11 +50,11 @@ public class Good {
         this.description = description;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -88,7 +103,7 @@ public class Good {
             return this;
         }
 
-        public Builder setPrice(final int price) {
+        public Builder setPrice(final long price) {
             good.setPrice(price);
             return this;
         }

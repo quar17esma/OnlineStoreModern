@@ -1,21 +1,32 @@
-package com.serhii.shutyi.entity;
+package com.quar17esma.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "CLIENT")
 public class Client {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", unique = true, nullable = false)
     private int id;
 
+    @NotEmpty
+    @Column(name = "NAME", nullable = false, length = 50)
     private String name;
 
-    private boolean isInBlackList;
+    @NotEmpty
+    @Column(name = "IS_IN_BLACK_LIST", nullable = false)
+    private boolean isInBlackList = false;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.ALL)
     private User user;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<Order> orders;
-
-    public Client() {
-    }
 
     public int getId() {
         return id;
