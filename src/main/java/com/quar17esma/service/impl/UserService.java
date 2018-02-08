@@ -40,7 +40,7 @@ public class UserService implements IUserService {
     @Transactional
     public Client login(String login, String password) {
         if (checkLogin(login, password)) {
-            return clientService.getClientByEmail(login);
+            return clientService.findClientByEmail(login);
         } else {
 //            throw new LoginException("Fail to login", login);
             throw new RuntimeException();
