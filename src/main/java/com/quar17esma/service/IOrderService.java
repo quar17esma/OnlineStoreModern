@@ -4,11 +4,11 @@ import com.quar17esma.model.Order;
 
 import java.util.List;
 
-public interface IOrdersService {
+public interface IOrderService {
 
-    List<Order> getOrdersByClientId(int clientId);
+    List<Order> findAllByClientId(Long clientId);
 
-    boolean payOrder(int orderId);
+    boolean payOrder(Long orderId);
 
     void sendOrder(Order order);
 }
