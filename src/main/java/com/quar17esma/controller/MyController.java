@@ -29,7 +29,9 @@ public class MyController {
 
         List<Good> goods = service.findAll();
         model.addAttribute("goods", goods);
-        
+
         return "allgoods";
     }
+
+
 }
