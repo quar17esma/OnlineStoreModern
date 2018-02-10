@@ -33,7 +33,7 @@ public class Order implements Serializable {
     private Client client;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="ID")
+//    @JoinColumn(name="ID")
     private List<Good> goods;
 
     public Order() {
