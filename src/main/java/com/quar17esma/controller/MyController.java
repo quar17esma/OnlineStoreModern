@@ -2,7 +2,6 @@ package com.quar17esma.controller;
 
 import com.quar17esma.model.Good;
 import com.quar17esma.service.IGoodService;
-import com.quar17esma.service.impl.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -30,6 +29,7 @@ public class MyController {
 
         List<Good> goods = service.findAll();
         model.addAttribute("goods", goods);
+        
         return "allgoods";
     }
 }
