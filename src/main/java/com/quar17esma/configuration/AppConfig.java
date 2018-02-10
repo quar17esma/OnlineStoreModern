@@ -13,7 +13,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.quar17esma")
+@ComponentScan(basePackages = {
+//        "com.quar17esma.service.impl",
+//        "com.quar17esma.service",
+        "com.quar17esma"
+})
 @EnableJpaRepositories(basePackages = "com.quar17esma.dao")
 public class AppConfig {
 
