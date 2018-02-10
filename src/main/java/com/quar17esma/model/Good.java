@@ -2,10 +2,11 @@ package com.quar17esma.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "GOOD")
-public class Good {
+public class Good implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +26,9 @@ public class Good {
     @Min(0)
     @Column(name = "QUANTITY", nullable = false)
     private int quantity;
+
+    public Good() {
+    }
 
     public int getId() {
         return id;

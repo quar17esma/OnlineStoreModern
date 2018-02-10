@@ -6,10 +6,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "USER")
-public class User {
+public class User implements Serializable {
 
     @GenericGenerator(name = "generator",
             strategy = "foreign",
@@ -38,6 +39,9 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private Client client;
+
+    public User() {
+    }
 
     public int getId() {
         return id;

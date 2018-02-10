@@ -3,11 +3,12 @@ package com.quar17esma.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "CLIENT")
-public class Client {
+public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,9 @@ public class Client {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<Order> orders;
+
+    public Client() {
+    }
 
     public int getId() {
         return id;

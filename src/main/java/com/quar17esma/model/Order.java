@@ -4,13 +4,15 @@ import com.quar17esma.enums.OrderStatus;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "ORDER")
-public class Order {
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,7 @@ public class Order {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "ORDERED_AT", nullable = false)
-    private LocalDateTime orderedAt;
+    private Date orderedAt;
 
     @NotEmpty
     @Enumerated
@@ -27,7 +29,7 @@ public class Order {
     private OrderStatus status = OrderStatus.NEW;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID", nullable = false)
+    @JoinColumn(name = "CLIENT_ID", nullable = false)
     private Client client;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -35,7 +37,6 @@ public class Order {
     private List<Good> goods;
 
     public Order() {
-        this.goods = new ArrayList<>();
     }
 
     public int getId() {
@@ -46,11 +47,11 @@ public class Order {
         this.id = id;
     }
 
-    public LocalDateTime getOrderedAt() {
+    public Date getOrderedAt() {
         return orderedAt;
     }
 
-    public void setOrderedAt(LocalDateTime orderedAt) {
+    public void setOrderedAt(Date orderedAt) {
         this.orderedAt = orderedAt;
     }
 
@@ -105,7 +106,7 @@ public class Order {
             return this;
         }
 
-        public Builder setOrderedAt(final LocalDateTime orderedAt) {
+        public Builder setOrderedAt(final Date orderedAt) {
             order.setOrderedAt(orderedAt);
             return this;
         }
