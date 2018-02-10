@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    @Query("SELECT c from Client c where c.orders.status = 'NEW'")
-    List<Client> findClientsWithUnpaidOrders();
+//    @Query("SELECT c from Client c where c.orders.status = 'NEW'")
+//    List<Client> findClientsWithUnpaidOrders();
 }

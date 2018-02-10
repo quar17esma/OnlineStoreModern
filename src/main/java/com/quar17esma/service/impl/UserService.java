@@ -3,22 +3,23 @@ package com.quar17esma.service.impl;
 import com.quar17esma.dao.UserRepository;
 import com.quar17esma.model.Client;
 import com.quar17esma.model.User;
+import com.quar17esma.service.IClientService;
 import com.quar17esma.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Repository
-@Transactional(readOnly = true)
+@Service("userService")
+@Transactional
 public class UserService implements IUserService {
 
     @Autowired
     private UserRepository repository;
 
     @Autowired
-    private ClientService clientService;
+    private IClientService clientService;
 
 
     @Override
@@ -33,7 +34,8 @@ public class UserService implements IUserService {
     }
 
     public boolean existsByEmail(String email){
-        return repository.existsByEmail(email);
+//        return repository.existsByEmail(email);
+        return false;
     }
 
     @Override

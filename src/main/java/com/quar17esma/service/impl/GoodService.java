@@ -5,14 +5,14 @@ import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.IGoodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-@Transactional(readOnly = true)
+@Service("goodService")
+@Transactional
 public class GoodService implements IGoodService {
 
     @Autowired
@@ -25,12 +25,13 @@ public class GoodService implements IGoodService {
 
     @Override
     public int countAll() {
-        return repository.countAll();
+//        return repository.countAll();
+        return 0;
     }
 
     @Override
     public Good findById(Long goodId) {
-        Optional<Good> good = repository.findById(goodId);
+        Optional<Good> good = Optional.ofNullable(repository.findOne(goodId));
         if (good.isPresent()) {
             return good.get();
 
@@ -41,7 +42,7 @@ public class GoodService implements IGoodService {
 
     @Override
     public void deleteById(Long goodId) {
-        repository.deleteById(goodId);
+        repository.delete(goodId);
     }
 
     @Override
