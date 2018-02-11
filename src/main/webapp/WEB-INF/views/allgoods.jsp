@@ -24,12 +24,15 @@
             </div>
             <div class="field">
                 <label>Description:</label>
-                <br/>
                 <c:out value="${good.description}"/>
             </div>
             <div class="field">
                 <label>Price:</label>
-                <ctg:price price="${good.price}"/>
+                <c:out value="${good.price}"/>
+            </div>
+            <div class="field">
+                <label>Quantity:</label>
+                <c:out value="${good.quantity}"/>
             </div>
             <div class="field">
                 <form class="button" name="buyNowForm" method="POST" action="./buy_now">
@@ -37,6 +40,7 @@
                     <input type="submit" value="Buy now">
                 </form>
             </div>
+            <br/>
         </c:forEach>
         <br/>
     </div>
