@@ -17,7 +17,7 @@ public class User implements Serializable {
             parameters = @Parameter(name = "property", value = "client"))
     @Id
     @GeneratedValue(generator = "generator")
-    private int id;
+    private long id;
 
     @NotEmpty
     @Column(name = "EMAIL", unique = true, nullable = false, length = 50)
@@ -43,11 +43,11 @@ public class User implements Serializable {
     public User() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -102,7 +102,7 @@ public class User implements Serializable {
             return user;
         }
 
-        public Builder setId(final int id) {
+        public Builder setId(final long id) {
             user.setId(id);
             return this;
         }

@@ -13,7 +13,7 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)
-    private int id;
+    private long id;
 
     @NotEmpty
     @Column(name = "NAME", nullable = false, length = 50)
@@ -32,11 +32,11 @@ public class Client implements Serializable {
     public Client() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -94,7 +94,7 @@ public class Client implements Serializable {
             return client;
         }
 
-        public Builder setId(final int id) {
+        public Builder setId(final long id) {
             client.setId(id);
             return this;
         }
