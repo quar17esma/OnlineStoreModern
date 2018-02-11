@@ -30,6 +30,7 @@
     <form class="headerButton" name="goodsForm" method="POST" action="./list">
         <input type="submit" value="All Goods">
     </form>
+    <a href="./newgood" class="btn btn-success custom-width">Add Good</a>
     <br/>
     <hr/>
 </div>

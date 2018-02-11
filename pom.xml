@@ -18,15 +18,16 @@
         <mysql.version>5.1.31</mysql.version>
         <joda-time.version>2.3</joda-time.version>
         <junit.version>4.12</junit.version>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
 
     <dependencies>
-        <!-- Spring -->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-core</artifactId>-->
-            <!--<version>${springframework.version}</version>-->
-        <!--</dependency>-->
+         <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -37,17 +38,12 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${springframework.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-tx</artifactId>-->
-            <!--<version>${springframework.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-orm</artifactId>-->
-            <!--<version>${springframework.version}</version>-->
-        <!--</dependency>-->
-        <!-- spring-data-jpa -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${springframework.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -129,6 +125,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
