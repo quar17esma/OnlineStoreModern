@@ -4,6 +4,7 @@ import com.quar17esma.enums.OrderStatus;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Order implements Serializable {
     @Column(name = "ORDERED_AT", nullable = false)
     private Date orderedAt;
 
-    @NotEmpty
+
     @Enumerated
     @Column(name = "STATUS", nullable = false)
     private OrderStatus status = OrderStatus.NEW;
