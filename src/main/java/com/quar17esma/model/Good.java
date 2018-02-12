@@ -11,7 +11,7 @@ public class Good implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)
-    private int id;
+    private long id;
 
     @Column(name = "NAME", nullable = false, length = 100)
     private String name;
@@ -30,11 +30,11 @@ public class Good implements Serializable {
     public Good() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -92,7 +92,7 @@ public class Good implements Serializable {
             return good;
         }
 
-        public Builder setId(final int id) {
+        public Builder setId(final long id) {
             good.setId(id);
             return this;
         }

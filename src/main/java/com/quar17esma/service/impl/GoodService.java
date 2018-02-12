@@ -4,6 +4,7 @@ import com.quar17esma.dao.GoodRepository;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.IGoodService;
+import com.quar17esma.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,9 @@ public class GoodService implements IGoodService {
 
     @Autowired
     private GoodRepository repository;
+
+    @Autowired
+    private IOrderService orderService;
 
     @Override
     public List<Good> findAll() {
@@ -56,5 +60,7 @@ public class GoodService implements IGoodService {
         good.setQuantity(orderedQuantity);
 
         order.getGoods().add(good);
+
+        orderService.sendOrder(order);
     }
 }

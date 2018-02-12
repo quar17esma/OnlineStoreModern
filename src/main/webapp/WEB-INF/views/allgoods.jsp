@@ -35,10 +35,7 @@
                 <c:out value="${good.quantity}"/>
             </div>
             <div class="field">
-                <form class="button" name="buyNowForm" method="POST" action="./buy_now">
-                    <input type="hidden" name="goodId" value="${good.id}">
-                    <input type="submit" value="Buy now">
-                </form>
+                <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success custom-width">Buy</a>
             </div>
             <br/>
         </c:forEach>

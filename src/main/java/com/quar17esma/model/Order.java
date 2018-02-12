@@ -4,6 +4,7 @@ import com.quar17esma.enums.OrderStatus;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,13 +18,13 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)
-    private int id;
+    private long id;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "ORDERED_AT", nullable = false)
     private Date orderedAt;
 
-    @NotEmpty
+
     @Enumerated
     @Column(name = "STATUS", nullable = false)
     private OrderStatus status = OrderStatus.NEW;
@@ -37,13 +38,14 @@ public class Order implements Serializable {
     private List<Good> goods;
 
     public Order() {
+        this.goods = new ArrayList<>();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -101,7 +103,7 @@ public class Order implements Serializable {
             return order;
         }
 
-        public Builder setId(final int id) {
+        public Builder setId(final long id) {
             order.setId(id);
             return this;
         }
