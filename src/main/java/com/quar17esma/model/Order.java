@@ -37,6 +37,7 @@ public class Order implements Serializable {
     private List<Good> goods;
 
     public Order() {
+        this.goods = new ArrayList<>();
     }
 
     public long getId() {
