@@ -8,18 +8,16 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {
-//        "com.quar17esma.service.impl",
-//        "com.quar17esma.service",
-        "com.quar17esma"
-})
+@ComponentScan(basePackages = "com.quar17esma")
 @EnableJpaRepositories(basePackages = "com.quar17esma.dao")
-public class AppConfig {
+public class AppConfig extends WebMvcConfigurerAdapter {
 
     /**
      * Configure ViewResolvers to deliver preferred views.
@@ -42,6 +40,14 @@ public class AppConfig {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         return messageSource;
+    }
+
+    /**
+     * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
 }
 

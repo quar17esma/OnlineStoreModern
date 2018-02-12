@@ -5,7 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit good</title>
+    <title>Edit good</title
+    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
+    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
