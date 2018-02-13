@@ -2,15 +2,14 @@ package com.quar17esma.service.impl;
 
 import com.quar17esma.dao.ClientRepository;
 import com.quar17esma.model.Client;
-import com.quar17esma.model.User;
+import com.quar17esma.model.UserMy;
 import com.quar17esma.service.IClientService;
-import com.quar17esma.service.IUserService;
+import com.quar17esma.service.IUserMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service("clientService")
 @Transactional
@@ -20,7 +19,7 @@ public class ClientService implements IClientService {
     private ClientRepository repository;
 
     @Autowired
-    private IUserService userService;
+    private IUserMyService userService;
 
     @Override
     @Transactional
@@ -38,8 +37,8 @@ public class ClientService implements IClientService {
     @Override
     @Transactional
     public Client findClientByEmail(String email) {
-        User user = userService.findByEmail(email);
-        return user.getClient();
+        UserMy userMy = userService.findByEmail(email);
+        return userMy.getClient();
     }
 
     @Override

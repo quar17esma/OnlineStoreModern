@@ -1,10 +1,10 @@
 package com.quar17esma.service.impl;
 
-import com.quar17esma.dao.UserRepository;
+import com.quar17esma.dao.UserMyRepository;
 import com.quar17esma.model.Client;
-import com.quar17esma.model.User;
+import com.quar17esma.model.UserMy;
 import com.quar17esma.service.IClientService;
-import com.quar17esma.service.IUserService;
+import com.quar17esma.service.IUserMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,18 +13,18 @@ import java.util.Optional;
 
 @Service("userService")
 @Transactional
-public class UserService implements IUserService {
+public class UserMyService implements IUserMyService {
 
     @Autowired
-    private UserRepository repository;
+    private UserMyRepository repository;
 
     @Autowired
     private IClientService clientService;
 
 
     @Override
-    public User findByEmail(String email) {
-        Optional<User> user = repository.findByEmail(email);
+    public UserMy findByEmail(String email) {
+        Optional<UserMy> user = repository.findByEmail(email);
         if (user.isPresent()) {
             return user.get();
 
@@ -57,7 +57,7 @@ public class UserService implements IUserService {
                 !login.isEmpty() &&
                 !password.isEmpty()) {
 
-            Optional<User> user = repository.findByEmail(login);
+            Optional<UserMy> user = repository.findByEmail(login);
             if (user.isPresent()) {
                 result = user.get().getPassword().equals(password);
             }

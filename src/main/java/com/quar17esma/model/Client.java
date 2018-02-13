@@ -24,7 +24,7 @@ public class Client implements Serializable {
     private boolean isInBlackList = false;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.ALL)
-    private User user;
+    private UserMy userMy;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<Order> orders;
@@ -56,12 +56,12 @@ public class Client implements Serializable {
         this.isInBlackList = isInBlackList;
     }
 
-    public User getUser() {
-        return user;
+    public UserMy getUser() {
+        return userMy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserMy userMy) {
+        this.userMy = userMy;
     }
 
     public List<Order> getOrders() {
@@ -78,7 +78,7 @@ public class Client implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", isInBlackList=" + isInBlackList +
-                ", user=" + user +
+                ", userMy=" + userMy +
                 ", orders=" + orders +
                 '}';
     }
@@ -109,8 +109,8 @@ public class Client implements Serializable {
             return this;
         }
 
-        public Builder setUser(final User user) {
-            client.setUser(user);
+        public Builder setUser(final UserMy userMy) {
+            client.setUser(userMy);
             return this;
         }
 

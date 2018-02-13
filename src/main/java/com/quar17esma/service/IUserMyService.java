@@ -1,10 +1,10 @@
 package com.quar17esma.service;
 
 import com.quar17esma.model.Client;
-import com.quar17esma.model.User;
+import com.quar17esma.model.UserMy;
 
-public interface IUserService {
-    User findByEmail (String email);
+public interface IUserMyService {
+    UserMy findByEmail (String email);
 
     boolean existsByEmail(String email);
 
