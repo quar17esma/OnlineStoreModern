@@ -1,62 +1,61 @@
 package com.quar17esma.model;
 
-import com.quar17esma.enums.Role;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "APP_USER")
 public class User implements Serializable {
 
-    @GenericGenerator(name = "generator",
-            strategy = "foreign",
-            parameters = @Parameter(name = "property", value = "client"))
     @Id
-    @GeneratedValue(generator = "generator")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @NotEmpty
-    @Column(name = "EMAIL", unique = true, nullable = false, length = 50)
-    private String email;
+    @Column(name = "SSO_ID", unique = true, nullable = false)
+    private String ssoId;
 
     @NotEmpty
-    @Column(name = "PASSWORD", nullable = false, length = 50)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @NotEmpty
-    @Column(name = "ENABLED", nullable = false)
-    private boolean enabled = true;
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE", nullable = false)
-    private Role role = Role.USER;
+    @Column(name = "LAST_NAME", nullable = false)
+    private String lastName;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private Client client;
+    @NotEmpty
+    @Column(name = "EMAIL", nullable = false)
+    private String email;
 
-    public User() {
-    }
+    @NotEmpty
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "APP_USER_USER_PROFILE",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_PROFILE_ID")})
+    private Set<UserProfile> userProfiles = new HashSet<>();
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSsoId() {
+        return ssoId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSsoId(String ssoId) {
+        this.ssoId = ssoId;
     }
 
     public String getPassword() {
@@ -67,69 +66,74 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public Role getRole() {
-        return role;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public Client getClient() {
-        return client;
+    public String getEmail() {
+        return email;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public static class Builder {
-        private User user;
-
-        public Builder() {
-            this.user = new User();
-        }
-
-        public User build() {
-            return user;
-        }
-
-        public Builder setId(final long id) {
-            user.setId(id);
-            return this;
-        }
-
-        public Builder setEmail(final String email) {
-            user.setEmail(email);
-            return this;
-        }
-
-        public Builder setPassword(final String password) {
-            user.setPassword(password);
-            return this;
-        }
-
-        public Builder setEnabled(final boolean enabled) {
-            user.setEnabled(enabled);
-            return this;
-        }
-
-        public Builder setRole(final Role role) {
-            user.setRole(role);
-            return this;
-        }
-
-        public Builder setClient(final Client client) {
-            user.setClient(client);
-            return this;
-        }
+    public Set<UserProfile> getUserProfiles() {
+        return userProfiles;
     }
+
+    public void setUserProfiles(Set<UserProfile> userProfiles) {
+        this.userProfiles = userProfiles;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof User))
+            return false;
+        User other = (User) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (ssoId == null) {
+            if (other.ssoId != null)
+                return false;
+        } else if (!ssoId.equals(other.ssoId))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", ssoId=" + ssoId
+                + ", firstName=" + firstName + ", lastName=" + lastName
+                + ", email=" + email + "]";
+    }
+
 }

@@ -4,7 +4,7 @@ import com.quar17esma.model.Order;
 
 import java.util.List;
 
-public interface IOrderService {
+public interface OrderService {
 
     List<Order> findAllByClientId(Long clientId);
 

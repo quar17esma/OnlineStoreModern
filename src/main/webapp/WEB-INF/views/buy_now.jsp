@@ -6,39 +6,43 @@
 <html>
 <head>
     <title>Buy good</title>
-    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
+    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../static/css/app.css" rel="stylesheet"/>
 </head>
 <body>
+<div class="generic-container">
 
-<jsp:include page="header.jsp"/>
+    <jsp:include page="header.jsp"/>
 
-<div class="field">
-    <label>Good name</label>
-    <c:out value="${good.name}"/>
-</div>
-<br/>
-<div class="field">
-    <label>Description</label>
-    <p><c:out value="${good.description}"/></p>
-</div>
-<br/>
-<div class="field">
-    <label>Price</label>
-    <c:out value="${good.price}"/>
-</div>
-<br/>
-<form:form method="POST" modelAttribute="good">
-    <form:input type="hidden" path="id" id="id" value="${good.id}"/>
-    <form:input type="hidden" path="quantity" id="quantity" value="1"/>
-    <div class="row">
-        <div class="form-actions floatRight">
-            <input type="submit" value="Buy" class="btn btn-primary btn-sm"/>
-            or
-            <a href="./list">Cancel</a>
+    <div class="well">
+        <div>
+            <label>Name</label>
+            <c:out value="${good.name}"/>
         </div>
+        <br/>
+        <div>
+            <label>Description</label>
+            <p><c:out value="${good.description}"/></p>
+        </div>
+        <br/>
+        <div>
+            <label>Price</label>
+            <c:out value="${good.price}"/>
+        </div>
+        <br/>
+        <form:form method="POST" modelAttribute="good">
+            <form:input type="hidden" path="id" id="id" value="${good.id}"/>
+            <form:input type="hidden" path="quantity" id="quantity" value="1"/>
+            <div class="row">
+                <div class="form-actions floatRight">
+                    <input type="submit" value="Buy" class="btn btn-primary btn-sm"/>
+                    or
+                    <a href="./list">Cancel</a>
+                </div>
+            </div>
+        </form:form>
+        <br/>
     </div>
-</form:form>
-<br/>
+</div>
 </body>
 </html>

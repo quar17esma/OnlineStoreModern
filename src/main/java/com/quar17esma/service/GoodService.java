@@ -5,7 +5,7 @@ import com.quar17esma.model.Order;
 
 import java.util.List;
 
-public interface IGoodService {
+public interface GoodService {
 
     List<Good> findAll();
 

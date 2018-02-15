@@ -1,7 +1,7 @@
 package com.quar17esma.controller;
 
 import com.quar17esma.configuration.AppConfig;
-import com.quar17esma.service.IGoodService;
+import com.quar17esma.service.GoodService;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class MyControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private IGoodService goodServiceMock;
+    private GoodService goodServiceMock;
 
     @InjectMocks
     private MyController controller;
