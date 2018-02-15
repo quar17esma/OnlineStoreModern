@@ -3,7 +3,7 @@ package com.quar17esma.controller;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.model.UserProfile;
-import com.quar17esma.service.IGoodService;
+import com.quar17esma.service.GoodService;
 import com.quar17esma.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -32,7 +32,7 @@ import java.util.List;
 public class MyController {
 
     @Autowired
-    IGoodService goodService;
+    GoodService goodService;
 
     @Autowired
     UserProfileService userProfileService;

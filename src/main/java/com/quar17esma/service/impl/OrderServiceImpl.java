@@ -3,19 +3,18 @@ package com.quar17esma.service.impl;
 import com.quar17esma.dao.OrderRepository;
 import com.quar17esma.enums.OrderStatus;
 import com.quar17esma.model.Order;
-import com.quar17esma.service.IOrderService;
+import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service("orderService")
 @Transactional
-public class OrderService implements IOrderService {
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository repository;

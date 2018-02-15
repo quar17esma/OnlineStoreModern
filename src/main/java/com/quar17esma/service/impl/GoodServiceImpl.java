@@ -3,8 +3,8 @@ package com.quar17esma.service.impl;
 import com.quar17esma.dao.GoodRepository;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
-import com.quar17esma.service.IGoodService;
-import com.quar17esma.service.IOrderService;
+import com.quar17esma.service.GoodService;
+import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Service("goodService")
 @Transactional
-public class GoodService implements IGoodService {
+public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private GoodRepository repository;
 
     @Autowired
-    private IOrderService orderService;
+    private OrderService orderService;
 
     @Override
     public List<Good> findAll() {
