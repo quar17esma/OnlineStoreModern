@@ -6,8 +6,8 @@
 <html>
 <head>
     <title>Edit good</title>
-    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
+    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../static/css/app.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="generic-container">

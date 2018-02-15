@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>AccessDenied page</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link href="../static/css/app.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="generic-container">
