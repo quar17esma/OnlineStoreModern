@@ -30,8 +30,8 @@ public class Order implements Serializable {
     private OrderStatus status = OrderStatus.NEW;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENT_ID", nullable = false)
-    private Client client;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @JoinColumn(name="ID")
@@ -65,12 +65,12 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public Client getClient() {
-        return client;
+    public User getUser() {
+        return user;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClient(User user) {
+        this.user = user;
     }
 
     public List<Good> getGoods() {
@@ -87,7 +87,7 @@ public class Order implements Serializable {
                 "id=" + id +
                 ", orderedAt=" + orderedAt +
                 ", status=" + status +
-                ", client=" + client +
+                ", client=" + user +
                 ", goods=" + goods +
                 '}';
     }
@@ -118,8 +118,8 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setClient(final Client client) {
-            order.setClient(client);
+        public Builder setUser(final User user) {
+            order.setClient(user);
             return this;
         }
 
