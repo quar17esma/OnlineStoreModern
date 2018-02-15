@@ -22,7 +22,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> findAllByClientId(Long clientId) {
-        return repository.findAllByClientId(clientId);
+        return repository.findAllByUserId(clientId);
     }
 
     @Override
