@@ -1,5 +1,6 @@
 package com.quar17esma.configuration;
 
+import com.quar17esma.security.SecurityConfiguration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class ServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -16,7 +17,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return null;
+		return new Class[] {SecurityConfiguration.class};
 	}
 
 }
