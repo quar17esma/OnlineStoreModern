@@ -60,6 +60,7 @@ public class MyController {
 
         List<Good> goods = goodService.findAll();
         model.addAttribute("goods", goods);
+        model.addAttribute("loggedinuser", getPrincipal());
 
         return "allgoods";
     }

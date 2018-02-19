@@ -15,13 +15,21 @@
     <h1>Online Store</h1>
     <hr/>
 
+    <c:choose>
+        <c:when test="${loggedinuser != null}">
+            <div class="well well-lg">
+                <span>Dear <strong>${loggedinuser}</strong>, Welcome to Online Store.</span>
+                <span class="floatRight"><a href="./logout">Logout</a></span>
+            </div>
+        </c:when>
+    </c:choose>
+
     <div class="well well-lg">
-        <a href="./logout" class="btn btn-success custom-width">Logout</a>
-        <a href="./show_cart" class="btn btn-success custom-width">Cart</a>
-        <a href="./my_orders" class="btn btn-success custom-width">My Orders</a>
-        <a href="./list" class="btn btn-success custom-width">All Goods</a>
+        <a href="./show_cart" class="btn custom-width">Cart</a>
+        <a href="./my_orders" class="btn custom-width">My Orders</a>
+        <a href="./list" class="btn custom-width">All Goods</a>
         <sec:authorize access="hasRole('ADMIN')">
-            <a href="./newgood" class="btn btn-success custom-width">Add Good</a>
+            <a href="./newgood" class="btn custom-width">Add Good</a>
         </sec:authorize>
     </div>
 </div>
