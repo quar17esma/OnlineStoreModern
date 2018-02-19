@@ -1,5 +1,7 @@
 package com.quar17esma.model;
 
+import com.quar17esma.enums.UserProfileType;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;

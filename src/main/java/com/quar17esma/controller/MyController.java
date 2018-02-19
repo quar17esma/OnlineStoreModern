@@ -2,9 +2,11 @@ package com.quar17esma.controller;
 
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
+import com.quar17esma.model.User;
 import com.quar17esma.model.UserProfile;
 import com.quar17esma.service.GoodService;
 import com.quar17esma.service.UserProfileService;
+import com.quar17esma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,6 +18,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -33,6 +37,9 @@ public class MyController {
 
     @Autowired
     GoodService goodService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     UserProfileService userProfileService;
@@ -87,7 +94,7 @@ public class MyController {
     /**
      * This method will provide the medium to buy a good.
      */
-    @RequestMapping(value = { "/buy-good-{goodId}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
     public String addGood(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
         model.addAttribute("good", good);
@@ -98,7 +105,7 @@ public class MyController {
     /**
      * Adds good to order
      */
-    @RequestMapping(value = { "/buy-good-{goodId}" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToOrder(@Valid Good good, BindingResult result) {
         if (result.hasErrors()) {
             return "buy_now";
@@ -143,10 +150,10 @@ public class MyController {
      * This method handles logout requests.
      * Toggle the handlers if you are RememberMe functionality is useless in your app.
      */
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             //new SecurityContextLogoutHandler().logout(request, response, auth);
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
@@ -157,12 +164,12 @@ public class MyController {
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
-    private String getPrincipal(){
+    private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
+            userName = ((UserDetails) principal).getUsername();
         } else {
             userName = principal.toString();
         }
@@ -180,5 +187,52 @@ public class MyController {
     @Autowired
     public void setAuthenticationTrustResolver(AuthenticationTrustResolver authenticationTrustResolver) {
         this.authenticationTrustResolver = authenticationTrustResolver;
+    }
+
+    /**
+     * This method will provide the medium to add a new user.
+     */
+    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
+    public String newUser(ModelMap model) {
+        User user = new User();
+        model.addAttribute("user", user);
+
+        return "registration";
+    }
+
+    /**
+     * This method will be called on form submission, handling POST request for
+     * saving user in database. It also validates the user input
+     */
+    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
+    public String saveUser(@Valid User user, BindingResult result,
+                           ModelMap model) {
+
+        if (result.hasErrors()) {
+            return "registration";
+        }
+
+		/*
+         * Preferred way to achieve uniqueness of field [sso] should be implementing custom @Unique annotation
+		 * and applying it on field [sso] of Model class [User].
+		 *
+		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
+		 * framework as well while still using internationalized messages.
+		 *
+		 */
+        if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
+            FieldError ssoError = new FieldError("user", "ssoId",
+                    messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+            result.addError(ssoError);
+            return "registration";
+        }
+
+        userService.saveUser(user);
+
+        model.addAttribute("success",
+                "User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
+        model.addAttribute("loggedinuser", getPrincipal());
+
+        return "registrationsuccess";
     }
 }

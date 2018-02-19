@@ -5,7 +5,6 @@
     <title>Login page</title>
     <link href="../static/css/bootstrap.css" rel="stylesheet"/>
     <link href="../static/css/app.css" rel="stylesheet"/>
-    <%--<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />--%>
 </head>
 
 <body>
@@ -49,6 +48,9 @@
                 </form>
             </div>
         </div>
+    </div>
+    <div class="well">
+        <a href="./newuser">Register Now</a>
     </div>
 </div>
 

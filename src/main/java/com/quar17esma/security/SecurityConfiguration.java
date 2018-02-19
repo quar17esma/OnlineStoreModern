@@ -32,30 +32,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Qualifier("tokenRepositoryDao")
     PersistentTokenRepository tokenRepository;
 
-//    @Autowired
-//    DataSource dataSource;
-
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailsService);
 		auth.authenticationProvider(authenticationProvider());
 	}
 
-//    @Autowired
-//    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication().dataSource(dataSource)
-//                .usersByUsernameQuery(
-//                        "select username, password, enabled from users where username=?")
-//                .authoritiesByUsernameQuery(
-//                        "select username, role from user_roles where username=?");
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/list11")
+                .antMatchers("/", "/list")
                     .access("hasRole('USER') or hasRole('ADMIN')")
-                .antMatchers("/newuser/**", "/delete-user-*", "/newgood/**")
+                .antMatchers("/delete-user-*", "/newgood/**")
                     .access("hasRole('ADMIN')")
                 .and()
                     .formLogin()
