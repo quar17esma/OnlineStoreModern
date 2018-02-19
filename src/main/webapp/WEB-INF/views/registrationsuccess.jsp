@@ -15,7 +15,7 @@
     </div>
 
     <span class="well floatRight">
-        Go to <a href="./list">Users List</a>
+        Go to <a href="./list">Goods List</a>
     </span>
 </div>
 
