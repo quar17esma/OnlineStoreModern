@@ -3,9 +3,7 @@ package com.quar17esma.controller;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.model.User;
-import com.quar17esma.model.UserProfile;
 import com.quar17esma.service.GoodService;
-import com.quar17esma.service.UserProfileService;
 import com.quar17esma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,9 +37,6 @@ public class MyController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserProfileService userProfileService;
 
     @Autowired
     MessageSource messageSource;
@@ -115,14 +109,6 @@ public class MyController {
         goodService.addGoodToOrder(new Order(), good.getId(), good.getQuantity());
 
         return "allgoods";
-    }
-
-    /**
-     * This method will provide UserProfile list to views
-     */
-    @ModelAttribute("roles")
-    public List<UserProfile> initializeProfiles() {
-        return userProfileService.findAll();
     }
 
     /**

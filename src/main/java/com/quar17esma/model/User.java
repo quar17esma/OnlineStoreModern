@@ -1,11 +1,10 @@
 package com.quar17esma.model;
 
+import com.quar17esma.enums.UserProfileType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "APP_USER")
@@ -35,16 +34,9 @@ public class User implements Serializable {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @NotEmpty
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "APP_USER_USER_PROFILE",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_PROFILE_ID")})
-    private Set<UserProfile> userProfiles = new HashSet<>();
-
-    public User() {
-        userProfiles.add(new UserProfile());
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PROFILE_TYPE", nullable = false)
+    private UserProfileType userProfileType = UserProfileType.USER;
 
     public Integer getId() {
         return id;
@@ -94,12 +86,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Set<UserProfile> getUserProfiles() {
-        return userProfiles;
+    public UserProfileType getUserProfileType() {
+        return userProfileType;
     }
 
-    public void setUserProfiles(Set<UserProfile> userProfiles) {
-        this.userProfiles = userProfiles;
+    public void setUserProfileType(UserProfileType userProfileType) {
+        this.userProfileType = userProfileType;
     }
 
     @Override

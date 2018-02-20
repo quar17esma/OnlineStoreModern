@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.quar17esma.model.User;
-import com.quar17esma.model.UserProfile;
 import com.quar17esma.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-
     private List<GrantedAuthority> getGrantedAuthorities(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserProfileType()));
 
-        for (UserProfile userProfile : user.getUserProfiles()) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + userProfile.getType()));
-        }
         return authorities;
     }
-
 }
