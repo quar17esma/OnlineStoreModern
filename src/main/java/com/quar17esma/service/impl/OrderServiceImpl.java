@@ -42,8 +42,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void sendOrder(Order order) {
+    public void saveOrder(Order order) {
+        if (order.getOrderedAt() == null) {
             order.setOrderedAt(new Date());
-            repository.save(order);
+        }
+        repository.save(order);
     }
 }

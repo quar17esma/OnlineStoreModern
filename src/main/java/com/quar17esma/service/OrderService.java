@@ -10,5 +10,5 @@ public interface OrderService {
 
     boolean payOrder(Long orderId);
 
-    void sendOrder(Order order);
+    void saveOrder(Order order);
 }

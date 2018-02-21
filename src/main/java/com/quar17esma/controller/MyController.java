@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
@@ -101,12 +102,19 @@ public class MyController {
      * Adds good to order
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
-    public String addGoodToOrder(@Valid Good good, BindingResult result) {
+    public String addGoodToOrder(@Valid Good good, BindingResult result, HttpSession httpSession) {
         if (result.hasErrors()) {
             return "buy_now";
         }
 
-        goodService.addGoodToOrder(new Order(), good.getId(), good.getQuantity());
+        Order order = (Order) httpSession.getAttribute("order");
+        if (order == null) {
+            order = new Order();
+            order.setClient(getUser());
+            httpSession.setAttribute("order", order);
+        }
+
+        goodService.addGoodToOrder(order, good.getId(), good.getQuantity());
 
         return "allgoods";
     }
@@ -161,6 +169,24 @@ public class MyController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    /**
+     * This method returns logged-in user.
+     */
+    private User getUser() {
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+
+        User user = userService.findBySSO(userName);
+
+        return user;
     }
 
     /**
