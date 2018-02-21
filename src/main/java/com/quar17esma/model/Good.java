@@ -71,6 +71,21 @@ public class Good implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Good)) return false;
+
+        Good good = (Good) o;
+
+        return getId() == good.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (getId() ^ (getId() >>> 32));
+    }
+
+    @Override
     public String toString() {
         return "Good{" +
                 "id=" + id +
