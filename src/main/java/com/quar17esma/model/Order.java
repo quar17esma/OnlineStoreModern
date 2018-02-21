@@ -1,15 +1,12 @@
 package com.quar17esma.model;
 
 import com.quar17esma.enums.OrderStatus;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "ORDER")
@@ -24,8 +21,7 @@ public class Order implements Serializable {
     @Column(name = "ORDERED_AT", nullable = false)
     private Date orderedAt;
 
-
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private OrderStatus status = OrderStatus.NEW;
 
@@ -33,13 +29,8 @@ public class Order implements Serializable {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name="ID")
-    private List<Good> goods;
-
-    public Order() {
-        this.goods = new ArrayList<>();
-    }
+    @ElementCollection
+    private Map<Good, Integer> orderedGoods = new HashMap<>();
 
     public long getId() {
         return id;
@@ -73,12 +64,27 @@ public class Order implements Serializable {
         this.user = user;
     }
 
-    public List<Good> getGoods() {
-        return goods;
+    public Map<Good, Integer> getOrderedGoods() {
+        return orderedGoods;
     }
 
-    public void setGoods(List<Good> goods) {
-        this.goods = goods;
+    public void setOrderedGoods(Map<Good, Integer> orderedGoods) {
+        this.orderedGoods = orderedGoods;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+
+        Order order = (Order) o;
+
+        return getId() == order.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (getId() ^ (getId() >>> 32));
     }
 
     @Override
@@ -88,12 +94,11 @@ public class Order implements Serializable {
                 ", orderedAt=" + orderedAt +
                 ", status=" + status +
                 ", client=" + user +
-                ", goods=" + goods +
                 '}';
     }
 
     public static class Builder {
-        private  Order order;
+        private Order order;
 
         public Builder() {
             this.order = new Order();
@@ -123,8 +128,8 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setGoods(final List<Good> goods) {
-            order.setGoods(goods);
+        public Builder setGoods(final Map<Good, Integer> orderedGoods) {
+            order.setOrderedGoods(orderedGoods);
             return this;
         }
     }
