@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 
-	public boolean isUserSSOUnique(Integer id, String sso) {
+	public boolean isUserSSOUnique(Long id, String sso) {
 		User user = findBySSO(sso);
 		return ( user == null || ((id != null) && (user.getId() == id)));
 	}
