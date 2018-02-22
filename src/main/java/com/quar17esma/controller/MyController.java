@@ -4,6 +4,7 @@ import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.model.User;
 import com.quar17esma.service.GoodService;
+import com.quar17esma.service.OrderService;
 import com.quar17esma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -38,6 +39,9 @@ public class MyController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OrderService orderService;
 
     @Autowired
     MessageSource messageSource;
@@ -154,13 +158,14 @@ public class MyController {
      * Toggle the handlers if you are RememberMe functionality is useless in your app.
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             //new SecurityContextLogoutHandler().logout(request, response, auth);
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
+        httpSession.invalidate();
         return "redirect:/login?logout";
     }
 
@@ -267,5 +272,18 @@ public class MyController {
         model.addAttribute("order", order);
 
         return "cart";
+    }
+
+    /**
+     * Confirm current Order.
+     */
+    @RequestMapping(value = {"/cart"}, method = RequestMethod.POST)
+    public String confirmOrder(HttpSession httpSession) {
+
+        Order order = (Order) httpSession.getAttribute("order");
+        orderService.confirmOrder(order.getId());
+        httpSession.removeAttribute("order");
+
+        return "allgoods";
     }
 }

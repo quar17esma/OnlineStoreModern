@@ -8,7 +8,7 @@ public interface OrderService {
 
     List<Order> findAllByClientId(Long clientId);
 
-    boolean payOrder(Long orderId);
+    void confirmOrder(Long orderId);
 
     void saveOrder(Order order);
 }
