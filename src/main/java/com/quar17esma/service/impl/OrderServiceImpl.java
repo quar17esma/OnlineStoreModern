@@ -26,24 +26,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public boolean payOrder(Long orderId) {
-        boolean result = false;
+    public void confirmOrder(Long orderId) {
 
         Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
         if (order.isPresent()) {
-            order.get().setStatus(OrderStatus.PAID);
+            order.get().setStatus(OrderStatus.CONFIRMED);
             repository.save(order.get());
-
-            result = true;
+        } else {
+            throw new RuntimeException("Order not found. Confirmation failed");
         }
-
-        return result;
     }
 
     @Override
     @Transactional
-    public void sendOrder(Order order) {
+    public void saveOrder(Order order) {
+        if (order.getOrderedAt() == null) {
             order.setOrderedAt(new Date());
-            repository.save(order);
+        }
+        repository.save(order);
     }
 }

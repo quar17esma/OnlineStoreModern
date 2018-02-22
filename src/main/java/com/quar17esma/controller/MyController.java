@@ -3,9 +3,8 @@ package com.quar17esma.controller;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.model.User;
-import com.quar17esma.model.UserProfile;
 import com.quar17esma.service.GoodService;
-import com.quar17esma.service.UserProfileService;
+import com.quar17esma.service.OrderService;
 import com.quar17esma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -19,13 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +41,7 @@ public class MyController {
     UserService userService;
 
     @Autowired
-    UserProfileService userProfileService;
+    OrderService orderService;
 
     @Autowired
     MessageSource messageSource;
@@ -60,6 +59,7 @@ public class MyController {
 
         List<Good> goods = goodService.findAll();
         model.addAttribute("goods", goods);
+        model.addAttribute("loggedinuser", getPrincipal());
 
         return "allgoods";
     }
@@ -106,22 +106,29 @@ public class MyController {
      * Adds good to order
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
-    public String addGoodToOrder(@Valid Good good, BindingResult result) {
+    public String addGoodToOrder(@Valid Good good, BindingResult result,
+                                 HttpSession httpSession, ModelMap model) {
         if (result.hasErrors()) {
             return "buy_now";
         }
 
-        goodService.addGoodToOrder(new Order(), good.getId(), good.getQuantity());
+        Order order = (Order) httpSession.getAttribute("order");
+        if (order == null) {
+            order = new Order();
+            order.setClient(getUser());
+            httpSession.setAttribute("order", order);
+        }
 
-        return "allgoods";
-    }
+        int orderedQuantity = good.getQuantity();
+        goodService.addGoodToOrder(order, good.getId(), orderedQuantity);
 
-    /**
-     * This method will provide UserProfile list to views
-     */
-    @ModelAttribute("roles")
-    public List<UserProfile> initializeProfiles() {
-        return userProfileService.findAll();
+        String goodName = goodService.findById(good.getId()).getName();
+        model.addAttribute("success",
+                "Good " + goodName +
+                        " in quantity - " + orderedQuantity +
+                        " successfully ordered.");
+
+        return "goodAddToOrderSuccess";
     }
 
     /**
@@ -151,13 +158,14 @@ public class MyController {
      * Toggle the handlers if you are RememberMe functionality is useless in your app.
      */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             //new SecurityContextLogoutHandler().logout(request, response, auth);
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
+        httpSession.invalidate();
         return "redirect:/login?logout";
     }
 
@@ -174,6 +182,24 @@ public class MyController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    /**
+     * This method returns logged-in user.
+     */
+    private User getUser() {
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+
+        User user = userService.findBySSO(userName);
+
+        return user;
     }
 
     /**
@@ -234,5 +260,32 @@ public class MyController {
         model.addAttribute("loggedinuser", getPrincipal());
 
         return "registrationsuccess";
+    }
+
+    /**
+     * Show current Order and its Goods.
+     */
+    @RequestMapping(value = {"/cart"}, method = RequestMethod.GET)
+    public String cart(ModelMap model, HttpSession httpSession) {
+
+        Order order = (Order) httpSession.getAttribute("order");
+        model.addAttribute("order", order);
+
+        return "cart";
+    }
+
+    /**
+     * Confirm current Order.
+     */
+    @RequestMapping(value = {"/cart"}, method = RequestMethod.POST)
+    public String confirmOrder(HttpSession httpSession, ModelMap model) {
+
+        Order order = (Order) httpSession.getAttribute("order");
+        orderService.confirmOrder(order.getId());
+        httpSession.removeAttribute("order");
+
+        model.addAttribute("success","Your order was successfully confirmed");
+
+        return "orderConfirmSuccess";
     }
 }

@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Registration Confirmation Page</title>
+    <title>Order Confirmation Success Page</title>
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
     <link href="/static/css/app.css" rel="stylesheet"/>
 </head>

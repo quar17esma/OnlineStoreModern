@@ -57,10 +57,24 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public void addGoodToOrder(Order order, Long goodId, int orderedQuantity) {
         Good good = findById(goodId);
-        good.setQuantity(orderedQuantity);
+        writeOffGood(orderedQuantity, good);
+        
+        if (order.getOrderedGoods().containsKey(good)){
+            int orderedBefore = order.getOrderedGoods().get(good);
+            order.getOrderedGoods().put(good, orderedBefore + orderedQuantity);
+        } else {
+            order.getOrderedGoods().put(good, orderedQuantity);
+        }
 
-        order.getGoods().add(good);
+        orderService.saveOrder(order);
+    }
 
-        orderService.sendOrder(order);
+    private void writeOffGood(int orderedQuantity, Good good) {
+        int diff = good.getQuantity() - orderedQuantity;
+        if (diff >= 0) {
+            good.setQuantity(diff);
+        } else {
+            throw new RuntimeException("There is not enough good quantity");
+        }
     }
 }
