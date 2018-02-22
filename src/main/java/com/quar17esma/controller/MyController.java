@@ -256,4 +256,16 @@ public class MyController {
 
         return "registrationsuccess";
     }
+
+    /**
+     * Show current Order and its Goods.
+     */
+    @RequestMapping(value = {"/cart"}, method = RequestMethod.GET)
+    public String cart(ModelMap model, HttpSession httpSession) {
+
+        Order order = (Order) httpSession.getAttribute("order");
+        model.addAttribute("order", order);
+
+        return "cart";
+    }
 }

@@ -25,7 +25,7 @@
     </c:choose>
 
     <div class="well well-lg">
-        <a href="./show_cart" class="btn custom-width">Cart</a>
+        <a href="./cart" class="btn custom-width">Cart</a>
         <a href="./my_orders" class="btn custom-width">My Orders</a>
         <a href="./list" class="btn custom-width">All Goods</a>
         <sec:authorize access="hasRole('ADMIN')">
