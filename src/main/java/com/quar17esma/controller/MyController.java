@@ -278,12 +278,14 @@ public class MyController {
      * Confirm current Order.
      */
     @RequestMapping(value = {"/cart"}, method = RequestMethod.POST)
-    public String confirmOrder(HttpSession httpSession) {
+    public String confirmOrder(HttpSession httpSession, ModelMap model) {
 
         Order order = (Order) httpSession.getAttribute("order");
         orderService.confirmOrder(order.getId());
         httpSession.removeAttribute("order");
 
-        return "allgoods";
+        model.addAttribute("success","Your order was successfully confirmed");
+
+        return "orderConfirmSuccess";
     }
 }
