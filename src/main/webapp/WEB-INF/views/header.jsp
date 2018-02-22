@@ -17,14 +17,14 @@
 
     <c:choose>
         <c:when test="${loggedinuser != null}">
-            <div class="well well-lg">
+            <div class="well well-sm">
                 <span>Dear <strong>${loggedinuser}</strong>, Welcome to Online Store.</span>
                 <span class="floatRight"><a href="./logout">Logout</a></span>
             </div>
         </c:when>
     </c:choose>
 
-    <div class="well well-lg">
+    <div class="well well-sm">
         <a href="./cart" class="btn custom-width">Cart</a>
         <a href="./my_orders" class="btn custom-width">My Orders</a>
         <a href="./list" class="btn custom-width">All Goods</a>

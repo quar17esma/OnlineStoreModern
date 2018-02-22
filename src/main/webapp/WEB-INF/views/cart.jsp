@@ -17,26 +17,26 @@
 
     <c:choose>
         <c:when test="${order != null}">
-            <div>
+            <div class="well pre-scrollable">
                 <c:forEach items="${order.orderedGoods}" var="good">
-                    <div>
-                        <label>Good name:</label>
-                        <c:out value="${good.key.name}"/>
+                    <div class="well">
+                        <div>
+                            <label>Good name:</label>
+                            <c:out value="${good.key.name}"/>
+                        </div>
+                        <div>
+                            <label>Good description:</label>
+                            <c:out value="${good.key.description}"/>
+                        </div>
+                        <div>
+                            <label>Good price:</label>
+                            <c:out value="${good.key.price}"/>
+                        </div>
+                        <div>
+                            <label>Ordered quantity</label>
+                            <c:out value="${good.value}"/>
+                        </div>
                     </div>
-                    <div>
-                        <label>Good description:</label>
-                        <br/>
-                        <c:out value="${good.key.description}"/>
-                    </div>
-                    <div>
-                        <label>Good price:</label>
-                        <c:out value="${good.key.price}"/>
-                    </div>
-                    <div>
-                        <label>Ordered quantity</label>
-                        <c:out value="${good.value}"/>
-                    </div>
-                    <hr/>
                 </c:forEach>
             </div>
 
@@ -49,7 +49,7 @@
         </c:when>
         <c:otherwise>
             <div class="alert alert-info lead">
-                    Sorry, your cart is empty.
+                Sorry, your cart is empty.
             </div>
         </c:otherwise>
     </c:choose>
