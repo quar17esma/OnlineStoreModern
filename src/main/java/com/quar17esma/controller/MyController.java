@@ -102,7 +102,8 @@ public class MyController {
      * Adds good to order
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
-    public String addGoodToOrder(@Valid Good good, BindingResult result, HttpSession httpSession) {
+    public String addGoodToOrder(@Valid Good good, BindingResult result,
+                                 HttpSession httpSession, ModelMap model) {
         if (result.hasErrors()) {
             return "buy_now";
         }
@@ -114,9 +115,16 @@ public class MyController {
             httpSession.setAttribute("order", order);
         }
 
-        goodService.addGoodToOrder(order, good.getId(), good.getQuantity());
+        int orderedQuantity = good.getQuantity();
+        goodService.addGoodToOrder(order, good.getId(), orderedQuantity);
 
-        return "allgoods";
+        String goodName = goodService.findById(good.getId()).getName();
+        model.addAttribute("success",
+                "Good " + goodName +
+                        " in quantity - " + orderedQuantity +
+                        " successfully ordered.");
+
+        return "goodAddToOrderSuccess";
     }
 
     /**
