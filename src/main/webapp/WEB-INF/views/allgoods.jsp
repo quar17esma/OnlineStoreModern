@@ -16,23 +16,23 @@
     <div class="well pre-scrollable">
         <c:forEach items="${goods}" var="good">
             <div class="well">
-                <div class="field">
+                <div>
                     <label>Name:</label>
                     <c:out value="${good.name}"/>
                 </div>
-                <div class="field">
+                <div>
                     <label>Description:</label>
                     <c:out value="${good.description}"/>
                 </div>
-                <div class="field">
+                <div>
                     <label>Price:</label>
                     <c:out value="${good.price}"/>
                 </div>
-                <div class="field">
+                <div>
                     <label>Quantity:</label>
                     <c:out value="${good.quantity}"/>
                 </div>
-                <div class="field">
+                <div>
                     <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success custom-width">Buy</a>
                 </div>
             </div>
