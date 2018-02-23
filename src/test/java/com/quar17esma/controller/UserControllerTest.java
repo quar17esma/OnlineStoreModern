@@ -26,14 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
 @WebAppConfiguration
-public class MyControllerTest {
+public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Mock
     private GoodService goodServiceMock;
 
     @InjectMocks
-    private MyController controller;
+    private UserController controller;
 
     @Before
     public void setUp() throws Exception {
