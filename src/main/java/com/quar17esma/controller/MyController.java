@@ -6,7 +6,6 @@ import com.quar17esma.model.User;
 import com.quar17esma.service.GoodService;
 import com.quar17esma.service.OrderService;
 import com.quar17esma.service.UserService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
@@ -62,7 +61,7 @@ public class MyController {
         model.addAttribute("goods", goods);
         model.addAttribute("loggedinuser", getPrincipal());
 
-        return "allgoods";
+        return "allGoods";
     }
 
     /**
@@ -73,7 +72,7 @@ public class MyController {
         Good good = new Good();
         model.addAttribute("good", good);
         model.addAttribute("edit", false);
-        return "edit_good";
+        return "editGood";
     }
 
     /**
@@ -84,7 +83,7 @@ public class MyController {
     public String saveGood(@Valid Good good, BindingResult result) {
 
         if (result.hasErrors()) {
-            return "edit_good";
+            return "editGood";
         }
 
         goodService.save(good);
@@ -100,7 +99,7 @@ public class MyController {
         Good good = goodService.findById(goodId);
         model.addAttribute("good", good);
 
-        return "buy_now";
+        return "buyNow";
     }
 
     /**
@@ -110,7 +109,7 @@ public class MyController {
     public String addGoodToOrder(@Valid Good good, BindingResult result,
                                  HttpSession httpSession, ModelMap model) {
         if (result.hasErrors()) {
-            return "buy_now";
+            return "buyNow";
         }
 
         Order order = (Order) httpSession.getAttribute("order");
@@ -260,7 +259,7 @@ public class MyController {
                 "User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
         model.addAttribute("loggedinuser", getPrincipal());
 
-        return "registrationsuccess";
+        return "registrationSuccess";
     }
 
     /**
