@@ -6,6 +6,7 @@ import com.quar17esma.model.User;
 import com.quar17esma.service.GoodService;
 import com.quar17esma.service.OrderService;
 import com.quar17esma.service.UserService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
@@ -287,5 +288,19 @@ public class MyController {
         model.addAttribute("success","Your order was successfully confirmed");
 
         return "orderConfirmSuccess";
+    }
+
+    /**
+     * Show all Orders.
+     */
+    @RequestMapping(value = {"/myOrders"}, method = RequestMethod.GET)
+    public String myOrders(ModelMap model, HttpSession httpSession) {
+
+        Long userId = getUser().getId();
+        List<Order> orders = orderService.findAllByClientIdFetchOrderedGoods(userId);
+
+        model.addAttribute("orders", orders);
+
+        return "myOrders";
     }
 }
