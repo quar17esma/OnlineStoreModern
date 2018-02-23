@@ -294,7 +294,7 @@ public class MyController {
      * Show all Orders.
      */
     @RequestMapping(value = {"/myOrders"}, method = RequestMethod.GET)
-    public String myOrders(ModelMap model, HttpSession httpSession) {
+    public String myOrders(ModelMap model) {
 
         Long userId = getUser().getId();
         List<Order> orders = orderService.findAllByClientIdFetchOrderedGoods(userId);
