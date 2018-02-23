@@ -17,8 +17,7 @@
         <c:forEach items="${goods}" var="good">
             <div class="well">
                 <div>
-                    <label>Name:</label>
-                    <c:out value="${good.name}"/>
+                    <h5><b><c:out value="${good.name}"/></b></h5>
                 </div>
                 <div>
                     <label>Description:</label>
