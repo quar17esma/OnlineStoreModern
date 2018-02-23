@@ -12,8 +12,7 @@
 </head>
 <body>
 <div>
-    <h1>Online Store</h1>
-    <hr/>
+    <h3>Online Store</h3>
 
     <c:choose>
         <c:when test="${loggedinuser != null}">
@@ -26,7 +25,7 @@
 
     <div class="well well-sm">
         <a href="./cart" class="btn custom-width">Cart</a>
-        <a href="./my_orders" class="btn custom-width">My Orders</a>
+        <a href="./myOrders" class="btn custom-width">My Orders</a>
         <a href="./list" class="btn custom-width">All Goods</a>
         <sec:authorize access="hasRole('ADMIN')">
             <a href="./newgood" class="btn custom-width">Add Good</a>
