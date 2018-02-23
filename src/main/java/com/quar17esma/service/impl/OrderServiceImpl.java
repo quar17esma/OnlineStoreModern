@@ -4,6 +4,7 @@ import com.quar17esma.dao.OrderRepository;
 import com.quar17esma.enums.OrderStatus;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.OrderService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllByClientId(Long clientId) {
         return repository.findAllByUserId(clientId);
+    }
+
+    @Override
+    public List<Order> findAllByClientIdFetchOrderedGoods(Long clientId) {
+        List<Order> orders = repository.findAllByUserId(clientId);
+        for (Order order:orders) {
+            Hibernate.initialize(order.getOrderedGoods());
+        }
+        return orders;
     }
 
     @Override

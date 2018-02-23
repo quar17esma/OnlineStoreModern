@@ -8,6 +8,8 @@ public interface OrderService {
 
     List<Order> findAllByClientId(Long clientId);
 
+    List<Order> findAllByClientIdFetchOrderedGoods(Long clientId);
+
     void confirmOrder(Long orderId);
 
     void saveOrder(Order order);
