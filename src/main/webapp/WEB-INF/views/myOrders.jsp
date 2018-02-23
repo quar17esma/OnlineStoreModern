@@ -14,36 +14,46 @@
 
     <jsp:include page="header.jsp"/>
 
-    <div class="well pre-scrollable">
-        <c:forEach items="${orders}" var="order">
+    <c:choose>
+        <c:when test="${orders.size() > 0}">
+            <div class="well pre-scrollable">
+                <c:forEach items="${orders}" var="order">
 
-            <div class="well well-sm">
-                <form:form method="POST">
-                    <label>Order creation time:</label>
-                    <c:out value="${order.orderedAt}"/>
+                    <div class="well well-sm">
+                        <form:form method="POST">
+                            <label>Order creation time:</label>
+                            <c:out value="${order.orderedAt}"/>
 
-                    <c:forEach items="${order.orderedGoods}" var="good">
-                        <div class="well well-sm">
-                            <label><c:out value="${good.key.name}"/></label> &nbsp; &nbsp;
-                            <label>  Price:</label>
-                            <c:out value="${good.key.price}"/>$ &nbsp; &nbsp;
-                            <label>  Quantity:</label>
-                            <c:out value="${good.value}"/>
-                        </div>
-                    </c:forEach>
+                            <c:forEach items="${order.orderedGoods}" var="good">
+                                <div class="well well-sm">
+                                    <label><c:out value="${good.key.name}"/></label> &nbsp; &nbsp;
+                                    <label> Price:</label>
+                                    <c:out value="${good.key.price}"/>$ &nbsp; &nbsp;
+                                    <label> Quantity:</label>
+                                    <c:out value="${good.value}"/>
+                                </div>
+                            </c:forEach>
 
-                    <c:if test="${order.status != 'PAID'}">
-                        <div class="row">
-                            <div class="form-actions floatRight">
-                                <input type="hidden" name="orderId" value="${order.id}"/>
-                                <input type="submit" value="Pay order" class="btn btn-primary btn-sm"/>
-                            </div>
-                        </div>
-                    </c:if>
-                </form:form>
+                            <c:if test="${order.status != 'PAID'}">
+                                <div class="row">
+                                    <div class="form-actions floatRight">
+                                        <input type="hidden" name="orderId" value="${order.id}"/>
+                                        <input type="submit" value="Pay order" class="btn btn-primary btn-sm"/>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </form:form>
+                    </div>
+                </c:forEach>
             </div>
-        </c:forEach>
-    </div>
+        </c:when>
+        <c:otherwise>
+            <div class="alert alert-info lead">
+                Sorry, you don't have orders.
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
 </div>
 </body>
 </html>
