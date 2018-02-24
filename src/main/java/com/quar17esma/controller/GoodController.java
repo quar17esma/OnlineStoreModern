@@ -98,9 +98,7 @@ public class GoodController {
 
         String goodName = goodService.findById(good.getId()).getName();
         model.addAttribute("success",
-                "Good " + goodName +
-                        " in quantity - " + orderedQuantity +
-                        " successfully ordered.");
+                goodName + " in quantity - " + orderedQuantity + " successfully ordered.");
 
         return "goodAddToOrderSuccess";
     }

@@ -2,10 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buy good</title>
+    <title><spring:message code="title.buy.good"/></title>
     <link href="../static/css/bootstrap.css" rel="stylesheet"/>
     <link href="../static/css/app.css" rel="stylesheet"/>
 </head>
@@ -16,28 +17,31 @@
 
     <div class="well">
         <div>
-            <label>Name</label>
-            <c:out value="${good.name}"/>
+            <h5><b><c:out value="${good.name}"/></b></h5>
         </div>
         <br/>
         <div>
-            <label>Description</label>
+            <label><spring:message code="label.description"/></label>
             <p><c:out value="${good.description}"/></p>
         </div>
         <br/>
         <div>
-            <label>Price</label>
+            <label><spring:message code="label.price"/></label>
             <c:out value="${good.price}"/>
         </div>
         <br/>
         <form:form method="POST" modelAttribute="good">
             <form:input type="hidden" path="id" id="id" value="${good.id}"/>
+            <form:input type="hidden" path="name" id="name" value="${good.name}"/>
+            <form:input type="hidden" path="description" id="description" value="${good.description}"/>
+            <form:input type="hidden" path="price" id="price" value="${good.price}"/>
             <form:input type="hidden" path="quantity" id="quantity" value="1"/>
             <div class="row">
                 <div class="form-actions floatRight">
-                    <input type="submit" value="Buy" class="btn btn-primary btn-sm"/>
-                    or
-                    <a href="./list">Cancel</a>
+                    <input type="submit" value="<spring:message code='button.buy'/>"
+                           class="btn btn-primary btn-sm"/>
+                    <spring:message code="text.or"/>
+                    <a href="./list"><spring:message code="link.cancel"/></a>
                 </div>
             </div>
         </form:form>
