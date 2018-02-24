@@ -18,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class GoodController {
+    private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
 
     @Autowired
     UserController userController;
@@ -71,6 +72,7 @@ public class GoodController {
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
     public String addGood(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
+        good.setQuantity(DEFAULT_QUANTITY_FOR_ORDERED_GOOD);
         model.addAttribute("good", good);
 
         return "buyNow";
@@ -98,9 +100,7 @@ public class GoodController {
 
         String goodName = goodService.findById(good.getId()).getName();
         model.addAttribute("success",
-                "Good " + goodName +
-                        " in quantity - " + orderedQuantity +
-                        " successfully ordered.");
+                goodName + " in quantity - " + orderedQuantity + " successfully ordered.");
 
         return "goodAddToOrderSuccess";
     }

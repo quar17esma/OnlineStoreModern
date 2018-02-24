@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>All Goods</title>
+    <title><spring:message code="title.all.goods"/></title>
     <link href="../static/css/bootstrap.css" rel="stylesheet"/>
     <link href="../static/css/app.css" rel="stylesheet"/>
 </head>
@@ -15,25 +16,36 @@
 
     <div class="well pre-scrollable">
         <c:forEach items="${goods}" var="good">
-            <div class="well">
-                <div>
-                    <label>Name:</label>
-                    <c:out value="${good.name}"/>
+            <div class="well col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5><b><c:out value="${good.name}"/></b></h5>
+                    </div>
                 </div>
-                <div>
-                    <label>Description:</label>
-                    <c:out value="${good.description}"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <label><spring:message code="label.price"/></label>
+                            <c:out value="${good.price}"/>
+                        </div>
+                        <div>
+                            <label><spring:message code="label.quantity"/></label>
+                            <c:out value="${good.quantity}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success custom-width floatRight">
+                                <spring:message code="button.buy"/>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label>Price:</label>
-                    <c:out value="${good.price}"/>
-                </div>
-                <div>
-                    <label>Quantity:</label>
-                    <c:out value="${good.quantity}"/>
-                </div>
-                <div>
-                    <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success custom-width">Buy</a>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label><spring:message code="label.description"/></label><br>
+                        <c:out value="${good.description}"/>
+                    </div>
                 </div>
             </div>
         </c:forEach>
