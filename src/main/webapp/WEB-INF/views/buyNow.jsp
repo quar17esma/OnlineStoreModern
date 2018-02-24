@@ -38,9 +38,11 @@
             <label class="col-md-3 control-lable" for="quantity">
                 <spring:message code="label.quantity"/>
             </label>
-            <form:input type="text" path="quantity" id="quantity" class="form-control input-sm"/>
-            <div class="has-error">
-                <form:errors path="quantity" class="help-inline"/>
+            <div class="col-md-2">
+                <form:input type="number" path="quantity" id="quantity" class="form-control input-sm"/>
+                <div class="has-error">
+                    <form:errors path="quantity" class="help-inline"/>
+                </div>
             </div>
             <div class="row">
                 <div class="form-actions floatRight">
