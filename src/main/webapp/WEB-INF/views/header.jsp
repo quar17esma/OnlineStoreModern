@@ -28,14 +28,16 @@
         </c:when>
     </c:choose>
 
-    <div class="well well-sm">
-        <a href="./cart" class="btn custom-width"><spring:message code="link.cart"/></a>
-        <a href="./myOrders" class="btn custom-width"><spring:message code="link.my.orders"/></a>
-        <a href="./list" class="btn custom-width"><spring:message code="link.goods.list"/></a>
-        <sec:authorize access="hasRole('ADMIN')">
-            <a href="./newgood" class="btn custom-width"><spring:message code="link.add.good"/></a>
-        </sec:authorize>
-    </div>
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a href="./cart" class="btn custom-width"><spring:message code="link.cart"/></a></li>
+            <li><a href="./myOrders" class="btn custom-width"><spring:message code="link.my.orders"/></a></li>
+            <li><a href="./list" class="btn custom-width"><spring:message code="link.goods.list"/></a></li>
+            <sec:authorize access="hasRole('ADMIN')">
+                <li><a href="./newgood" class="btn custom-width"><spring:message code="link.add.good"/></a></li>
+            </sec:authorize>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>
