@@ -10,6 +10,9 @@
 
 <body>
 <div id="mainWrapper">
+    <div>
+        Language : <a href="?lang=en_US">English</a> | <a href="?lang=ru_RU">Russian</a>
+    </div>
     <div class="login-container">
         <div class="login-card">
             <div class="login-form">
