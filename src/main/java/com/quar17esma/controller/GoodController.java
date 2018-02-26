@@ -4,6 +4,7 @@ import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/")
@@ -25,6 +27,9 @@ public class GoodController {
 
     @Autowired
     GoodService goodService;
+
+    @Autowired
+    MessageSource messageSource;
 
     /**
      * List all existing Goods.
@@ -83,7 +88,7 @@ public class GoodController {
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToOrder(@Valid Good good, BindingResult result,
-                                 HttpSession httpSession, ModelMap model) {
+                                 HttpSession httpSession, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "buyNow";
         }
@@ -100,7 +105,9 @@ public class GoodController {
 
         String goodName = goodService.findById(good.getId()).getName();
         model.addAttribute("success",
-                goodName + " in quantity - " + orderedQuantity + " successfully ordered.");
+                messageSource.getMessage("success.good.ordered",
+                        new Object[]{goodName, orderedQuantity},
+                        locale));
 
         return "goodAddToOrderSuccess";
     }

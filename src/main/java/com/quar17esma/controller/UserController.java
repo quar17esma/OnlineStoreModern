@@ -116,7 +116,7 @@ public class UserController {
      */
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
-                           ModelMap model) {
+                           ModelMap model, Locale locale) {
 
         if (result.hasErrors()) {
             return "registration";
@@ -124,7 +124,7 @@ public class UserController {
 
         if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
             FieldError ssoError = new FieldError("user", "ssoId",
-                    messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+                    messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, locale));
             result.addError(ssoError);
             return "registration";
         }
@@ -132,7 +132,9 @@ public class UserController {
         userService.saveUser(user);
 
         model.addAttribute("success",
-                "User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
+                messageSource.getMessage("success.user.register",
+                        new String[]{user.getFirstName(), user.getLastName()},
+                        locale));
         model.addAttribute("loggedinuser", getPrincipal());
 
         return "registrationSuccess";
