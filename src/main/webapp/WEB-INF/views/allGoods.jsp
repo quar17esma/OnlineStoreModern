@@ -8,6 +8,9 @@
     <title><spring:message code="title.all.goods"/></title>
     <link href="../static/css/bootstrap.css" rel="stylesheet"/>
     <link href="../static/css/app.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="generic-container">
@@ -35,7 +38,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="row">
-                            <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success custom-width floatRight">
+                            <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success floatRight">
                                 <spring:message code="button.buy"/>
                             </a>
                         </div>
@@ -43,8 +46,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label><spring:message code="label.description"/></label><br>
-                        <c:out value="${good.description}"/>
+                        <a href="#desc${good.id}" data-toggle="collapse">
+                            <spring:message code="label.description"/>
+                        </a>
+                        <br>
+                        <div id="desc${good.id}" class="collapse">
+                            <c:out value="${good.description}"/>
+                        </div>
                     </div>
                 </div>
             </div>
