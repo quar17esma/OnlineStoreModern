@@ -30,11 +30,11 @@
 
     <nav class="navbar navbar-default">
         <ul class="nav navbar-nav">
-            <li><a href="./cart" class="btn custom-width"><spring:message code="link.cart"/></a></li>
-            <li><a href="./myOrders" class="btn custom-width"><spring:message code="link.my.orders"/></a></li>
-            <li><a href="./list" class="btn custom-width"><spring:message code="link.goods.list"/></a></li>
+            <li><a href="./cart" class="btn"><spring:message code="link.cart"/></a></li>
+            <li><a href="./myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
+            <li><a href="./list" class="btn"><spring:message code="link.goods.list"/></a></li>
             <sec:authorize access="hasRole('ADMIN')">
-                <li><a href="./newgood" class="btn custom-width"><spring:message code="link.add.good"/></a></li>
+                <li><a href="./newgood" class="btn"><spring:message code="link.add.good"/></a></li>
             </sec:authorize>
         </ul>
     </nav>
