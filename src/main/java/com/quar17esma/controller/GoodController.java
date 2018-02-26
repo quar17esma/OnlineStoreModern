@@ -8,16 +8,16 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 
 @Controller
+@SessionAttributes("loggedInUser")
 @RequestMapping("/")
 public class GoodController {
     private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
@@ -31,6 +31,11 @@ public class GoodController {
     @Autowired
     MessageSource messageSource;
 
+    @ModelAttribute("loggedInUser")
+    public String getLoggedInUser () {
+        return userController.getPrincipal();
+    }
+
     /**
      * List all existing Goods.
      */
@@ -39,7 +44,6 @@ public class GoodController {
 
         List<Good> goods = goodService.findAll();
         model.addAttribute("goods", goods);
-        model.addAttribute("loggedinuser", userController.getPrincipal());
 
         return "allGoods";
     }

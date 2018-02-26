@@ -16,11 +16,11 @@
     <h3><spring:message code="label.online.store"/></h3>
 
     <c:choose>
-        <c:when test="${loggedinuser != null}">
+        <c:when test="${sessionScope.get('loggedInUser') != null}">
             <div class="well well-sm">
                 <span>
                     <spring:message code="text.dear"/>
-                    <strong>${loggedinuser}</strong>
+                    <strong>${sessionScope.get('loggedInUser')}</strong>
                     <spring:message code="text.welcome.to.store"/>
                 </span>
                 <span class="floatRight"><a href="./logout"><spring:message code="link.logout"/></a></span>
