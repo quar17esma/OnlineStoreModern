@@ -49,7 +49,8 @@
                         <a href="#desc${good.id}" data-toggle="collapse">
                             <spring:message code="label.description"/>
                         </a>
-                        <br>
+                        <br/>
+                        <br/>
                         <div id="desc${good.id}" class="collapse">
                             <c:out value="${good.description}"/>
                         </div>
