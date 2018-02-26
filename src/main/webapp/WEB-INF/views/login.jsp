@@ -6,6 +6,9 @@
     <title><spring:message code="title.login.page"/></title>
     <link href="../static/css/bootstrap.css" rel="stylesheet"/>
     <link href="../static/css/app.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -33,12 +36,12 @@
                         </div>
                     </c:if>
                     <div class="input-group input-sm">
-                        <label class="input-group-addon" for="username"><i class="fa fa-userMy"></i></label>
+                        <label class="input-group-addon" for="username"><span class="glyphicon glyphicon-user"/></label>
                         <input type="text" class="form-control" id="username" name="ssoId"
                                placeholder="<spring:message code='placeholder.enter.username'/>" required>
                     </div>
                     <div class="input-group input-sm">
-                        <label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label>
+                        <label class="input-group-addon" for="password"><span class="glyphicon glyphicon-lock"/></label>
                         <input type="password" class="form-control" id="password" name="password"
                                placeholder="<spring:message code='placeholder.enter.password'/>" required>
                     </div>
