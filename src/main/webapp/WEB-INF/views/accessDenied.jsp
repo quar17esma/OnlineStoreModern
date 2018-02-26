@@ -11,7 +11,9 @@
 <div class="generic-container">
     <div class="authbar">
 		<span>
-			Dear <strong>${loggedinuser}</strong>, You are not authorized to access this page.
+			<spring:message code="text.dear"/>
+            <strong>${loggedinuser}</strong>
+            <spring:message code="text.not.authorized"/>
 		</span>
         <span class="floatRight">
 			<a href="<c:url value="/logout" />"><spring:message code="link.logout"/>Logout</a>

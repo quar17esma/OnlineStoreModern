@@ -4,18 +4,20 @@ import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
+@SessionAttributes("loggedInUser")
 @RequestMapping("/")
 public class GoodController {
     private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
@@ -26,6 +28,14 @@ public class GoodController {
     @Autowired
     GoodService goodService;
 
+    @Autowired
+    MessageSource messageSource;
+
+    @ModelAttribute("loggedInUser")
+    public String getLoggedInUser () {
+        return userController.getPrincipal();
+    }
+
     /**
      * List all existing Goods.
      */
@@ -34,7 +44,6 @@ public class GoodController {
 
         List<Good> goods = goodService.findAll();
         model.addAttribute("goods", goods);
-        model.addAttribute("loggedinuser", userController.getPrincipal());
 
         return "allGoods";
     }
@@ -55,7 +64,8 @@ public class GoodController {
      * saving user in database. It also validates the good input
      */
     @RequestMapping(value = {"/newgood"}, method = RequestMethod.POST)
-    public String saveGood(@Valid Good good, BindingResult result) {
+    public String saveGood(@Valid Good good, BindingResult result,
+                           ModelMap model, Locale locale) {
 
         if (result.hasErrors()) {
             return "editGood";
@@ -63,7 +73,12 @@ public class GoodController {
 
         goodService.save(good);
 
-        return "redirect:/list";
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.added",
+                        new Object[]{good.getName()},
+                        locale));
+
+        return "successPage";
     }
 
     /**
@@ -83,7 +98,7 @@ public class GoodController {
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToOrder(@Valid Good good, BindingResult result,
-                                 HttpSession httpSession, ModelMap model) {
+                                 HttpSession httpSession, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "buyNow";
         }
@@ -100,8 +115,10 @@ public class GoodController {
 
         String goodName = goodService.findById(good.getId()).getName();
         model.addAttribute("success",
-                goodName + " in quantity - " + orderedQuantity + " successfully ordered.");
+                messageSource.getMessage("success.good.ordered",
+                        new Object[]{goodName, orderedQuantity},
+                        locale));
 
-        return "goodAddToOrderSuccess";
+        return "successPage";
     }
 }

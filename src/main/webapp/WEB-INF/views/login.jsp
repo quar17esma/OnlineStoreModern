@@ -10,6 +10,13 @@
 
 <body>
 <div id="mainWrapper">
+    <div class="row">
+        <div class="well-sm floatRight">
+            <a href="?lang=en_US"><spring:message code="link.english"/></a>
+            |
+            <a href="?lang=ru_RU"><spring:message code="link.russian"/></a>
+        </div>
+    </div>
     <div class="login-container">
         <div class="login-card">
             <div class="login-form">

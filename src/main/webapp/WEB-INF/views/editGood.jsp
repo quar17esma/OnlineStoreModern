@@ -77,7 +77,7 @@
 
             <div class="row">
                 <div class="form-actions floatRight">
-                    <input type="submit" value="<spring:message code='button.register'/>"
+                    <input type="submit" value="<spring:message code='button.confirm'/>"
                            class="btn btn-primary btn-sm"/>
                     <spring:message code="text.or"/>
                     <a href="./list"><spring:message code="link.cancel"/></a>

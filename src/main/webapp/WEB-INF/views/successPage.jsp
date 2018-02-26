@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title><spring:message code="title.success.add.good"/></title>
+    <title><spring:message code="title.success.page"/></title>
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
     <link href="/static/css/app.css" rel="stylesheet"/>
 </head>
@@ -17,7 +17,7 @@
 
     <span class="well floatRight">
         <spring:message code="text.go.to"/>
-        <a href="./list"><spring:message code="link.goods.list"/></a>
+        <a href="${pageContext.request.contextPath}/list"><spring:message code="link.goods.list"/></a>
     </span>
 </div>
 

@@ -21,7 +21,6 @@
                 <c:forEach items="${orders}" var="order">
 
                     <div class="well well-sm">
-                        <form:form method="POST">
                             <label><spring:message code="label.order.create.time"/></label>
                             <c:out value="${order.orderedAt}"/>
 
@@ -38,13 +37,12 @@
                             <c:if test="${order.status != 'PAID'}">
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <input type="hidden" name="orderId" value="${order.id}"/>
-                                        <input type="submit" value="<spring:message code='button.pay.order'/>"
-                                               class="btn btn-primary btn-sm"/>
+                                        <a href="./myOrders/pay-${order.id}" class="btn btn-primary btn-sm">
+                                            <spring:message code='button.pay.order'/>
+                                        </a>
                                     </div>
                                 </div>
                             </c:if>
-                        </form:form>
                     </div>
                 </c:forEach>
             </div>
