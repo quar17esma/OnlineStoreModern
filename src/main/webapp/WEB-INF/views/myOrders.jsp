@@ -9,6 +9,9 @@
     <title><spring:message code="title.my.orders"/></title>
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
     <link href="/static/css/app.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="generic-container">
@@ -19,30 +22,41 @@
         <c:when test="${orders.size() > 0}">
             <div class="well pre-scrollable">
                 <c:forEach items="${orders}" var="order">
-
-                    <div class="well well-sm">
-                            <label><spring:message code="label.order.create.time"/></label>
-                            <c:out value="${order.orderedAt}"/>
-
-                            <c:forEach items="${order.orderedGoods}" var="good">
-                                <div class="well well-sm">
-                                    <label><c:out value="${good.key.name}"/></label> &nbsp; &nbsp;
-                                    <label><spring:message code="label.price"/></label>
-                                    <c:out value="${good.key.price}"/>$ &nbsp; &nbsp;
-                                    <label><spring:message code="label.quantity"/></label>
-                                    <c:out value="${good.value}"/>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <label><spring:message code="label.order.number"/></label>
+                                    <a data-toggle="collapse" href="#collapse${order.id}">
+                                        <c:out value="${order.id}"/>
+                                    </a>&nbsp;&nbsp;
+                                    <label><spring:message code="label.order.create.time"/></label>
+                                    <c:out value="${order.orderedAt}"/>
+                                </h4>
+                            </div>
+                            <div id="collapse${order.id}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <c:forEach items="${order.orderedGoods}" var="good">
+                                        <div class="well well-sm">
+                                            <label><c:out value="${good.key.name}"/></label>&nbsp;&nbsp;
+                                            <label><spring:message code="label.price"/></label>
+                                            <c:out value="${good.key.price}"/>$ &nbsp;&nbsp;
+                                            <label><spring:message code="label.quantity"/></label>
+                                            <c:out value="${good.value}"/>
+                                        </div>
+                                    </c:forEach>
+                                    <c:if test="${order.status != 'PAID'}">
+                                        <div class="row">
+                                            <div class="form-actions floatRight">
+                                                <a href="./myOrders/pay-${order.id}" class="btn btn-primary btn-sm">
+                                                    <spring:message code='button.pay.order'/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                 </div>
-                            </c:forEach>
-
-                            <c:if test="${order.status != 'PAID'}">
-                                <div class="row">
-                                    <div class="form-actions floatRight">
-                                        <a href="./myOrders/pay-${order.id}" class="btn btn-primary btn-sm">
-                                            <spring:message code='button.pay.order'/>
-                                        </a>
-                                    </div>
-                                </div>
-                            </c:if>
+                            </div>
+                        </div>
                     </div>
                 </c:forEach>
             </div>
