@@ -60,7 +60,8 @@ public class GoodController {
      * saving user in database. It also validates the good input
      */
     @RequestMapping(value = {"/newgood"}, method = RequestMethod.POST)
-    public String saveGood(@Valid Good good, BindingResult result) {
+    public String saveGood(@Valid Good good, BindingResult result,
+                           ModelMap model, Locale locale) {
 
         if (result.hasErrors()) {
             return "editGood";
@@ -68,7 +69,12 @@ public class GoodController {
 
         goodService.save(good);
 
-        return "redirect:/list";
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.added",
+                        new Object[]{good.getName()},
+                        locale));
+
+        return "successPage";
     }
 
     /**
@@ -109,6 +115,6 @@ public class GoodController {
                         new Object[]{goodName, orderedQuantity},
                         locale));
 
-        return "goodAddToOrderSuccess";
+        return "successPage";
     }
 }

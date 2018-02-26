@@ -50,7 +50,7 @@ public class OrderController {
         model.addAttribute("success",
                 messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
 
-        return "orderConfirmSuccess";
+        return "successPage";
     }
 
     /**

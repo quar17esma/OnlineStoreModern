@@ -137,7 +137,7 @@ public class UserController {
                         locale));
         model.addAttribute("loggedinuser", getPrincipal());
 
-        return "registrationSuccess";
+        return "successPage";
     }
 
     /**

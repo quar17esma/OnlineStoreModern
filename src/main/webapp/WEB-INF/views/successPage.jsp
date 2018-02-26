@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title><spring:message code="title.success.add.good"/></title>
+    <title><spring:message code="title.success.page"/></title>
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
     <link href="/static/css/app.css" rel="stylesheet"/>
 </head>
