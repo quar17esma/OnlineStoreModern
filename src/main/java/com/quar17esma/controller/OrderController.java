@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -65,5 +66,19 @@ public class OrderController {
         model.addAttribute("orders", orders);
 
         return "myOrders";
+    }
+
+    /**
+     * Pay Order.
+     */
+    @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
+    public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
+
+        orderService.payOrder(orderId);
+
+        model.addAttribute("success",
+                messageSource.getMessage("success.order.pay", new Object[] {}, locale));
+
+        return "successPage";
     }
 }

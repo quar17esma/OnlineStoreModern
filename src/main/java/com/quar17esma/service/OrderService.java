@@ -13,4 +13,6 @@ public interface OrderService {
     void confirmOrder(Long orderId);
 
     void saveOrder(Order order);
+
+    void payOrder(Long orderId);
 }

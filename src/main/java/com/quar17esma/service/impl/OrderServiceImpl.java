@@ -55,4 +55,15 @@ public class OrderServiceImpl implements OrderService {
         }
         repository.save(order);
     }
+
+    @Override
+    public void payOrder(Long orderId) {
+        Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
+        if (order.isPresent()) {
+            order.get().setStatus(OrderStatus.PAID);
+            repository.save(order.get());
+        } else {
+            throw new RuntimeException("Order not found. Payment failed");
+        }
+    }
 }
