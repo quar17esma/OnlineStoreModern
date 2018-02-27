@@ -106,7 +106,7 @@ public class GoodController {
         Order order = (Order) httpSession.getAttribute("order");
         if (order == null) {
             order = new Order();
-            order.setClient(userController.getUser());
+            order.setUser(userController.getUser());
             httpSession.setAttribute("order", order);
         }
 
