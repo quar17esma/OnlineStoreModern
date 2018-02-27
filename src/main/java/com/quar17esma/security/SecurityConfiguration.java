@@ -26,11 +26,11 @@ import javax.sql.DataSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsService customUserDetailsService;
+    private UserDetailsService customUserDetailsService;
 
     @Autowired
     @Qualifier("tokenRepositoryDao")
-    PersistentTokenRepository tokenRepository;
+    private PersistentTokenRepository tokenRepository;
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {

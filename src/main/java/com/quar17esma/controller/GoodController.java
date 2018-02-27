@@ -23,13 +23,13 @@ public class GoodController {
     private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
 
     @Autowired
-    UserController userController;
+    private UserController userController;
 
     @Autowired
-    GoodService goodService;
+    private GoodService goodService;
 
     @Autowired
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     @ModelAttribute("loggedInUser")
     public String getLoggedInUser () {
