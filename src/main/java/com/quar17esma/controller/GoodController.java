@@ -64,7 +64,7 @@ public class GoodController {
      * saving user in database. It also validates the good input
      */
     @RequestMapping(value = {"/newgood"}, method = RequestMethod.POST)
-    public String saveGood(@Valid Good good, BindingResult result,
+    public String saveNewGood(@Valid Good good, BindingResult result,
                            ModelMap model, Locale locale) {
 
         if (result.hasErrors()) {
@@ -117,6 +117,38 @@ public class GoodController {
         model.addAttribute("success",
                 messageSource.getMessage("success.good.ordered",
                         new Object[]{goodName, orderedQuantity},
+                        locale));
+
+        return "successPage";
+    }
+
+    /**
+     * This method will provide the medium to edit a good.
+     */
+    @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
+    public String editGood(@PathVariable Long goodId, ModelMap model) {
+        Good good = goodService.findById(goodId);
+        model.addAttribute("good", good);
+        model.addAttribute("edit", true);
+
+        return "editGood";
+    }
+
+    /**
+     * Edit Good.
+     */
+    @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
+    public String saveEditedGood(@Valid Good good, BindingResult result,
+                                 ModelMap model, Locale locale) {
+        if (result.hasErrors()) {
+            return "editGood";
+        }
+
+        goodService.save(good);
+
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.edited",
+                        new Object[]{good.getName()},
                         locale));
 
         return "successPage";

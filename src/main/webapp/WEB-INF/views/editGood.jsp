@@ -25,7 +25,8 @@
                         <spring:message code="label.name"/>
                     </label>
                     <div class="col-md-7">
-                        <form:input type="text" path="name" id="name" class="form-control input-sm"/>
+                        <form:input type="text" path="name" id="name"
+                                    value="${good.name}" class="form-control input-sm"/>
                         <div class="has-error">
                             <form:errors path="name" class="help-inline"/>
                         </div>
@@ -39,7 +40,8 @@
                         <spring:message code="label.description"/>
                     </label>
                     <div class="col-md-7">
-                        <form:textarea type="text" path="description" id="description" class="form-control input-sm"/>
+                        <form:textarea type="text" path="description" id="description"
+                                       value="${good.description}" class="form-control input-sm"/>
                         <div class="has-error">
                             <form:errors path="description" class="help-inline"/>
                         </div>
@@ -53,7 +55,8 @@
                         <spring:message code="label.price"/>
                     </label>
                     <div class="col-md-2">
-                        <form:input type="number" path="price" id="price" class="form-control input-sm"/>
+                        <form:input type="number" path="price" id="price"
+                                    value="${good.price}" class="form-control input-sm"/>
                         <div class="has-error">
                             <form:errors path="price" class="help-inline"/>
                         </div>
@@ -67,7 +70,8 @@
                         <spring:message code="label.quantity"/>
                     </label>
                     <div class="col-md-2">
-                        <form:input type="number" path="quantity" id="quantity" class="form-control input-sm"/>
+                        <form:input type="number" path="quantity" id="quantity"
+                                    value="${good.quantity}" class="form-control input-sm"/>
                         <div class="has-error">
                             <form:errors path="quantity" class="help-inline"/>
                         </div>
