@@ -31,7 +31,7 @@
                                         <c:out value="${order.id}"/>
                                     </a>&nbsp;&nbsp;
                                     <label><spring:message code="label.order.create.time"/></label>
-                                    <c:out value="${order.orderedAt}"/>
+                                    <c:out value="${localDateTimeFormat.format(order.orderedAt)}"/>
                                 </h4>
                             </div>
                             <div id="collapse${order.id}" class="panel-collapse collapse">
