@@ -153,4 +153,11 @@ public class GoodController {
 
         return "successPage";
     }
+
+    @RequestMapping(value = "/imageController/{goodId}")
+    @ResponseBody
+    public byte[] helloWorld(@PathVariable long goodId)  {
+        Good good = goodService.findById(goodId);
+        return good.getProfilePic();
+    }
 }

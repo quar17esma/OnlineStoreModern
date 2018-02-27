@@ -41,6 +41,10 @@ public class Good implements Serializable {
     @Column(name = "QUANTITY", nullable = false)
     private int quantity;
 
+    @Lob
+    @Column(name="PROFILE_PIC")
+    private byte[] profilePic;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

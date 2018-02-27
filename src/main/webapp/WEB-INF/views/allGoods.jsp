@@ -27,6 +27,12 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <img src="./imageController/${good.id}" alt="${good.name}" class="img-thumbnail"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
                     <div class="col-md-6">
                         <div>
                             <label><spring:message code="label.price"/></label>
@@ -44,6 +50,7 @@
                             </a>
                         </div>
                         <sec:authorize access="hasRole('ADMIN')">
+                            <br/>
                             <div class="row">
                                 <a href="<c:url value='/edit-good-${good.id}' />" class="btn btn-warning floatRight">
                                     <spring:message code="button.edit"/>
