@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllByClientIdFetchOrderedGoods(Long clientId) {
         List<Order> orders = repository.findAllByUserId(clientId);
-        for (Order order:orders) {
+        for (Order order : orders) {
             Hibernate.initialize(order.getOrderedGoods());
         }
         return orders;
@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     public void confirmOrder(Long orderId) {
 
         Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
-        if (order.isPresent()) {
+        if (order.isPresent() && order.get().getStatus() == OrderStatus.NEW) {
             order.get().setStatus(OrderStatus.CONFIRMED);
             repository.save(order.get());
         } else {
@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void saveOrder(Order order) {
         if (order.getOrderedAt() == null) {
-            order.setOrderedAt(new Date());
+            order.setOrderedAt(LocalDateTime.now());
         }
         repository.save(order);
     }

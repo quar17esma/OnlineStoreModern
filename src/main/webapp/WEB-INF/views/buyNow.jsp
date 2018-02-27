@@ -35,7 +35,7 @@
             <form:input type="hidden" path="name" id="name" value="${good.name}"/>
             <form:input type="hidden" path="description" id="description" value="${good.description}"/>
             <form:input type="hidden" path="price" id="price" value="${good.price}"/>
-            <label class="col-md-3 control-lable" for="quantity">
+            <label class="col-md-3 control-label" for="quantity">
                 <spring:message code="label.quantity"/>
             </label>
             <div class="col-md-2">
