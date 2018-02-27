@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.ArrayList;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,14 +27,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
 @WebAppConfiguration
-public class UserControllerTest {
+public class GoodControllerTest {
     private MockMvc mockMvc;
 
     @Mock
     private GoodService goodServiceMock;
 
+    @Mock
+    private UserController userController;
+
     @InjectMocks
-    private UserController controller;
+    private GoodController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -52,10 +56,11 @@ public class UserControllerTest {
     @Test
     public void listGoods() throws Exception {
         when(goodServiceMock.findAll()).thenReturn(new ArrayList<>());
+        when(userController.getPrincipal()).thenReturn("");
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("allgoods"));
+                .andExpect(view().name("allGoods"));
     }
 
 }
