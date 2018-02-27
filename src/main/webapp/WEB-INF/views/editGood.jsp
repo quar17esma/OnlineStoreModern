@@ -21,7 +21,7 @@
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label class="col-md-3 control-lable" for="name">
+                    <label class="col-md-3 control-label" for="name">
                         <spring:message code="label.name"/>
                     </label>
                     <div class="col-md-7">
@@ -35,7 +35,7 @@
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label class="col-md-3 control-lable" for="description">
+                    <label class="col-md-3 control-label" for="description">
                         <spring:message code="label.description"/>
                     </label>
                     <div class="col-md-7">
@@ -49,7 +49,7 @@
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label class="col-md-3 control-lable" for="price">
+                    <label class="col-md-3 control-label" for="price">
                         <spring:message code="label.price"/>
                     </label>
                     <div class="col-md-2">
@@ -63,7 +63,7 @@
 
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label class="col-md-3 control-lable" for="quantity">
+                    <label class="col-md-3 control-label" for="quantity">
                         <spring:message code="label.quantity"/>
                     </label>
                     <div class="col-md-2">
