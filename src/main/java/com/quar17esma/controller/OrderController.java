@@ -49,7 +49,7 @@ public class OrderController {
      * Confirm current Order.
      */
     @RequestMapping(value = {"/cart"}, method = RequestMethod.POST)
-    public String confirmOrder(HttpSession httpSession, ModelMap model, Locale locale) {
+    public String confirmOrderFromCart(HttpSession httpSession, ModelMap model, Locale locale) {
 
         Order order = (Order) httpSession.getAttribute("order");
         orderService.confirmOrder(order.getId());
@@ -85,6 +85,20 @@ public class OrderController {
 
         model.addAttribute("success",
                 messageSource.getMessage("success.order.pay", new Object[] {}, locale));
+
+        return "successPage";
+    }
+
+    /**
+     * Confirm Order by Id.
+     */
+    @RequestMapping(value = {"/myOrders/confirm-{orderId}"}, method = RequestMethod.GET)
+    public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
+
+        orderService.confirmOrder(orderId);
+
+        model.addAttribute("success",
+                messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
 
         return "successPage";
     }

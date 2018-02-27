@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAllByClientIdFetchOrderedGoods(Long clientId) {
         List<Order> orders = repository.findAllByUserId(clientId);
-        for (Order order:orders) {
+        for (Order order : orders) {
             Hibernate.initialize(order.getOrderedGoods());
         }
         return orders;
@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     public void confirmOrder(Long orderId) {
 
         Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
-        if (order.isPresent()) {
+        if (order.isPresent() && order.get().getStatus() == OrderStatus.NEW) {
             order.get().setStatus(OrderStatus.CONFIRMED);
             repository.save(order.get());
         } else {
