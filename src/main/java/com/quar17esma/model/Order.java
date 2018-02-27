@@ -1,10 +1,11 @@
 package com.quar17esma.model;
 
+import com.quar17esma.converter.LocalDateTimeConverter;
 import com.quar17esma.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,9 +18,9 @@ public class Order implements Serializable {
     @Column(name = "ID", unique = true, nullable = false)
     private long id;
 
-    @Temporal(TemporalType.DATE)
+    @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "ORDERED_AT", nullable = false)
-    private Date orderedAt;
+    private LocalDateTime orderedAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
@@ -40,11 +41,11 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Date getOrderedAt() {
+    public LocalDateTime getOrderedAt() {
         return orderedAt;
     }
 
-    public void setOrderedAt(Date orderedAt) {
+    public void setOrderedAt(LocalDateTime orderedAt) {
         this.orderedAt = orderedAt;
     }
 
@@ -113,7 +114,7 @@ public class Order implements Serializable {
             return this;
         }
 
-        public Builder setOrderedAt(final Date orderedAt) {
+        public Builder setOrderedAt(final LocalDateTime orderedAt) {
             order.setOrderedAt(orderedAt);
             return this;
         }
