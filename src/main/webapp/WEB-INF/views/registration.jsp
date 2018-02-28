@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<div class="generic-container">
+<div class="generic-container col-md-offset-1">
 
     <div class="well lead"><spring:message code="title.registration.form"/></div>
 

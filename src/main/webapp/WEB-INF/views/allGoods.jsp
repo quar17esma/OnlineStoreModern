@@ -14,66 +14,69 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="generic-container">
+<div class="container-fluid">
 
     <jsp:include page="header.jsp"/>
 
-    <div class="well pre-scrollable">
-        <c:forEach items="${goods}" var="good">
-            <div class="well col-md-6">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h5><b><c:out value="${good.name}"/></b></h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
-                        <img src="./imageController/${good.id}" alt="${good.name}" class="img-thumbnail"/>
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div>
-                            <label><spring:message code="label.price"/></label>
-                            <c:out value="${good.price}"/>
-                        </div>
-                        <div>
-                            <label><spring:message code="label.quantity"/></label>
-                            <c:out value="${good.quantity}"/>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <c:forEach items="${goods}" var="good">
+                <div class="well col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5><b><c:out value="${good.name}"/></b></h5>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success floatRight">
-                                <spring:message code="button.buy"/>
-                            </a>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <img src="./imageController/${good.id}" alt="${good.name}" class="img-thumbnail"/>
                         </div>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <br/>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <label><spring:message code="label.price"/></label>
+                                <c:out value="${good.price}"/>
+                            </div>
+                            <div>
+                                <label><spring:message code="label.quantity"/></label>
+                                <c:out value="${good.quantity}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="row">
-                                <a href="<c:url value='/edit-good-${good.id}' />" class="btn btn-warning floatRight">
-                                    <spring:message code="button.edit"/>
+                                <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success floatRight">
+                                    <spring:message code="button.buy"/>
                                 </a>
                             </div>
-                        </sec:authorize>
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <br/>
+                                <div class="row">
+                                    <a href="<c:url value='/edit-good-${good.id}' />"
+                                       class="btn btn-warning floatRight">
+                                        <spring:message code="button.edit"/>
+                                    </a>
+                                </div>
+                            </sec:authorize>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <a href="#desc${good.id}" data-toggle="collapse">
-                            <spring:message code="label.description"/>
-                        </a>
-                        <br/>
-                        <br/>
-                        <div id="desc${good.id}" class="collapse">
-                            <c:out value="${good.description}"/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="#desc${good.id}" data-toggle="collapse">
+                                <spring:message code="label.description"/>
+                            </a>
+                            <br/>
+                            <br/>
+                            <div id="desc${good.id}" class="collapse">
+                                <c:out value="${good.description}"/>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </c:forEach>
-        <br/>
+            </c:forEach>
+            <br/>
+        </div>
     </div>
 </div>
 </body>

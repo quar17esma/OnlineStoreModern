@@ -11,10 +11,11 @@
     <link href="../static/css/app.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="generic-container">
+<div class="container-fluid">
 
     <jsp:include page="header.jsp"/>
-
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
     <div class="well">
         <div>
             <h5><b><c:out value="${good.name}"/></b></h5>
@@ -55,6 +56,8 @@
         </form:form>
         <br/>
     </div>
+            </div>
+        </div>
 </div>
 </body>
 </html>
