@@ -20,13 +20,13 @@ import java.util.Locale;
 @RequestMapping("/")
 public class OrderController {
     @Autowired
-    UserController userController;
+    private UserController userController;
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @Autowired
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     @ModelAttribute("localDateTimeFormat")
     public DateTimeFormatter getLocalDateTimeFormat () {

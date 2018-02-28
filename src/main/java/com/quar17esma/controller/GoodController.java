@@ -23,13 +23,13 @@ public class GoodController {
     private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
 
     @Autowired
-    UserController userController;
+    private UserController userController;
 
     @Autowired
-    GoodService goodService;
+    private GoodService goodService;
 
     @Autowired
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     @ModelAttribute("loggedInUser")
     public String getLoggedInUser () {
@@ -64,7 +64,7 @@ public class GoodController {
      * saving user in database. It also validates the good input
      */
     @RequestMapping(value = {"/newgood"}, method = RequestMethod.POST)
-    public String saveGood(@Valid Good good, BindingResult result,
+    public String saveNewGood(@Valid Good good, BindingResult result,
                            ModelMap model, Locale locale) {
 
         if (result.hasErrors()) {
@@ -106,7 +106,7 @@ public class GoodController {
         Order order = (Order) httpSession.getAttribute("order");
         if (order == null) {
             order = new Order();
-            order.setClient(userController.getUser());
+            order.setUser(userController.getUser());
             httpSession.setAttribute("order", order);
         }
 
@@ -120,5 +120,44 @@ public class GoodController {
                         locale));
 
         return "successPage";
+    }
+
+    /**
+     * This method will provide the medium to edit a good.
+     */
+    @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
+    public String editGood(@PathVariable Long goodId, ModelMap model) {
+        Good good = goodService.findById(goodId);
+        model.addAttribute("good", good);
+        model.addAttribute("edit", true);
+
+        return "editGood";
+    }
+
+    /**
+     * Edit Good.
+     */
+    @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
+    public String saveEditedGood(@Valid Good good, BindingResult result,
+                                 ModelMap model, Locale locale) {
+        if (result.hasErrors()) {
+            return "editGood";
+        }
+
+        goodService.save(good);
+
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.edited",
+                        new Object[]{good.getName()},
+                        locale));
+
+        return "successPage";
+    }
+
+    @RequestMapping(value = "/imageController/{goodId}")
+    @ResponseBody
+    public byte[] helloWorld(@PathVariable long goodId)  {
+        Good good = goodService.findById(goodId);
+        return good.getProfilePic();
     }
 }

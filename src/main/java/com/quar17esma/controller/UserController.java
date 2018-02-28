@@ -29,15 +29,15 @@ import java.util.Locale;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    MessageSource messageSource;
+    private MessageSource messageSource;
 
     @Autowired
-    PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
+    private PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
 
-    AuthenticationTrustResolver authenticationTrustResolver;
+    private AuthenticationTrustResolver authenticationTrustResolver;
 
     /**
      * This method handles Access-Denied redirect.

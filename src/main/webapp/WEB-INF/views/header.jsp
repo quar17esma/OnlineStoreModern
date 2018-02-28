@@ -10,34 +10,45 @@
     <title><spring:message code="title.header"/></title>
     <link href="../static/css/bootstrap.css" rel="stylesheet"/>
     <link href="../static/css/app.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div>
-    <h3><spring:message code="label.online.store"/></h3>
-
-    <c:choose>
-        <c:when test="${sessionScope.get('loggedInUser') != null}">
-            <div class="well well-sm">
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="text-center">
+            <h3><spring:message code="label.online.store"/></h3>
+        </div>
+        <c:choose>
+            <c:when test="${sessionScope.get('loggedInUser') != null}">
+                <div class="well well-sm">
                 <span>
                     <spring:message code="text.dear"/>
                     <strong>${sessionScope.get('loggedInUser')}</strong>
                     <spring:message code="text.welcome.to.store"/>
                 </span>
-                <span class="floatRight"><a href="./logout"><spring:message code="link.logout"/></a></span>
-            </div>
-        </c:when>
-    </c:choose>
+                    <span class="floatRight">
+                    <a href="./logout">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        <spring:message code="link.logout"/>
+                    </a>
+                </span>
+                </div>
+            </c:when>
+        </c:choose>
 
-    <nav class="navbar navbar-default">
-        <ul class="nav navbar-nav">
-            <li><a href="./cart" class="btn"><spring:message code="link.cart"/></a></li>
-            <li><a href="./myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
-            <li><a href="./list" class="btn"><spring:message code="link.goods.list"/></a></li>
-            <sec:authorize access="hasRole('ADMIN')">
-                <li><a href="./newgood" class="btn"><spring:message code="link.add.good"/></a></li>
-            </sec:authorize>
-        </ul>
-    </nav>
+        <nav class="navbar navbar-default">
+            <ul class="nav navbar-nav">
+                <li><a href="./cart" class="btn"><spring:message code="link.cart"/></a></li>
+                <li><a href="./myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
+                <li><a href="./list" class="btn"><spring:message code="link.goods.list"/></a></li>
+                <sec:authorize access="hasRole('ADMIN')">
+                    <li><a href="./newgood" class="btn"><spring:message code="link.add.good"/></a></li>
+                </sec:authorize>
+            </ul>
+        </nav>
+    </div>
 </div>
 </body>
 </html>
