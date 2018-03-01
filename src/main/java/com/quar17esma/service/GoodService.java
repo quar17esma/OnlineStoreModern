@@ -9,8 +9,6 @@ public interface GoodService {
 
     List<Good> findAll();
 
-    int countAll();
-
     Good findById(Long goodId);
 
     void deleteById(Long goodId);
