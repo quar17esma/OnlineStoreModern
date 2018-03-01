@@ -28,12 +28,6 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public int countAll() {
-//        return repository.countAll();
-        return 0;
-    }
-
-    @Override
     public Good findById(Long goodId) {
         Optional<Good> good = Optional.ofNullable(repository.findOne(goodId));
         if (good.isPresent()) {
