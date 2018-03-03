@@ -68,7 +68,7 @@ public class OrderController {
     public String myOrders(ModelMap model) {
 
         Long userId = userController.getUser().getId();
-        List<Order> orders = orderService.findAllByClientIdFetchOrderedGoods(userId);
+        List<Order> orders = orderService.findAllByUserIdFetchOrderedGoods(userId);
 
         model.addAttribute("orders", orders);
 
