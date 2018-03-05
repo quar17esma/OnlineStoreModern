@@ -16,7 +16,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "user")
 @Builder
 public class Order implements Serializable {
 
