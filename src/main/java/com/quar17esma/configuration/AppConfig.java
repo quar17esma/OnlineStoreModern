@@ -4,6 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.LocaleResolver;
@@ -21,8 +22,9 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.quar17esma")
 @EnableJpaRepositories(basePackages = "com.quar17esma.dao")
+@EnableAspectJAutoProxy
+@ComponentScan(basePackages = "com.quar17esma")
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     /**
