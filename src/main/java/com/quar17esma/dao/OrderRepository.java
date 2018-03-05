@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Cacheable(value = "ordersCache", key = "#userId")
+    @Cacheable(value = "ordersCache", key = "#p0")
     List<Order> findAllByUserId(Long userId);
 
     @Cacheable(value = "ordersCache")
