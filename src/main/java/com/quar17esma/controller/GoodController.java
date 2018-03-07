@@ -156,7 +156,7 @@ public class GoodController {
 
     @RequestMapping(value = "/imageController/{goodId}")
     @ResponseBody
-    public byte[] helloWorld(@PathVariable long goodId)  {
+    public byte[] getGoodPicById(@PathVariable long goodId)  {
         Good good = goodService.findById(goodId);
         return good.getProfilePic();
     }
