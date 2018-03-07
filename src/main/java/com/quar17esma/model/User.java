@@ -1,10 +1,7 @@
 package com.quar17esma.model;
 
 import com.quar17esma.enums.UserProfileType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,6 +14,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "password")
 public class User implements Serializable {
 
     @Id
@@ -78,16 +76,4 @@ public class User implements Serializable {
             return false;
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "User [" +
-                "id=" + id +
-                ", ssoId=" + ssoId +
-                ", firstName=" + firstName +
-                ", lastName=" + lastName +
-                ", email=" + email +
-                "]";
-    }
-
 }

@@ -50,7 +50,7 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public void addGoodToOrder(Order order, Long goodId, int orderedQuantity) {
-        Good good = findById(goodId);
+        Good good = repository.findOne(goodId);
         writeOffGood(orderedQuantity, good);
         
         if (order.getOrderedGoods().containsKey(good)){

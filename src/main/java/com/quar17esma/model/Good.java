@@ -1,6 +1,7 @@
 package com.quar17esma.model;
 
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -10,17 +11,16 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "GOOD")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "goods")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@ToString(exclude = {"profilePic", "description"})
 @Builder
 public class Good implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true, nullable = false)
     private long id;
 
     @NotEmpty
