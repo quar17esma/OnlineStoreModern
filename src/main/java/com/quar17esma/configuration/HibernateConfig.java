@@ -31,10 +31,10 @@ public class HibernateConfig {
     @Autowired
     private Environment environment;
 
-    @Bean
-    public SessionFactory sessionFactory() {
-        return entityManager().unwrap(Session.class).getSessionFactory();
-    }
+//    @Bean
+//    public SessionFactory sessionFactory() {
+//        return entityManager().unwrap(Session.class).getSessionFactory();
+//    }
 
     @Bean
     public EntityManager entityManager() {

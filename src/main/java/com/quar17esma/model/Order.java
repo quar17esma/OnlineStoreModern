@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "ORDERS")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +22,6 @@ public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true, nullable = false)
     private long id;
 
     @Convert(converter = LocalDateTimeConverter.class)
@@ -30,7 +29,7 @@ public class Order implements Serializable {
     private LocalDateTime orderedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS", nullable = false)
+    @Column(name = "ORDER_STATUS", nullable = false)
     private OrderStatus status = OrderStatus.NEW;
 
     @ManyToOne(fetch = FetchType.LAZY)

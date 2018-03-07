@@ -20,7 +20,6 @@ public class Good implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true, nullable = false)
     private long id;
 
     @NotEmpty
