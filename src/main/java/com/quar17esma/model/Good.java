@@ -15,7 +15,7 @@ import java.io.Serializable;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "goods")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-@ToString(exclude = {"profilePic", "description"})
+@ToString(exclude = {"goodPic", "description"})
 @Builder
 public class Good implements Serializable {
 
@@ -42,8 +42,8 @@ public class Good implements Serializable {
     private int quantity;
 
     @Lob
-    @Column(name="PROFILE_PIC")
-    private byte[] profilePic;
+    @Column(name="GOOD_PIC")
+    private byte[] goodPic;
 
     @Override
     public boolean equals(Object o) {

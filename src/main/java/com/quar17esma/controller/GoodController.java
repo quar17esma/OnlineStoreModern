@@ -10,7 +10,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -158,6 +157,6 @@ public class GoodController {
     @ResponseBody
     public byte[] getGoodPicById(@PathVariable long goodId)  {
         Good good = goodService.findById(goodId);
-        return good.getProfilePic();
+        return good.getGoodPic();
     }
 }
