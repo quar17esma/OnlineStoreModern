@@ -39,7 +39,7 @@
                 <li><a href="./myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
                 <li><a href="./list" class="btn"><spring:message code="link.goods.list"/></a></li>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <li><a href="./newgood" class="btn"><spring:message code="link.add.good"/></a></li>
+                    <li><a href="./new-good" class="btn"><spring:message code="link.add.good"/></a></li>
                 </sec:authorize>
             </ul>
         </nav>

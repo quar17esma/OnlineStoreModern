@@ -23,6 +23,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -119,13 +120,13 @@ public class GoodControllerTest {
     public void saveNewGoodValidationFail() throws Exception {
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
 
-        String name = StringUtils.repeat("a", 102);
+        String name = StringUtils.repeat("a", 101);
         String description = StringUtils.repeat("a", 1001);
         Long price = -1L;
         Integer quantity = -1;
         Long id = 0L;
 
-        mockMvc.perform(post("/newgood")
+        mockMvc.perform(post("/new-good")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", name)
                 .param("description", description)
@@ -148,5 +149,43 @@ public class GoodControllerTest {
                 .andExpect(model().attribute("good", hasProperty("quantity", is(quantity))));
 
         verifyZeroInteractions(goodServiceMock);
+        verifyZeroInteractions(messageSourceMock);
+    }
+
+    //    @Ignore
+    @Test
+    public void saveNewGoodSuccess() throws Exception {
+        when(userControllerMock.getPrincipal()).thenReturn("johnny");
+
+        String name = StringUtils.repeat("a", 62);
+        String description = StringUtils.repeat("a", 524);
+        Long price = 1200L;
+        Integer quantity = 35;
+        Long id = 0L;
+        Good good = new Good();
+
+        mockMvc.perform(post("/new-good")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", name)
+                .param("description", description)
+                .param("price", String.valueOf(price))
+                .param("quantity", String.valueOf(quantity))
+                .requestAttr("good", good)
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name("successPage"))
+                .andExpect(forwardedUrl("/WEB-INF/views/successPage.jsp"))
+                .andExpect(model().attributeHasNoErrors("good"))
+                .andExpect(model().attribute("good", hasProperty("id", is(id))))
+                .andExpect(model().attribute("good", hasProperty("name", is(name))))
+                .andExpect(model().attribute("good", hasProperty("description", is(description))))
+                .andExpect(model().attribute("good", hasProperty("price", is(price))))
+                .andExpect(model().attribute("good", hasProperty("quantity", is(quantity))));
+
+        verify(goodServiceMock, times(1)).save(good);
+        verifyNoMoreInteractions(goodServiceMock);
+        verify(messageSourceMock, times(1))
+                .getMessage(matches("success.good.added"), any(), any());
+        verifyNoMoreInteractions(messageSourceMock);
     }
 }

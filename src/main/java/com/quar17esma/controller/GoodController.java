@@ -50,7 +50,7 @@ public class GoodController {
     /**
      * This method will provide the medium to add a new good.
      */
-    @RequestMapping(value = {"/newgood"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/new-good"}, method = RequestMethod.GET)
     public String newGood(ModelMap model) {
         Good good = new Good();
         model.addAttribute("good", good);
@@ -62,7 +62,7 @@ public class GoodController {
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the good input
      */
-    @RequestMapping(value = {"/newgood"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
     public String saveNewGood(@Valid Good good, BindingResult result,
                            ModelMap model, Locale locale) {
 
