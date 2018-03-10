@@ -121,8 +121,8 @@ public class GoodControllerTest {
 
         String name = StringUtils.repeat("a", 102);
         String description = StringUtils.repeat("a", 1001);
-        Long price = 100L;
-        Integer quantity = 50;
+        Long price = -1L;
+        Integer quantity = -1;
         Long id = 0L;
 
         mockMvc.perform(post("/newgood")
@@ -138,10 +138,14 @@ public class GoodControllerTest {
                 .andExpect(forwardedUrl("/WEB-INF/views/editGood.jsp"))
                 .andExpect(model().attributeHasFieldErrors("good", "name"))
                 .andExpect(model().attributeHasFieldErrors("good", "description"))
-                .andExpect(model().attributeErrorCount("good", 2))
+                .andExpect(model().attributeHasFieldErrors("good", "price"))
+                .andExpect(model().attributeHasFieldErrors("good", "quantity"))
+                .andExpect(model().attributeErrorCount("good", 4))
                 .andExpect(model().attribute("good", hasProperty("id", is(id))))
+                .andExpect(model().attribute("good", hasProperty("name", is(name))))
                 .andExpect(model().attribute("good", hasProperty("description", is(description))))
-                .andExpect(model().attribute("good", hasProperty("name", is(name))));
+                .andExpect(model().attribute("good", hasProperty("price", is(price))))
+                .andExpect(model().attribute("good", hasProperty("quantity", is(quantity))));
 
         verifyZeroInteractions(goodServiceMock);
     }
