@@ -8,11 +8,6 @@
 <html>
 <head>
     <title><spring:message code="title.header"/></title>
-    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
-    <link href="../static/css/app.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="row">
@@ -44,7 +39,7 @@
                 <li><a href="./myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
                 <li><a href="./list" class="btn"><spring:message code="link.goods.list"/></a></li>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <li><a href="./newgood" class="btn"><spring:message code="link.add.good"/></a></li>
+                    <li><a href="./new-good" class="btn"><spring:message code="link.add.good"/></a></li>
                 </sec:authorize>
             </ul>
         </nav>

@@ -10,7 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -32,7 +32,7 @@ public class GoodController {
     private MessageSource messageSource;
 
     @ModelAttribute("loggedInUser")
-    public String getLoggedInUser () {
+    public String getLoggedInUser() {
         return userController.getPrincipal();
     }
 
@@ -51,7 +51,7 @@ public class GoodController {
     /**
      * This method will provide the medium to add a new good.
      */
-    @RequestMapping(value = {"/newgood"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/new-good"}, method = RequestMethod.GET)
     public String newGood(ModelMap model) {
         Good good = new Good();
         model.addAttribute("good", good);
@@ -63,9 +63,9 @@ public class GoodController {
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the good input
      */
-    @RequestMapping(value = {"/newgood"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
     public String saveNewGood(@Valid Good good, BindingResult result,
-                           ModelMap model, Locale locale) {
+                              ModelMap model, Locale locale) {
 
         if (result.hasErrors()) {
             return "editGood";
@@ -85,8 +85,16 @@ public class GoodController {
      * This method will provide the medium to buy a good.
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
-    public String addGood(@PathVariable Long goodId, ModelMap model) {
-        Good good = goodService.findById(goodId);
+    public String buyGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+        Good good;
+        try {
+            good = goodService.findById(goodId);
+        } catch (EntityNotFoundException ex) {
+            model.addAttribute("failMessage", messageSource.getMessage("fail.good.find",
+                    new Object[]{goodId}, locale));
+            return "failPage";
+        }
+
         good.setQuantity(DEFAULT_QUANTITY_FOR_ORDERED_GOOD);
         model.addAttribute("good", good);
 
@@ -94,7 +102,7 @@ public class GoodController {
     }
 
     /**
-     * Adds good to order
+     * Adds good to order and writes off good
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToOrder(@Valid Good good, BindingResult result,
@@ -156,8 +164,8 @@ public class GoodController {
 
     @RequestMapping(value = "/imageController/{goodId}")
     @ResponseBody
-    public byte[] getGoodPicById(@PathVariable long goodId)  {
+    public byte[] getGoodPicById(@PathVariable long goodId) {
         Good good = goodService.findById(goodId);
-        return good.getProfilePic();
+        return good.getGoodPic();
     }
 }
