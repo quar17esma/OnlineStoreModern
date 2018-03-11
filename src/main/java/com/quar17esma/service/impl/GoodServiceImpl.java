@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service("goodService")
 @Transactional
@@ -29,12 +29,12 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public Good findById(Long goodId) {
-        Optional<Good> good = Optional.ofNullable(repository.findOne(goodId));
-        if (good.isPresent()) {
-            return good.get();
-
+        Good good = repository.findOne(goodId);
+        if (good != null) {
+            return good;
         } else {
-            throw new RuntimeException();
+            throw new EntityNotFoundException(
+                    String.format("Can't find entity of class: %s with id: %d", Good.class.getName(), goodId));
         }
     }
 
