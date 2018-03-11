@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
@@ -51,8 +52,6 @@ public class GoodControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-//        Mockito.reset(goodServiceMock, userControllerMock, messageSourceMock);
-
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
@@ -63,6 +62,8 @@ public class GoodControllerTest {
                 .setValidator(validator)
                 .setViewResolvers(viewResolver)
                 .build();
+
+        when(userControllerMock.getPrincipal()).thenReturn("johnny");
     }
 
     //    @Ignore
@@ -86,7 +87,6 @@ public class GoodControllerTest {
                 .build();
 
         when(goodServiceMock.findAll()).thenReturn(Arrays.asList(firstGood, secondGood));
-        when(userControllerMock.getPrincipal()).thenReturn("johnny");
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -118,7 +118,6 @@ public class GoodControllerTest {
     //    @Ignore
     @Test
     public void saveNewGoodValidationFail() throws Exception {
-        when(userControllerMock.getPrincipal()).thenReturn("johnny");
 
         String name = StringUtils.repeat("a", 101);
         String description = StringUtils.repeat("a", 1001);
@@ -155,7 +154,6 @@ public class GoodControllerTest {
     //    @Ignore
     @Test
     public void saveNewGoodSuccess() throws Exception {
-        when(userControllerMock.getPrincipal()).thenReturn("johnny");
 
         String name = StringUtils.repeat("a", 62);
         String description = StringUtils.repeat("a", 524);
@@ -186,6 +184,29 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(goodServiceMock);
         verify(messageSourceMock, times(1))
                 .getMessage(matches("success.good.added"), any(), any());
+        verifyNoMoreInteractions(messageSourceMock);
+    }
+
+    @Test
+    public void buyGoodEntityNotFoundException() throws Exception {
+        Long goodId = 13L;
+        when(goodServiceMock.findById(goodId)).thenThrow(new EntityNotFoundException());
+        when(messageSourceMock.getMessage(matches("fail.good.find"), any(), any()))
+                .thenReturn("Test fail message");
+
+        mockMvc.perform(get("/buy-good-{goodId}", goodId)
+                .requestAttr("goodId", goodId)
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name("failPage"))
+                .andExpect(forwardedUrl("/WEB-INF/views/failPage.jsp"))
+                .andExpect(model().attributeExists("failMessage"))
+                .andExpect(model().attributeDoesNotExist("good"));
+
+        verify(goodServiceMock, times(1)).findById(goodId);
+        verifyNoMoreInteractions(goodServiceMock);
+        verify(messageSourceMock, times(1))
+                .getMessage(matches("fail.good.find"), any(), any());
         verifyNoMoreInteractions(messageSourceMock);
     }
 }
