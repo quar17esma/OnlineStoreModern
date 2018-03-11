@@ -84,7 +84,7 @@ public class GoodController {
      * This method will provide the medium to buy a good.
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
-    public String addGood(@PathVariable Long goodId, ModelMap model) {
+    public String buyGood(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
         good.setQuantity(DEFAULT_QUANTITY_FOR_ORDERED_GOOD);
         model.addAttribute("good", good);
@@ -93,7 +93,7 @@ public class GoodController {
     }
 
     /**
-     * Adds good to order
+     * Adds good to order and writes off good
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToOrder(@Valid Good good, BindingResult result,
