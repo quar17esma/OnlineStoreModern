@@ -1,6 +1,7 @@
 package com.quar17esma.loggining;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
@@ -51,11 +52,20 @@ public class SpringAOPLogger {
 
     private void appendArgs(ProceedingJoinPoint joinPoint, StringBuilder logMessage) {
         Object[] args = joinPoint.getArgs();
-        for (Object object:args) {
+        for (Object object : args) {
             logMessage.append(object).append(",");
         }
         if (args.length > 0) {
             logMessage.deleteCharAt(logMessage.length() - 1);
         }
+    }
+
+    @AfterThrowing(
+            pointcut = "execution(* com.quar17esma.service..*.*(..)) || " +
+                    "execution(* com.quar17esma.controller..*.*(..)) || " +
+                    "execution(* com.quar17esma.dao..*.*(..))",
+            throwing = "ex")
+    public void logAfterThrowing(Throwable ex) throws Throwable {
+        logger.error(ex.getMessage(), ex);
     }
 }
