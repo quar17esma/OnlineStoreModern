@@ -21,6 +21,7 @@ Apache Maven used for building.
 Logging implemented by AOP with AspectJ, Slf4j and Logback.
 Project Lombok used for entities boilerplate.
 Tests are written on JUnit and Mockito using Hamcrest.
+Bootstrap 3 used for front-end.
 
 ## Technologies used:
 
