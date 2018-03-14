@@ -21,13 +21,13 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository repository;
 
     @Override
-    public List<Order> findAllByClientId(Long userId) {
-        return repository.findAllByUserId(userId);
+    public List<Order> findAllByUserId(Long userId) {
+        return repository.findAllByUserIdOrderByOrderedAtDesc(userId);
     }
 
     @Override
     public List<Order> findAllByUserIdFetchOrderedGoods(Long userId) {
-        List<Order> orders = repository.findAllByUserId(userId);
+        List<Order> orders = repository.findAllByUserIdOrderByOrderedAtDesc(userId);
         for (Order order : orders) {
             Hibernate.initialize(order.getOrderedGoods());
         }
