@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<Order> findAllByClientId(Long userId);
+    List<Order> findAllByUserId(Long userId);
 
     List<Order> findAllByUserIdFetchOrderedGoods(Long userId);
 
