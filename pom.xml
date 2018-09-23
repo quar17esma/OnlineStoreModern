@@ -227,6 +227,7 @@
 
     <build>
         <finalName>OnlineStoreModern</finalName>
+        <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -251,7 +252,34 @@
                 <version>2.0.6</version>
                 <configuration>
                     <appName>OnlineStoreModern</appName>
+                    <processTypes>
+                        <web>java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war</web>
+                    </processTypes>
+                    <!--<includeTarget>false</includeTarget>-->
+                    <!--<includes>-->
+                        <!--<include>target/OnlineStoreModern.war</include>-->
+                    <!--</includes>-->
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>copy</goal></goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.jsimone</groupId>
+                                    <artifactId>webapp-runner</artifactId>
+                                    <version>9.0.11.0</version>
+                                    <destFileName>webapp-runner.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
