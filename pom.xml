@@ -274,7 +274,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>launch.Main</mainClass>
+                            <mainClass>com.quar17esma.launch.Main</mainClass>
                             <name>webapp</name>
                         </program>
                     </programs>
