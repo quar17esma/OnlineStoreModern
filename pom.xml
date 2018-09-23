@@ -23,6 +23,7 @@
         <logback.version>1.1.3</logback.version>
         <jcl.slf4j.version>1.7.12</jcl.slf4j.version>
         <aspectj.version>1.8.9</aspectj.version>
+        <tomcat.version>8.0.45</tomcat.version>
     </properties>
 
     <dependencies>
@@ -216,11 +217,30 @@
             <version>${aspectj.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.heroku.sdk/heroku-maven-plugin -->
         <dependency>
-            <groupId>com.heroku.sdk</groupId>
-            <artifactId>heroku-maven-plugin</artifactId>
-            <version>2.0.6</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper-el</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
 
     </dependencies>
@@ -247,40 +267,32 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.heroku.sdk</groupId>
-                <artifactId>heroku-maven-plugin</artifactId>
-                <version>2.0.6</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>2.0.0</version>
                 <configuration>
-                    <appName>OnlineStoreModern</appName>
-                    <processTypes>
-                        <web>java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war</web>
-                    </processTypes>
-                    <!--<includeTarget>false</includeTarget>-->
-                    <!--<includes>-->
-                        <!--<include>target/OnlineStoreModern.war</include>-->
-                    <!--</includes>-->
+                    <assembleDirectory>target</assembleDirectory>
+                    <programs>
+                        <program>
+                            <mainClass>launch.Main</mainClass>
+                            <name>webapp</name>
+                        </program>
+                    </programs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals><goal>copy</goal></goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.github.jsimone</groupId>
-                                    <artifactId>webapp-runner</artifactId>
-                                    <version>9.0.11.0</version>
-                                    <destFileName>webapp-runner.jar</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
     </build>
 </project>
