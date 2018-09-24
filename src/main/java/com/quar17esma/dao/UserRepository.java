@@ -4,7 +4,7 @@ import com.quar17esma.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findBySsoId(String sso);
+    User findByEmail(String email);
 
-    void deleteBySsoId(String sso);
+    void deleteByEmail(String email);
 }

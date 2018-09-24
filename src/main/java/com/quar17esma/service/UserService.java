@@ -9,14 +9,14 @@ public interface UserService {
 	
 	User findById(int id);
 	
-	User findBySSO(String sso);
+	User findByEmail(String email);
 	
 	void saveUser(User user);
 	
-	void deleteUserBySSO(String sso);
+	void deleteUserByEmail(String email);
 
 	List<User> findAllUsers(); 
 	
-	boolean isUserSSOUnique(Long id, String sso);
+	boolean isUserEmailUnique(Long id, String email);
 
 }

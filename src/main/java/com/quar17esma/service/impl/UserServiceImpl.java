@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findOne((long) id);
 	}
 
-	public User findBySSO(String sso) {
-		return userRepository.findBySsoId(sso);
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 
 	public void saveUser(User user) {
@@ -36,16 +36,16 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 	
-	public void deleteUserBySSO(String sso) {
-		userRepository.deleteBySsoId(sso);
+	public void deleteUserByEmail(String email) {
+		userRepository.deleteByEmail(email);
 	}
 
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
 
-	public boolean isUserSSOUnique(Long id, String sso) {
-		User user = findBySSO(sso);
+	public boolean isUserEmailUnique(Long id, String email) {
+		User user = findByEmail(email);
 		return ( user == null || ((id != null) && (user.getId() == id)));
 	}
 	
