@@ -1,1 +1,1 @@
-web: sh target/webapp
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* Main
