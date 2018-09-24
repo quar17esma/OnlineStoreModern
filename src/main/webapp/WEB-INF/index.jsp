@@ -4,6 +4,6 @@
     <title>Index</title>
 </head>
 <body>
-<jsp:forward page="./rest/" ></jsp:forward>
+<h2>Hello Heroku!</h2>
 </body>
 </html>
