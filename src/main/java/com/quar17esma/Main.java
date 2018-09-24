@@ -1,3 +1,5 @@
+package com.quar17esma;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -53,13 +55,6 @@ public class Main {
         StandardContext ctx = (StandardContext) tomcat.addWebapp("", webContentFolder.getAbsolutePath());
         //Set execution independent of current thread context classloader (compatibility with exec:java mojo)
         ctx.setParentClassLoader(Main.class.getClassLoader());
-
-        //Disable TLD scanning by default
-//        if (System.getProperty(Constants.SKIP_JARS_PROPERTY) == null && System.getProperty(Constants.SKIP_JARS_PROPERTY) == null) {
-//            System.out.println("disabling TLD scanning");
-//            StandardJarScanFilter jarScanFilter = (StandardJarScanFilter) ctx.getJarScanner().getJarScanFilter();
-//            jarScanFilter.setTldSkip("*");
-//        }
 
         System.out.println("configuring app with basedir: " + webContentFolder.getAbsolutePath());
 

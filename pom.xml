@@ -279,7 +279,7 @@
                     <assembleDirectory>target/bin</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>Main</mainClass>
+                            <mainClass>com.quar17esma.Main</mainClass>
                             <name>webapp</name>
                         </program>
                     </programs>
