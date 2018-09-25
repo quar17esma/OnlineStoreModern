@@ -27,7 +27,6 @@ import java.util.Locale;
 @RequestMapping("/")
 @ComponentScan({"com.quar17esma.security"})
 public class UserController {
-
     @Autowired
     private UserService userService;
 
@@ -54,12 +53,12 @@ public class UserController {
     public String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (principal instanceof UserDetails) {
             userName = ((UserDetails) principal).getUsername();
         } else {
             userName = principal.toString();
         }
+
         return userName;
     }
 
@@ -92,10 +91,11 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         httpSession.invalidate();
+
         return "redirect:/login?logout";
     }
 
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/new_user"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -103,7 +103,7 @@ public class UserController {
         return "registration";
     }
 
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/new_user"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model, Locale locale) {
         if (result.hasErrors()) {
