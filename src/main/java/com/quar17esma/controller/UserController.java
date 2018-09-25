@@ -117,24 +117,19 @@ public class UserController {
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model, Locale locale) {
-
         if (result.hasErrors()) {
             return "registration";
-        }
-
-        if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
-            FieldError ssoError = new FieldError("user", "ssoId",
-                    messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, locale));
-            result.addError(ssoError);
+        } else if (!userService.isUserEmailUnique(user.getId(), user.getEmail())) {
+            FieldError emailError = new FieldError("user", "email",
+                    messageSource.getMessage("non.unique.email", new String[]{user.getEmail()}, locale));
+            result.addError(emailError);
             return "registration";
         }
 
         userService.saveUser(user);
-
         model.addAttribute("success",
                 messageSource.getMessage("success.user.register",
-                        new String[]{user.getFirstName(), user.getLastName()},
-                        locale));
+                        new String[]{user.getFirstName(), user.getLastName()}, locale));
         model.addAttribute("loggedinuser", getPrincipal());
 
         return "successPage";
@@ -153,7 +148,7 @@ public class UserController {
             userName = principal.toString();
         }
 
-        User user = userService.findBySSO(userName);
+        User user = userService.findByEmail(userName);
 
         return user;
     }

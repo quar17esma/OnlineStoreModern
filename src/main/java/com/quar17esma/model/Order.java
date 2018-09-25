@@ -3,6 +3,7 @@ package com.quar17esma.model;
 import com.quar17esma.converter.LocalDateTimeConverter;
 import com.quar17esma.enums.OrderStatus;
 import lombok.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -11,33 +12,32 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@Entity
-@Table(name = "ORDERS")
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "orders")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @ToString(exclude = "user")
 @Builder
+@Entity
+@Table(name = "orders")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "orders")
 public class Order implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name = "ORDERED_AT", nullable = false)
+    @Column(name = "ordered_at", nullable = false)
     private LocalDateTime orderedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ORDER_STATUS", nullable = false)
+    @Column(name = "order_status", nullable = false)
     private OrderStatus status = OrderStatus.NEW;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "goods")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "goods")
     @ElementCollection
     private Map<Good, Integer> orderedGoods = new HashMap<>();
 

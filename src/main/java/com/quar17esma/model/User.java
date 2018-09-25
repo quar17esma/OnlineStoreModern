@@ -8,42 +8,37 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "APP_USER")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "password")
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
-    @Column(name = "SSO_ID", unique = true, nullable = false)
-    private String ssoId;
-
-    @NotEmpty
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @NotEmpty
-    @Column(name = "FIRST_NAME", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @NotEmpty
-    @Column(name = "LAST_NAME", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @NotEmpty
     @Email
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "PROFILE_TYPE", nullable = false)
+    @Column(name = "role", nullable = false)
     private UserProfileType userProfileType = UserProfileType.USER;
 
     @Override
@@ -51,7 +46,7 @@ public class User implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
         return result;
     }
 
@@ -69,10 +64,10 @@ public class User implements Serializable {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (ssoId == null) {
-            if (other.ssoId != null)
+        if (email == null) {
+            if (other.email != null)
                 return false;
-        } else if (!ssoId.equals(other.ssoId))
+        } else if (!email.equals(other.email))
             return false;
         return true;
     }
