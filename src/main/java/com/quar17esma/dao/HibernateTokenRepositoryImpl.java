@@ -27,7 +27,7 @@ public class HibernateTokenRepositoryImpl implements PersistentTokenRepository {
         persistentLogin.setUsername(token.getUsername());
         persistentLogin.setSeries(token.getSeries());
         persistentLogin.setToken(token.getTokenValue());
-        persistentLogin.setLast_used(token.getDate());
+        persistentLogin.setLastUsed(token.getDate());
         em.persist(persistentLogin);
     }
 
@@ -39,7 +39,7 @@ public class HibernateTokenRepositoryImpl implements PersistentTokenRepository {
             PersistentLogin persistentLogin = (PersistentLogin) crit.uniqueResult();
 
             return new PersistentRememberMeToken(persistentLogin.getUsername(), persistentLogin.getSeries(),
-                    persistentLogin.getToken(), persistentLogin.getLast_used());
+                    persistentLogin.getToken(), persistentLogin.getLastUsed());
         } catch (Exception e) {
             return null;
         }
@@ -60,7 +60,7 @@ public class HibernateTokenRepositoryImpl implements PersistentTokenRepository {
     public void updateToken(String seriesId, String tokenValue, Date lastUsed) {
         PersistentLogin persistentLogin = em.find(PersistentLogin.class, seriesId);
         persistentLogin.setToken(tokenValue);
-        persistentLogin.setLast_used(lastUsed);
+        persistentLogin.setLastUsed(lastUsed);
         em.persist(persistentLogin);
     }
 }

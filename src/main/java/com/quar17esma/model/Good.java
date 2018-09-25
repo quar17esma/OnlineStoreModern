@@ -1,6 +1,7 @@
 package com.quar17esma.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -9,40 +10,39 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "GOOD")
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "goods")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @ToString(exclude = {"goodPic", "description"})
 @Builder
+@Entity
+@Table(name = "goods")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "goods")
 public class Good implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
     @Length(min = 5, max = 100)
-    @Column(name = "NAME", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     @NotEmpty
     @Length(min = 5, max = 1000)
-    @Column(name = "DESCRIPTION", nullable = false, length = 1000)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
     @Min(0)
-    @Column(name = "PRICE", nullable = false)
+    @Column(name = "price", nullable = false)
     private long price;
 
     @Min(0)
-    @Column(name = "QUANTITY", nullable = false)
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
     @Lob
-    @Column(name="GOOD_PIC")
+    @Column(name="good_pic")
     private byte[] goodPic;
 
     @Override
