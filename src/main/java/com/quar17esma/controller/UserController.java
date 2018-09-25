@@ -29,18 +29,12 @@ import java.util.Locale;
 public class UserController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private MessageSource messageSource;
-
     @Autowired
     private PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
-
     private AuthenticationTrustResolver authenticationTrustResolver;
 
-    /**
-     * This method handles Access-Denied redirect.
-     */
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
         model.addAttribute("loggedinuser", getPrincipal());
@@ -104,24 +98,25 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/new_user"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
-                           ModelMap model, Locale locale) {
+    public String saveUser(@Valid User user, BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "registration";
-        } else if (!userService.isUserEmailUnique(user.getId(), user.getEmail())) {
+        } else if (isEmailBusy(user)) {
             FieldError emailError = new FieldError("user", "email",
-                    messageSource.getMessage("non.unique.email", new String[]{user.getEmail()}, locale));
+                    messageSource.getMessage("error.busy.email", new String[]{user.getEmail()}, locale));
             result.addError(emailError);
             return "registration";
         }
-
         userService.saveUser(user);
         model.addAttribute("successRegistrationMessage",
-                messageSource.getMessage("success.user.register",
-                        new String[]{user.getFirstName(), user.getLastName()}, locale));
+                messageSource.getMessage("success.user.register", new String[]{user.getFirstName(), user.getLastName()}, locale));
         model.addAttribute("loggedinuser", getPrincipal());
 
         return "login";
+    }
+
+    private boolean isEmailBusy(@Valid User user) {
+        return userService.isEmailBusy(user.getEmail());
     }
 
     /**

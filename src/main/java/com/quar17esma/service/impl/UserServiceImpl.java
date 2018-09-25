@@ -16,10 +16,8 @@ import java.util.List;
 @Transactional
 @ComponentScan({"com.quar17esma.dao"})
 public class UserServiceImpl implements UserService {
-
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
@@ -44,9 +42,7 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 
-	public boolean isUserEmailUnique(Long id, String email) {
-		User user = findByEmail(email);
-		return ( user == null || ((id != null) && (user.getId() == id)));
+	public boolean isEmailBusy(String email) {
+		return findByEmail(email) != null;
 	}
-	
 }
