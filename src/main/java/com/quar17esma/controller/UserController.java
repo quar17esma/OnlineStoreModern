@@ -84,10 +84,6 @@ public class UserController {
         return authenticationTrustResolver.isAnonymous(authentication);
     }
 
-    /**
-     * This method handles logout requests.
-     * Toggle the handlers if you are RememberMe functionality is useless in your app.
-     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -99,9 +95,6 @@ public class UserController {
         return "redirect:/login?logout";
     }
 
-    /**
-     * This method will provide the medium to add a new user.
-     */
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
@@ -110,10 +103,6 @@ public class UserController {
         return "registration";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
-     */
     @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
     public String saveUser(@Valid User user, BindingResult result,
                            ModelMap model, Locale locale) {
@@ -127,12 +116,12 @@ public class UserController {
         }
 
         userService.saveUser(user);
-        model.addAttribute("success",
+        model.addAttribute("successRegistrationMessage",
                 messageSource.getMessage("success.user.register",
                         new String[]{user.getFirstName(), user.getLastName()}, locale));
         model.addAttribute("loggedinuser", getPrincipal());
 
-        return "successPage";
+        return "login";
     }
 
     /**
