@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
-	public User findById(int id) {
-		return userRepository.findOne((long) id);
+	public User findById(Long id) {
+		return userRepository.findOne(id);
 	}
 
 	public User findByEmail(String email) {

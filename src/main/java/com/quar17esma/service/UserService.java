@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public interface UserService {
-	User findById(int id);
+	User findById(Long id);
 	
 	User findByEmail(String email);
 	
@@ -17,5 +17,4 @@ public interface UserService {
 	List<User> findAllUsers(); 
 	
 	boolean isEmailBusy(String email);
-
 }

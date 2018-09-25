@@ -16,7 +16,6 @@ import java.util.Optional;
 @Service("orderService")
 @Transactional
 public class OrderServiceImpl implements OrderService {
-
     @Autowired
     private OrderRepository repository;
 
@@ -31,14 +30,14 @@ public class OrderServiceImpl implements OrderService {
         for (Order order : orders) {
             Hibernate.initialize(order.getOrderedGoods());
         }
+
         return orders;
     }
 
     @Override
     @Transactional
-    public void confirmOrder(Long orderId) {
-
-        Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
+    public void confirmOrder(Long id) {
+        Optional<Order> order = Optional.ofNullable(repository.findOne(id));
         if (order.isPresent() && order.get().getStatus() == OrderStatus.NEW) {
             order.get().setStatus(OrderStatus.CONFIRMED);
             repository.save(order.get());
@@ -57,8 +56,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void payOrder(Long orderId) {
-        Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
+    public void payOrder(Long id) {
+        Optional<Order> order = Optional.ofNullable(repository.findOne(id));
         if (order.isPresent()) {
             order.get().setStatus(OrderStatus.PAID);
             repository.save(order.get());
