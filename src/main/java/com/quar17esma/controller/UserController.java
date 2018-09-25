@@ -107,7 +107,7 @@ public class UserController {
             result.addError(emailError);
             return "registration";
         }
-        userService.saveUser(user);
+        userService.save(user);
         model.addAttribute("successRegistrationMessage",
                 messageSource.getMessage("success.user.register", new String[]{user.getFirstName(), user.getLastName()}, locale));
         model.addAttribute("loggedinuser", getPrincipal());

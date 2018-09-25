@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service("orderService")
 @Transactional
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends AbstractCRUDService<Order> implements OrderService {
     @Autowired
     private OrderRepository repository;
 

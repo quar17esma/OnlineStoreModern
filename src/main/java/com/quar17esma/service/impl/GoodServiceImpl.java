@@ -9,44 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-
 @Service("goodService")
 @Transactional
-public class GoodServiceImpl implements GoodService {
-
+public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodService {
     @Autowired
     private GoodRepository repository;
-
     @Autowired
     private OrderService orderService;
-
-    @Override
-    public List<Good> findAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public Good findById(Long goodId) {
-        Good good = repository.findOne(goodId);
-        if (good != null) {
-            return good;
-        } else {
-            throw new EntityNotFoundException(
-                    String.format("Can't find entity of class: %s with id: %d", Good.class.getName(), goodId));
-        }
-    }
-
-    @Override
-    public void deleteById(Long goodId) {
-        repository.delete(goodId);
-    }
-
-    @Override
-    public void save(Good good) {
-        repository.save(good);
-    }
 
     @Override
     public void addGoodToOrder(Order order, Long goodId, int orderedQuantity) {
