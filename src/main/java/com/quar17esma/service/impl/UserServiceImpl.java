@@ -9,29 +9,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-
 @Service("userService")
 @Transactional
 @ComponentScan({"com.quar17esma.dao"})
-public class UserServiceImpl implements UserService {
-
+public class UserServiceImpl extends AbstractCRUDService<User> implements UserService {
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
     private PasswordEncoder passwordEncoder;
-	
-	public User findById(int id) {
-		return userRepository.findOne((long) id);
-	}
 
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
-	public void saveUser(User user) {
+	public void save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
@@ -40,13 +31,7 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteByEmail(email);
 	}
 
-	public List<User> findAllUsers() {
-		return userRepository.findAll();
+	public boolean isEmailBusy(String email) {
+		return findByEmail(email) != null;
 	}
-
-	public boolean isUserEmailUnique(Long id, String email) {
-		User user = findByEmail(email);
-		return ( user == null || ((id != null) && (user.getId() == id)));
-	}
-	
 }

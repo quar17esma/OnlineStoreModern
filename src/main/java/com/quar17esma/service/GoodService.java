@@ -3,17 +3,6 @@ package com.quar17esma.service;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 
-import java.util.List;
-
-public interface GoodService {
-
-    List<Good> findAll();
-
-    Good findById(Long goodId);
-
-    void deleteById(Long goodId);
-
-    void save(Good good);
-
+public interface GoodService extends CRUDService<Good> {
     void addGoodToOrder(Order order, Long goodId, int orderedQuantity);
 }

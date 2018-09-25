@@ -27,21 +27,14 @@ import java.util.Locale;
 @RequestMapping("/")
 @ComponentScan({"com.quar17esma.security"})
 public class UserController {
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private MessageSource messageSource;
-
     @Autowired
     private PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
-
     private AuthenticationTrustResolver authenticationTrustResolver;
 
-    /**
-     * This method handles Access-Denied redirect.
-     */
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
         model.addAttribute("loggedinuser", getPrincipal());
@@ -54,12 +47,12 @@ public class UserController {
     public String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (principal instanceof UserDetails) {
             userName = ((UserDetails) principal).getUsername();
         } else {
             userName = principal.toString();
         }
+
         return userName;
     }
 
@@ -84,10 +77,6 @@ public class UserController {
         return authenticationTrustResolver.isAnonymous(authentication);
     }
 
-    /**
-     * This method handles logout requests.
-     * Toggle the handlers if you are RememberMe functionality is useless in your app.
-     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -96,13 +85,11 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         httpSession.invalidate();
+
         return "redirect:/login?logout";
     }
 
-    /**
-     * This method will provide the medium to add a new user.
-     */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/new_user"}, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -110,29 +97,26 @@ public class UserController {
         return "registration";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the user input
-     */
-    @RequestMapping(value = {"/newuser"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
-                           ModelMap model, Locale locale) {
+    @RequestMapping(value = {"/new_user"}, method = RequestMethod.POST)
+    public String saveUser(@Valid User user, BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "registration";
-        } else if (!userService.isUserEmailUnique(user.getId(), user.getEmail())) {
+        } else if (isEmailBusy(user)) {
             FieldError emailError = new FieldError("user", "email",
-                    messageSource.getMessage("non.unique.email", new String[]{user.getEmail()}, locale));
+                    messageSource.getMessage("error.busy.email", new String[]{user.getEmail()}, locale));
             result.addError(emailError);
             return "registration";
         }
-
-        userService.saveUser(user);
-        model.addAttribute("success",
-                messageSource.getMessage("success.user.register",
-                        new String[]{user.getFirstName(), user.getLastName()}, locale));
+        userService.save(user);
+        model.addAttribute("successRegistrationMessage",
+                messageSource.getMessage("success.user.register", new String[]{user.getFirstName(), user.getLastName()}, locale));
         model.addAttribute("loggedinuser", getPrincipal());
 
-        return "successPage";
+        return "login";
+    }
+
+    private boolean isEmailBusy(@Valid User user) {
+        return userService.isEmailBusy(user.getEmail());
     }
 
     /**

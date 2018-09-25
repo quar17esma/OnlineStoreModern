@@ -36,65 +36,45 @@ public class GoodController {
         return userController.getPrincipal();
     }
 
-    /**
-     * List all existing Goods.
-     */
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public String listGoods(ModelMap model) {
-
         List<Good> goods = goodService.findAll();
         model.addAttribute("goods", goods);
 
         return "allGoods";
     }
 
-    /**
-     * This method will provide the medium to add a new good.
-     */
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.GET)
     public String newGood(ModelMap model) {
         Good good = new Good();
         model.addAttribute("good", good);
         model.addAttribute("edit", false);
+
         return "editGood";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the good input
-     */
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
-    public String saveNewGood(@Valid Good good, BindingResult result,
-                              ModelMap model, Locale locale) {
-
+    public String saveNewGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
-
         goodService.save(good);
-
         model.addAttribute("success",
-                messageSource.getMessage("success.good.added",
-                        new Object[]{good.getName()},
-                        locale));
+                messageSource.getMessage("success.good.added", new Object[]{good.getName()}, locale));
 
         return "successPage";
     }
 
-    /**
-     * This method will provide the medium to buy a good.
-     */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
     public String buyGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
         Good good;
         try {
             good = goodService.findById(goodId);
         } catch (EntityNotFoundException ex) {
-            model.addAttribute("failMessage", messageSource.getMessage("fail.good.find",
-                    new Object[]{goodId}, locale));
+            model.addAttribute("failMessage",
+                    messageSource.getMessage("fail.good.find", new Object[]{goodId}, locale));
             return "failPage";
         }
-
         good.setQuantity(DEFAULT_QUANTITY_FOR_ORDERED_GOOD);
         model.addAttribute("good", good);
 
@@ -123,16 +103,11 @@ public class GoodController {
 
         String goodName = goodService.findById(good.getId()).getName();
         model.addAttribute("success",
-                messageSource.getMessage("success.good.ordered",
-                        new Object[]{goodName, orderedQuantity},
-                        locale));
+                messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
 
         return "successPage";
     }
 
-    /**
-     * This method will provide the medium to edit a good.
-     */
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
     public String editGood(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
@@ -142,22 +117,14 @@ public class GoodController {
         return "editGood";
     }
 
-    /**
-     * Edit Good.
-     */
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
-    public String saveEditedGood(@Valid Good good, BindingResult result,
-                                 ModelMap model, Locale locale) {
+    public String saveEditedGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
-
         goodService.save(good);
-
         model.addAttribute("success",
-                messageSource.getMessage("success.good.edited",
-                        new Object[]{good.getName()},
-                        locale));
+                messageSource.getMessage("success.good.edited", new Object[]{good.getName()}, locale));
 
         return "successPage";
     }
