@@ -5,6 +5,7 @@ import com.quar17esma.model.Good;
 import com.quar17esma.service.GoodService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -66,7 +67,7 @@ public class GoodControllerTest {
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
     }
 
-    //    @Ignore
+    @Ignore
     @Test
     public void listGoods() throws Exception {
 
@@ -115,7 +116,7 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(goodServiceMock);
     }
 
-    //    @Ignore
+    @Ignore
     @Test
     public void saveNewGoodValidationFail() throws Exception {
 
@@ -151,7 +152,7 @@ public class GoodControllerTest {
         verifyZeroInteractions(messageSourceMock);
     }
 
-    //    @Ignore
+    @Ignore
     @Test
     public void saveNewGoodSuccess() throws Exception {
 
@@ -187,6 +188,7 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(messageSourceMock);
     }
 
+    @Ignore
     @Test
     public void buyGoodEntityNotFoundException() throws Exception {
         Long goodId = 13L;
