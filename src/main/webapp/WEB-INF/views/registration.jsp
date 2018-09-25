@@ -51,20 +51,6 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="ssoId">
-                    <spring:message code="label.sso.id"/>
-                </label>
-                <div class="col-md-7">
-                    <form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm"/>
-                    <div class="has-error">
-                        <form:errors path="ssoId" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="password">
                     <spring:message code="label.password"/>
                 </label>
