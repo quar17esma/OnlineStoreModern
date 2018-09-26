@@ -45,14 +45,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success floatRight">
+                                <a href="<c:url value='../goods/buy-good-${good.id}' />" class="btn btn-success floatRight">
                                     <spring:message code="button.buy"/>
                                 </a>
                             </div>
                             <sec:authorize access="hasRole('ADMIN')">
                                 <br/>
                                 <div class="row">
-                                    <a href="<c:url value='/edit-good-${good.id}' />"
+                                    <a href="<c:url value='../goods/edit-good-${good.id}' />"
                                        class="btn btn-warning floatRight">
                                         <spring:message code="button.edit"/>
                                     </a>
