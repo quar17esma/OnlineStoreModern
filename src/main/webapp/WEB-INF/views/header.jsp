@@ -28,7 +28,7 @@
                     <spring:message code="text.welcome.to.store"/>
                 </span>
                     <span class="floatRight">
-                    <a href="../logout">
+                    <a href="${pageContext.request.contextPath}/logout">
                         <span class="glyphicon glyphicon-log-out"></span>
                         <spring:message code="link.logout"/>
                     </a>
@@ -39,11 +39,11 @@
 
         <nav class="navbar navbar-default">
             <ul class="nav navbar-nav">
-                <li><a href="../cart" class="btn"><spring:message code="link.cart"/></a></li>
-                <li><a href="../myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
-                <li><a href="../goods/list" class="btn"><spring:message code="link.goods.list"/></a></li>
+                <li><a href="${pageContext.request.contextPath}/cart" class="btn"><spring:message code="link.cart"/></a></li>
+                <li><a href="${pageContext.request.contextPath}/myOrders" class="btn"><spring:message code="link.my.orders"/></a></li>
+                <li><a href="${pageContext.request.contextPath}/goods/list" class="btn"><spring:message code="link.goods.list"/></a></li>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <li><a href="../goods/new-good" class="btn"><spring:message code="link.add.good"/></a></li>
+                    <li><a href="${pageContext.request.contextPath}/goods/new-good" class="btn"><spring:message code="link.add.good"/></a></li>
                 </sec:authorize>
             </ul>
         </nav>

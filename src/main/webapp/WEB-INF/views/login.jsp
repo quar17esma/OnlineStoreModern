@@ -93,7 +93,7 @@
             </div>
         </div>
         <hr/>
-        <a href="./new_user"><spring:message code="link.register"/></a>
+        <a href="${pageContext.request.contextPath}/new_user"><spring:message code="link.register"/></a>
     </div>
 </div>
 </body>

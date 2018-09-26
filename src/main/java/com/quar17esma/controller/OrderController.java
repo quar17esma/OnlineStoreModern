@@ -21,10 +21,8 @@ import java.util.Locale;
 public class OrderController {
     @Autowired
     private UserController userController;
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private MessageSource messageSource;
 
