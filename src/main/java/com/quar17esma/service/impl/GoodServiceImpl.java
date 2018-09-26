@@ -29,7 +29,7 @@ public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodSe
             order.getOrderedGoods().put(good, orderedQuantity);
         }
 
-        orderService.saveOrder(order);
+        orderService.save(order);
     }
 
     private void writeOffGood(int orderedQuantity, Good good) {

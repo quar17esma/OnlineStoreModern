@@ -48,7 +48,7 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
 
     @Override
     @Transactional
-    public void saveOrder(Order order) {
+    public void save(Order order) {
         if (order.getOrderedAt() == null) {
             order.setOrderedAt(LocalDateTime.now());
         }
