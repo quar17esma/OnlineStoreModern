@@ -18,7 +18,7 @@ import java.util.Locale;
 
 @Controller
 @SessionAttributes("loggedInUser")
-@RequestMapping("/")
+@RequestMapping("/goods")
 public class GoodController {
     private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
 

@@ -49,10 +49,10 @@
                 <form name="loginForm" method="POST" action="${loginUrl}">
                     <div class="form-group">
                         <div class="input-group">
-                            <label class="input-group-addon" for="username">
+                            <label class="input-group-addon" for="email">
                                 <span class="glyphicon glyphicon-user"/>
                             </label>
-                            <input class="form-control" type="email" name="ssoId" value="" id="username"
+                            <input class="form-control" type="email" name="email" value="" id="email"
                                    placeholder="<spring:message code='placeholder.enter.email'/>"/>
                         </div>
                         <div class="col-md-2">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="form-group">
                         <div class="input-group">
-                            <label class="input-group-addon" for="username">
+                            <label class="input-group-addon" for="password">
                                 <span class="glyphicon glyphicon-lock"/>
                             </label>
                             <input class="form-control" type="password" name="password" value="" id="password"
