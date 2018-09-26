@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/orders")
 public class OrderController {
     @Autowired
     private UserController userController;

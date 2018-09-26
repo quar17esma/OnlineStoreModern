@@ -48,7 +48,7 @@
                                         <c:if test="${order.status == 'CONFIRMED'}">
                                             <div class="row">
                                                 <div class="form-actions floatRight">
-                                                    <a href="${pageContext.request.contextPath}/myOrders/pay-${order.id}"
+                                                    <a href="${pageContext.request.contextPath}/orders/myOrders/pay-${order.id}"
                                                        class="btn btn-success btn-sm">
                                                         <spring:message code='button.pay.order'/>
                                                     </a>
@@ -58,7 +58,7 @@
                                         <c:if test="${order.status == 'NEW'}">
                                             <div class="row">
                                                 <div class="form-actions floatRight">
-                                                    <a href="${pageContext.request.contextPath}/myOrders/confirm-${order.id}"
+                                                    <a href="${pageContext.request.contextPath}/orders/myOrders/confirm-${order.id}"
                                                        class="btn btn-success btn-sm">
                                                         <spring:message code='button.confirm.order'/>
                                                     </a>
