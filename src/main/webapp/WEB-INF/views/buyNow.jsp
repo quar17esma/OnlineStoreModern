@@ -16,50 +16,47 @@
 <div class="container-fluid">
 
     <jsp:include page="header.jsp"/>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-    <div class="well">
-        <div>
-            <h5><b><c:out value="${good.name}"/></b></h5>
-        </div>
-        <br/>
-        <div>
-            <label><spring:message code="label.description"/></label>
-            <p><c:out value="${good.description}"/></p>
-        </div>
-        <br/>
-        <div>
-            <label><spring:message code="label.price"/></label>
-            <c:out value="${good.price}"/>
-        </div>
-        <br/>
-        <form:form method="POST" modelAttribute="good">
-            <form:input type="hidden" path="id" id="id" value="${good.id}"/>
-            <form:input type="hidden" path="name" id="name" value="${good.name}"/>
-            <form:input type="hidden" path="description" id="description" value="${good.description}"/>
-            <form:input type="hidden" path="price" id="price" value="${good.price}"/>
-            <label class="col-md-3 control-label" for="quantity">
-                <spring:message code="label.quantity"/>
-            </label>
-            <div class="col-md-2">
-                <form:input type="number" path="quantity" id="quantity" class="form-control input-sm"/>
-                <div class="has-error">
-                    <form:errors path="quantity" class="help-inline"/>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="well">
+                <div>
+                    <h5><b><c:out value="${good.name}"/></b></h5>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-actions floatRight">
-                    <input type="submit" value="<spring:message code='button.buy'/>"
-                           class="btn btn-primary btn-sm"/>
-                    <spring:message code="text.or"/>
-                    <a href="${pageContext.request.contextPath}/goods/list"><spring:message code="link.cancel"/></a>
+                <br/>
+                <div>
+                    <label><spring:message code="label.description"/></label>
+                    <p><c:out value="${good.description}"/></p>
                 </div>
+                <br/>
+                <div>
+                    <label><spring:message code="label.price"/></label>
+                    <c:out value="${good.price}"/>
+                </div>
+                <br/>
+                <form:form method="POST">
+                    <label class="col-md-3 control-label" for="orderedQuantity">
+                        <spring:message code="label.quantity"/>
+                    </label>
+                    <div class="col-md-2">
+                        <input type="number" name="orderedQuantity" id="orderedQuantity" class="form-control input-sm"/>
+                        <div class="has-error">
+                            <form:errors path="quantity" class="help-inline"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-actions floatRight">
+                            <input type="submit" value="<spring:message code='button.buy'/>"
+                                   class="btn btn-primary btn-sm"/>
+                            <spring:message code="text.or"/>
+                            <a href="${pageContext.request.contextPath}/goods/list"><spring:message
+                                    code="link.cancel"/></a>
+                        </div>
+                    </div>
+                </form:form>
+                <br/>
             </div>
-        </form:form>
-        <br/>
+        </div>
     </div>
-            </div>
-        </div>
 </div>
 </body>
 </html>

@@ -85,27 +85,26 @@ public class GoodController {
      * Adds good to order and writes off good
      */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
-    public String addGoodToOrder(@Valid Good good, BindingResult result,
+    public String addGoodToOrder(@PathVariable Long goodId,
+                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
                                  HttpSession httpSession, ModelMap model, Locale locale) {
-        if (result.hasErrors()) {
-            return "buyNow";
-        }
+        Order order = getOrderFromSessionOrCreate(httpSession);
+        goodService.addGoodToOrder(order, goodId, orderedQuantity);
+        String goodName = goodService.findById(goodId).getName();
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
 
+        return "successPage";
+    }
+
+    private Order getOrderFromSessionOrCreate(HttpSession httpSession) {
         Order order = (Order) httpSession.getAttribute("order");
         if (order == null) {
             order = new Order();
             order.setUser(userController.getUser());
             httpSession.setAttribute("order", order);
         }
-
-        int orderedQuantity = good.getQuantity();
-        goodService.addGoodToOrder(order, good.getId(), orderedQuantity);
-
-        String goodName = goodService.findById(good.getId()).getName();
-        model.addAttribute("success",
-                messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
-
-        return "successPage";
+        return order;
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
