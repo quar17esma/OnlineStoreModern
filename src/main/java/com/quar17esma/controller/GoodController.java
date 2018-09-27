@@ -20,14 +20,10 @@ import java.util.Locale;
 @SessionAttributes("loggedInUser")
 @RequestMapping("/goods")
 public class GoodController {
-    private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
-
     @Autowired
     private UserController userController;
-
     @Autowired
     private GoodService goodService;
-
     @Autowired
     private MessageSource messageSource;
 
@@ -45,7 +41,7 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.GET)
-    public String newGood(ModelMap model) {
+    public String showNewGoodForm(ModelMap model) {
         Good good = new Good();
         model.addAttribute("good", good);
         model.addAttribute("edit", false);
@@ -66,7 +62,7 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
-    public String buyGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+    public String showBuyGoodForm(@PathVariable Long goodId, ModelMap model, Locale locale) {
         Good good;
         try {
             good = goodService.findById(goodId);
@@ -75,7 +71,6 @@ public class GoodController {
                     messageSource.getMessage("fail.good.find", new Object[]{goodId}, locale));
             return "failPage";
         }
-        good.setQuantity(DEFAULT_QUANTITY_FOR_ORDERED_GOOD);
         model.addAttribute("good", good);
 
         return "buyNow";
