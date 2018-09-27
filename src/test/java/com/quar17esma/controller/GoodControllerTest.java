@@ -22,7 +22,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
@@ -39,10 +41,8 @@ public class GoodControllerTest {
 
     @Mock
     private GoodService goodServiceMock;
-
     @Mock
     private UserController userControllerMock;
-
     @Mock
     private MessageSource messageSourceMock;
 
@@ -67,53 +67,46 @@ public class GoodControllerTest {
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void listGoods() throws Exception {
+        List<Good> goods = createDummyGoodsList();
 
-        Good firstGood = Good.builder()
-                .id(1L)
-                .name("Lorem")
-                .description("Lorem ipsum")
-                .price(200L)
-                .quantity(34)
-                .build();
+        when(goodServiceMock.findAll()).thenReturn(goods);
 
-        Good secondGood = Good.builder()
-                .id(2L)
-                .name("ipsum")
-                .description("Lorem ipsum")
-                .price(500L)
-                .quantity(23)
-                .build();
-
-        when(goodServiceMock.findAll()).thenReturn(Arrays.asList(firstGood, secondGood));
-
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/goods/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("allGoods"))
                 .andExpect(forwardedUrl("/WEB-INF/views/allGoods.jsp"))
-                .andExpect(model().attribute("goods", hasSize(2)))
-                .andExpect(model().attribute("goods", hasItem(
-                        allOf(
-                                hasProperty("id", is(1L)),
-                                hasProperty("description", is("Lorem ipsum")),
-                                hasProperty("name", is("Lorem")),
-                                hasProperty("price", is(200L)),
-                                hasProperty("quantity", is(34))
-                        )
-                )))
-                .andExpect(model().attribute("goods", hasItem(
-                        allOf(
-                                hasProperty("id", is(2L)),
-                                hasProperty("description", is("Lorem ipsum")),
-                                hasProperty("name", is("ipsum")),
-                                hasProperty("price", is(500L)),
-                                hasProperty("quantity", is(23))
-                        )
-                )));
+                .andExpect(model().attribute("goods", hasSize(goods.size())))
+                .andExpect(model().attribute("goods", goods));
         verify(goodServiceMock, times(1)).findAll();
         verifyNoMoreInteractions(goodServiceMock);
+    }
+
+    private List<Good> createDummyGoodsList() {
+        List<Good> goods = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            goods.add(
+                    Good.builder()
+                            .id(i)
+                            .build()
+            );
+        }
+
+        return goods;
+    }
+    
+//    @Ignore
+    @Test
+    public void newGood() throws Exception {
+        mockMvc.perform(get("/goods/new-good"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("editGood"))
+                .andExpect(forwardedUrl("/WEB-INF/views/editGood.jsp"))
+                .andExpect(model().attribute("good", instanceOf(Good.class)))
+                .andExpect(model().attribute("good", hasProperty("id", is(0L))))
+                .andExpect(model().attribute("edit", false));
     }
 
     @Ignore
