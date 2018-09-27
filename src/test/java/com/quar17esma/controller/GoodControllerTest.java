@@ -67,7 +67,7 @@ public class GoodControllerTest {
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void listGoods() throws Exception {
         List<Good> goods = createDummyGoodsList();
@@ -96,10 +96,10 @@ public class GoodControllerTest {
 
         return goods;
     }
-    
-//    @Ignore
+
+    //    @Ignore
     @Test
-    public void newGood() throws Exception {
+    public void showNewGoodForm() throws Exception {
         mockMvc.perform(get("/goods/new-good"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editGood"))
@@ -109,17 +109,16 @@ public class GoodControllerTest {
                 .andExpect(model().attribute("edit", false));
     }
 
-    @Ignore
+    //    @Ignore
     @Test
     public void saveNewGoodValidationFail() throws Exception {
-
         String name = StringUtils.repeat("a", 101);
         String description = StringUtils.repeat("a", 1001);
         Long price = -1L;
         Integer quantity = -1;
         Long id = 0L;
 
-        mockMvc.perform(post("/new-good")
+        mockMvc.perform(post("/goods/new-good")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", name)
                 .param("description", description)
@@ -145,10 +144,9 @@ public class GoodControllerTest {
         verifyZeroInteractions(messageSourceMock);
     }
 
-    @Ignore
+    //    @Ignore
     @Test
     public void saveNewGoodSuccess() throws Exception {
-
         String name = StringUtils.repeat("a", 62);
         String description = StringUtils.repeat("a", 524);
         Long price = 1200L;
@@ -156,7 +154,7 @@ public class GoodControllerTest {
         Long id = 0L;
         Good good = new Good();
 
-        mockMvc.perform(post("/new-good")
+        mockMvc.perform(post("/goods/new-good")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", name)
                 .param("description", description)
@@ -181,15 +179,35 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(messageSourceMock);
     }
 
-    @Ignore
+//    @Ignore
     @Test
-    public void buyGoodEntityNotFoundException() throws Exception {
+    public void showBuyGoodForm() throws Exception {
+        Long goodId = 13L;
+        Good good = Good.builder()
+                .id(goodId)
+                .build();
+        when(goodServiceMock.findById(goodId)).thenReturn(good);
+
+        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId)
+                .requestAttr("goodId", goodId)
+        )
+                .andExpect(status().isOk())
+                .andExpect(view().name("buyNow"))
+                .andExpect(forwardedUrl("/WEB-INF/views/buyNow.jsp"))
+                .andExpect(model().attribute("good", is(good)));
+
+        verify(goodServiceMock, times(1)).findById(goodId);
+    }
+
+//    @Ignore
+    @Test
+    public void showBuyGoodFormEntityNotFoundException() throws Exception {
         Long goodId = 13L;
         when(goodServiceMock.findById(goodId)).thenThrow(new EntityNotFoundException());
         when(messageSourceMock.getMessage(matches("fail.good.find"), any(), any()))
                 .thenReturn("Test fail message");
 
-        mockMvc.perform(get("/buy-good-{goodId}", goodId)
+        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId)
                 .requestAttr("goodId", goodId)
         )
                 .andExpect(status().isOk())
@@ -203,5 +221,15 @@ public class GoodControllerTest {
         verify(messageSourceMock, times(1))
                 .getMessage(matches("fail.good.find"), any(), any());
         verifyNoMoreInteractions(messageSourceMock);
+    }
+
+    @Ignore
+    @Test
+    public void addGoodToOrder() throws Exception {
+    }
+
+    @Ignore
+    @Test
+    public void editGood() throws Exception {
     }
 }
