@@ -38,7 +38,9 @@
                         <spring:message code="label.quantity"/>
                     </label>
                     <div class="col-md-2">
-                        <input type="number" name="orderedQuantity" id="orderedQuantity" class="form-control input-sm"/>
+                        <input type="number" min="1" value="1"
+                               name="orderedQuantity" id="orderedQuantity" required="required"
+                               class="form-control input-sm"/>
                         <div class="has-error">
                             <form:errors path="quantity" class="help-inline"/>
                         </div>
