@@ -17,6 +17,13 @@
 
     <jsp:include page="header.jsp"/>
     <div class="row">
+        <c:if test="${errorNotEnoughGood != null}">
+            <div class="alert alert-danger">
+                <c:out value="${errorNotEnoughGood}"/>
+            </div>
+        </c:if>
+    </div>
+    <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="well">
                 <div>
