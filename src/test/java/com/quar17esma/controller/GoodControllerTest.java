@@ -191,9 +191,7 @@ public class GoodControllerTest {
                 .build();
         when(goodServiceMock.findById(goodId)).thenReturn(good);
 
-        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId)
-                .requestAttr("goodId", goodId)
-        )
+        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyNow"))
                 .andExpect(forwardedUrl("/WEB-INF/views/buyNow.jsp"))
@@ -210,9 +208,7 @@ public class GoodControllerTest {
         when(messageSourceMock.getMessage(matches("fail.good.find"), any(), any()))
                 .thenReturn("Test fail message");
 
-        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId)
-                .requestAttr("goodId", goodId)
-        )
+        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("failPage"))
                 .andExpect(forwardedUrl("/WEB-INF/views/failPage.jsp"))
@@ -226,7 +222,7 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(messageSourceMock);
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void addGoodToCart() throws Exception {
         Long goodId = 13L;
