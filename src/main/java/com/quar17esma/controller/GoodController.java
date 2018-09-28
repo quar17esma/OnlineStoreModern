@@ -1,5 +1,6 @@
 package com.quar17esma.controller;
 
+import com.quar17esma.exceptions.NotEnoughGoodException;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
@@ -76,15 +77,18 @@ public class GoodController {
         return "buyNow";
     }
 
-    /**
-     * Adds good to order and writes off good
-     */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
-    public String addGoodToOrder(@PathVariable Long goodId,
-                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
-                                 HttpSession httpSession, ModelMap model, Locale locale) {
-        Order order = getOrderFromSessionOrCreate(httpSession);
-        goodService.addGoodToOrder(order, goodId, orderedQuantity);
+    public String addGoodToCart(@PathVariable Long goodId,
+                                @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
+                                HttpSession httpSession, ModelMap model, Locale locale) {
+        Order cart = getOrderFromSessionOrCreate(httpSession);
+        try {
+            goodService.addGoodToCart(cart, goodId, orderedQuantity);
+        } catch (NotEnoughGoodException e) {
+            handleNotEnoughGoodException(goodId, model, locale);
+            return "buyNow";
+        }
+
         String goodName = goodService.findById(goodId).getName();
         model.addAttribute("success",
                 messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
@@ -100,6 +104,14 @@ public class GoodController {
             httpSession.setAttribute("order", order);
         }
         return order;
+    }
+
+    private void handleNotEnoughGoodException(@PathVariable Long goodId, ModelMap model, Locale locale) {
+        Good good = goodService.findById(goodId);
+        model.addAttribute("good", good);
+        model.addAttribute("errorNotEnoughGood",
+                messageSource.getMessage("not.enough.good",
+                        new Object[]{good.getName(), good.getQuantity()}, locale));
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)

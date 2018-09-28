@@ -1,6 +1,7 @@
 package com.quar17esma.service.impl;
 
 import com.quar17esma.dao.GoodRepository;
+import com.quar17esma.exceptions.NotEnoughGoodException;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
@@ -18,18 +19,34 @@ public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodSe
     private OrderService orderService;
 
     @Override
-    public void addGoodToOrder(Order order, Long goodId, int orderedQuantity) {
+    public void addGoodToCart(Order cart, Long goodId, int orderedQuantity) throws NotEnoughGoodException {
         Good good = repository.findOne(goodId);
-        writeOffGood(orderedQuantity, good);
-        
-        if (order.getOrderedGoods().containsKey(good)){
-            int orderedBefore = order.getOrderedGoods().get(good);
-            order.getOrderedGoods().put(good, orderedBefore + orderedQuantity);
-        } else {
-            order.getOrderedGoods().put(good, orderedQuantity);
+        int totalQuantity = countTotalOrderedQuantity(cart, orderedQuantity, good);
+        checkEnoughGood(totalQuantity, good);
+        cart.getOrderedGoods().put(good, totalQuantity);
+    }
+
+    private int countTotalOrderedQuantity(Order cart, int orderedQuantity, Good good) {
+        int totalQuantity = orderedQuantity;
+        if (cart.getOrderedGoods().containsKey(good)) {
+            int orderedPrev = cart.getOrderedGoods().get(good);
+            totalQuantity = orderedPrev + orderedQuantity;
+        }
+        return totalQuantity;
+    }
+
+    private void checkEnoughGood(int orderedQuantity, Good good) throws NotEnoughGoodException {
+        if (isNotEnoughGood(orderedQuantity, good)) {
+            throw new NotEnoughGoodException();
+        }
+    }
+
+    private boolean isNotEnoughGood(int orderedQuantity, Good good) {
+        if (Integer.compare(good.getQuantity(), orderedQuantity) < 0) {
+            return true;
         }
 
-        orderService.save(order);
+        return false;
     }
 
     private void writeOffGood(int orderedQuantity, Good good) {
