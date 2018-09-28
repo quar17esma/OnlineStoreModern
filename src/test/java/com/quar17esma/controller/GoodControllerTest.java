@@ -1,6 +1,7 @@
 package com.quar17esma.controller;
 
 import com.quar17esma.configuration.AppConfig;
+import com.quar17esma.exceptions.NotEnoughGoodException;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
@@ -249,9 +250,34 @@ public class GoodControllerTest {
         verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void addGoodToCartNotEnoughGoodException() throws Exception {
+        Long goodId = 13L;
+        Good good = Good.builder()
+                .id(goodId)
+                .name("Samsung s9")
+                .build();
+        int orderedQuantity = 5;
+        Order order = new Order();
+        when(sessionMock.getAttribute("order")).thenReturn(order);
+        when(goodServiceMock.findById(goodId)).thenReturn(good);
+        when(messageSourceMock.getMessage(matches("not.enough.good"), any(), any()))
+                .thenReturn("Test error message");
+        doThrow(new NotEnoughGoodException()).when(goodServiceMock).addGoodToCart(order, goodId, orderedQuantity);
+
+
+        mockMvc.perform(
+                post("/goods/buy-good-{goodId}", goodId)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("orderedQuantity", String.valueOf(orderedQuantity)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("buyNow"))
+                .andExpect(forwardedUrl("/WEB-INF/views/buyNow.jsp"))
+                .andExpect(model().attributeExists("errorNotEnoughGood"))
+                .andExpect(model().attribute("good", is(good)))
+                .andExpect(model().attributeDoesNotExist("success"));
+        verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
     }
 
     @Ignore
