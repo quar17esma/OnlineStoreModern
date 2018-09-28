@@ -2,6 +2,7 @@ package com.quar17esma.controller;
 
 import com.quar17esma.configuration.AppConfig;
 import com.quar17esma.model.Good;
+import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -22,8 +23,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -45,6 +46,8 @@ public class GoodControllerTest {
     private UserController userControllerMock;
     @Mock
     private MessageSource messageSourceMock;
+    @Mock
+    private HttpSession sessionMock;
 
     @InjectMocks
     private GoodController controller;
@@ -146,7 +149,7 @@ public class GoodControllerTest {
 
     //    @Ignore
     @Test
-    public void saveNewGoodSuccess() throws Exception {
+    public void saveNewGood() throws Exception {
         String name = StringUtils.repeat("a", 62);
         String description = StringUtils.repeat("a", 524);
         Long price = 1200L;
@@ -179,7 +182,7 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(messageSourceMock);
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void showBuyGoodForm() throws Exception {
         Long goodId = 13L;
@@ -199,7 +202,7 @@ public class GoodControllerTest {
         verify(goodServiceMock, times(1)).findById(goodId);
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void showBuyGoodFormEntityNotFoundException() throws Exception {
         Long goodId = 13L;
@@ -223,9 +226,36 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(messageSourceMock);
     }
 
+//    @Ignore
+    @Test
+    public void addGoodToCart() throws Exception {
+        Long goodId = 13L;
+        Good good = Good.builder()
+                .id(goodId)
+                .name("Samsung s9")
+                .build();
+        int orderedQuantity = 5;
+        Order order = new Order();
+        when(sessionMock.getAttribute("order")).thenReturn(order);
+        when(goodServiceMock.findById(goodId)).thenReturn(good);
+        when(messageSourceMock.getMessage(matches("success.good.ordered"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(
+                post("/goods/buy-good-{goodId}", goodId)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("orderedQuantity", String.valueOf(orderedQuantity)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("successPage"))
+                .andExpect(forwardedUrl("/WEB-INF/views/successPage.jsp"))
+                .andExpect(model().attributeExists("success"))
+                .andExpect(model().attributeDoesNotExist("errorNotEnoughGood"));
+        verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
+    }
+
     @Ignore
     @Test
-    public void addGoodToOrder() throws Exception {
+    public void addGoodToCartNotEnoughGoodException() throws Exception {
     }
 
     @Ignore
