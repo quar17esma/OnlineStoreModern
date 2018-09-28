@@ -115,7 +115,7 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
-    public String editGood(@PathVariable Long goodId, ModelMap model) {
+    public String showEditGoodForm(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
         model.addAttribute("good", good);
         model.addAttribute("edit", true);
