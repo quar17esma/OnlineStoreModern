@@ -28,7 +28,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <img src="./imageController/${good.id}" alt="${good.name}" class="img-thumbnail"/>
+                            <img src="${pageContext.request.contextPath}/goods/imageController/${good.id}" alt="${good.name}" class="img-thumbnail"/>
                         </div>
                     </div>
                     <br/>
