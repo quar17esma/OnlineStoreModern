@@ -17,8 +17,7 @@
 
     <jsp:include page="header.jsp"/>
 
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+    <div class="container">
             <c:choose>
                 <c:when test="${orders.size() > 0}">
                     <c:forEach items="${orders}" var="order">
@@ -77,9 +76,9 @@
                     </div>
                 </c:otherwise>
             </c:choose>
-        </div>
     </div>
-</div>
+
+    <jsp:include page="footer.jsp"/>
 </div>
 </body>
 </html>
