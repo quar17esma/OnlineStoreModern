@@ -22,15 +22,15 @@
             <div class="well">
                 <form:form method="POST" modelAttribute="good">
                     <form:input type="hidden" path="id" id="id"/>
-
+                    <form:input type="hidden" path="goodPic" id="goodPic"/>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label class="col-md-3 control-label" for="name">
                                 <spring:message code="label.name"/>
                             </label>
                             <div class="col-md-7">
-                                <form:input type="text" path="name" id="name"
-                                            value="${good.name}" class="form-control input-sm"/>
+                                <form:input type="text" path="name" id="name" value="${good.name}"
+                                            class="form-control input-sm"/>
                                 <div class="has-error">
                                     <form:errors path="name" class="help-inline"/>
                                 </div>
