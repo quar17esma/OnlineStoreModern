@@ -58,6 +58,15 @@
                                     </a>
                                 </div>
                             </sec:authorize>
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <br/>
+                                <div class="row">
+                                    <a href="<c:url value='../goods/delete-good-${good.id}' />"
+                                       class="btn btn-danger floatRight">
+                                        <spring:message code="button.delete"/>
+                                    </a>
+                                </div>
+                            </sec:authorize>
                         </div>
                     </div>
                     <div class="row">
