@@ -58,8 +58,6 @@
                             code="link.goods.list"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/orders/myOrders"><spring:message
                             code="link.my.orders"/></a></li>
-                    <li><a href="${pageContext.request.contextPath}/goods/list"><spring:message
-                            code="link.goods.list"/></a></li>
                     <sec:authorize access="hasRole('ADMIN')">
                         <li><a href="${pageContext.request.contextPath}/goods/new-good"><spring:message
                                 code="link.add.good"/></a></li>
