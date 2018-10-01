@@ -16,7 +16,7 @@
     <style>
         /* Remove the navbar's default rounded borders and increase the bottom margin */
         .navbar {
-            margin-bottom: 50px;
+            margin-bottom: 25px;
             border-radius: 0;
         }
 
