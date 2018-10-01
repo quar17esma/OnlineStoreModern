@@ -63,7 +63,9 @@
                                 code="link.add.good"/></a></li>
                     </sec:authorize>
                     <li><a href="#">Stores</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="${pageContext.request.contextPath}/contact">
+                        <spring:message code="link.contact"/></a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="${pageContext.request.contextPath}/orders/cart"><span
