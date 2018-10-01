@@ -19,8 +19,7 @@
 
     <jsp:include page="header.jsp"/>
 
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+    <div class="container">
             <c:choose>
                 <c:when test="${order != null}">
                     <div class="well">
@@ -65,7 +64,6 @@
                     <br><br>
                 </c:otherwise>
             </c:choose>
-        </div>
     </div>
 
     <jsp:include page="footer.jsp"/>
