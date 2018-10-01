@@ -1,6 +1,7 @@
 package com.quar17esma.service.impl;
 
 import com.quar17esma.dao.GoodRepository;
+import com.quar17esma.exceptions.NotEnoughGoodException;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
@@ -9,58 +10,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-
 @Service("goodService")
 @Transactional
-public class GoodServiceImpl implements GoodService {
-
+public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodService {
     @Autowired
     private GoodRepository repository;
-
     @Autowired
     private OrderService orderService;
 
     @Override
-    public List<Good> findAll() {
-        return repository.findAll();
+    public void addGoodToCart(Order cart, Long goodId, int orderedQuantity) throws NotEnoughGoodException {
+        Good good = repository.findOne(goodId);
+        int totalQuantity = countTotalOrderedQuantity(cart, orderedQuantity, good);
+        checkEnoughGood(totalQuantity, good);
+        cart.getOrderedGoods().put(good, totalQuantity);
     }
 
-    @Override
-    public Good findById(Long goodId) {
-        Good good = repository.findOne(goodId);
-        if (good != null) {
-            return good;
-        } else {
-            throw new EntityNotFoundException(
-                    String.format("Can't find entity of class: %s with id: %d", Good.class.getName(), goodId));
+    private int countTotalOrderedQuantity(Order cart, int orderedQuantity, Good good) {
+        int totalQuantity = orderedQuantity;
+        if (cart.getOrderedGoods().containsKey(good)) {
+            int orderedPrev = cart.getOrderedGoods().get(good);
+            totalQuantity = orderedPrev + orderedQuantity;
+        }
+        return totalQuantity;
+    }
+
+    private void checkEnoughGood(int orderedQuantity, Good good) throws NotEnoughGoodException {
+        if (isNotEnoughGood(orderedQuantity, good)) {
+            throw new NotEnoughGoodException();
         }
     }
 
-    @Override
-    public void deleteById(Long goodId) {
-        repository.delete(goodId);
-    }
-
-    @Override
-    public void save(Good good) {
-        repository.save(good);
-    }
-
-    @Override
-    public void addGoodToOrder(Order order, Long goodId, int orderedQuantity) {
-        Good good = repository.findOne(goodId);
-        writeOffGood(orderedQuantity, good);
-        
-        if (order.getOrderedGoods().containsKey(good)){
-            int orderedBefore = order.getOrderedGoods().get(good);
-            order.getOrderedGoods().put(good, orderedBefore + orderedQuantity);
-        } else {
-            order.getOrderedGoods().put(good, orderedQuantity);
+    private boolean isNotEnoughGood(int orderedQuantity, Good good) {
+        if (Integer.compare(good.getQuantity(), orderedQuantity) < 0) {
+            return true;
         }
 
-        orderService.saveOrder(order);
+        return false;
     }
 
     private void writeOffGood(int orderedQuantity, Good good) {

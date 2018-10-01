@@ -1,5 +1,6 @@
 package com.quar17esma.controller;
 
+import com.quar17esma.exceptions.NotEnoughGoodException;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
@@ -18,16 +19,12 @@ import java.util.Locale;
 
 @Controller
 @SessionAttributes("loggedInUser")
-@RequestMapping("/")
+@RequestMapping("/goods")
 public class GoodController {
-    private static final int DEFAULT_QUANTITY_FOR_ORDERED_GOOD = 1;
-
     @Autowired
     private UserController userController;
-
     @Autowired
     private GoodService goodService;
-
     @Autowired
     private MessageSource messageSource;
 
@@ -36,105 +33,89 @@ public class GoodController {
         return userController.getPrincipal();
     }
 
-    /**
-     * List all existing Goods.
-     */
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public String listGoods(ModelMap model) {
-
         List<Good> goods = goodService.findAll();
         model.addAttribute("goods", goods);
 
         return "allGoods";
     }
 
-    /**
-     * This method will provide the medium to add a new good.
-     */
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.GET)
-    public String newGood(ModelMap model) {
+    public String showNewGoodForm(ModelMap model) {
         Good good = new Good();
         model.addAttribute("good", good);
         model.addAttribute("edit", false);
+
         return "editGood";
     }
 
-    /**
-     * This method will be called on form submission, handling POST request for
-     * saving user in database. It also validates the good input
-     */
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
-    public String saveNewGood(@Valid Good good, BindingResult result,
-                              ModelMap model, Locale locale) {
-
+    public String saveNewGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
-
         goodService.save(good);
-
         model.addAttribute("success",
-                messageSource.getMessage("success.good.added",
-                        new Object[]{good.getName()},
-                        locale));
+                messageSource.getMessage("success.good.added", new Object[]{good.getName()}, locale));
 
         return "successPage";
     }
 
-    /**
-     * This method will provide the medium to buy a good.
-     */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
-    public String buyGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+    public String showBuyGoodForm(@PathVariable Long goodId, ModelMap model, Locale locale) {
         Good good;
         try {
             good = goodService.findById(goodId);
         } catch (EntityNotFoundException ex) {
-            model.addAttribute("failMessage", messageSource.getMessage("fail.good.find",
-                    new Object[]{goodId}, locale));
+            model.addAttribute("failMessage",
+                    messageSource.getMessage("fail.good.find", new Object[]{goodId}, locale));
             return "failPage";
         }
-
-        good.setQuantity(DEFAULT_QUANTITY_FOR_ORDERED_GOOD);
         model.addAttribute("good", good);
 
         return "buyNow";
     }
 
-    /**
-     * Adds good to order and writes off good
-     */
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
-    public String addGoodToOrder(@Valid Good good, BindingResult result,
-                                 HttpSession httpSession, ModelMap model, Locale locale) {
-        if (result.hasErrors()) {
+    public String addGoodToCart(@PathVariable Long goodId,
+                                @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
+                                HttpSession httpSession, ModelMap model, Locale locale) {
+        Order cart = getOrderFromSessionOrCreate(httpSession);
+        try {
+            goodService.addGoodToCart(cart, goodId, orderedQuantity);
+        } catch (NotEnoughGoodException e) {
+            handleNotEnoughGoodException(goodId, model, locale);
             return "buyNow";
         }
 
+        String goodName = goodService.findById(goodId).getName();
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
+
+        return "successPage";
+    }
+
+    private Order getOrderFromSessionOrCreate(HttpSession httpSession) {
         Order order = (Order) httpSession.getAttribute("order");
         if (order == null) {
             order = new Order();
             order.setUser(userController.getUser());
             httpSession.setAttribute("order", order);
         }
-
-        int orderedQuantity = good.getQuantity();
-        goodService.addGoodToOrder(order, good.getId(), orderedQuantity);
-
-        String goodName = goodService.findById(good.getId()).getName();
-        model.addAttribute("success",
-                messageSource.getMessage("success.good.ordered",
-                        new Object[]{goodName, orderedQuantity},
-                        locale));
-
-        return "successPage";
+        return order;
     }
 
-    /**
-     * This method will provide the medium to edit a good.
-     */
+    private void handleNotEnoughGoodException(@PathVariable Long goodId, ModelMap model, Locale locale) {
+        Good good = goodService.findById(goodId);
+        model.addAttribute("good", good);
+        model.addAttribute("errorNotEnoughGood",
+                messageSource.getMessage("not.enough.good",
+                        new Object[]{good.getName(), good.getQuantity()}, locale));
+    }
+
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
-    public String editGood(@PathVariable Long goodId, ModelMap model) {
+    public String showEditGoodForm(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
         model.addAttribute("good", good);
         model.addAttribute("edit", true);
@@ -142,24 +123,31 @@ public class GoodController {
         return "editGood";
     }
 
-    /**
-     * Edit Good.
-     */
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
-    public String saveEditedGood(@Valid Good good, BindingResult result,
-                                 ModelMap model, Locale locale) {
+    public String saveEditedGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
-
         goodService.save(good);
-
         model.addAttribute("success",
-                messageSource.getMessage("success.good.edited",
-                        new Object[]{good.getName()},
-                        locale));
+                messageSource.getMessage("success.good.edited", new Object[]{good.getName()}, locale));
 
         return "successPage";
+    }
+
+    @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
+    public String deleteGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+        Good good = goodService.findById(goodId);
+        if (good == null) {
+            model.addAttribute("failMessage",
+                    messageSource.getMessage("fail.good.find", new Object[]{good.getId()}, locale));
+            return "failPage";
+        }
+        goodService.delete(goodId);
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.delete", new Object[]{good.getId()}, locale));
+
+        return "editGood";
     }
 
     @RequestMapping(value = "/imageController/{goodId}")

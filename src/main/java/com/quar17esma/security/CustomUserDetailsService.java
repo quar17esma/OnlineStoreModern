@@ -22,20 +22,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String ssoId)
-            throws UsernameNotFoundException {
-        User user = userService.findBySSO(ssoId);
-
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userService.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("Username not found");
         }
 
         return new org.springframework.security.core.userdetails.User(
-                user.getSsoId(), user.getPassword(),
-                true, true,
-                true, true,
-                getGrantedAuthorities(user)
-        );
+                user.getEmail(), user.getPassword(),
+                true, true,true, true,
+                getGrantedAuthorities(user));
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(User user) {

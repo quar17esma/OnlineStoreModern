@@ -7,7 +7,7 @@
 
 <head>
     <title><spring:message code="title.registration.form"/></title>
-    <link href="/static/css/app.css" rel="stylesheet"/>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -51,20 +51,6 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="ssoId">
-                    <spring:message code="label.sso.id"/>
-                </label>
-                <div class="col-md-7">
-                    <form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm"/>
-                    <div class="has-error">
-                        <form:errors path="ssoId" class="help-inline"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="password">
                     <spring:message code="label.password"/>
                 </label>
@@ -96,7 +82,7 @@
                 <input type="submit" value="<spring:message code="button.register"/>"
                        class="btn btn-primary btn-sm"/>
                 <spring:message code="text.or"/>
-                <a href="./list"><spring:message code="link.cancel"/></a>
+                <a href="${pageContext.request.contextPath}/goods/list"><spring:message code="link.cancel"/></a>
             </div>
         </div>
     </form:form>

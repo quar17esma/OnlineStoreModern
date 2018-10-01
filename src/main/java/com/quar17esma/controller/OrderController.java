@@ -17,14 +17,12 @@ import java.util.List;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/orders")
 public class OrderController {
     @Autowired
     private UserController userController;
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private MessageSource messageSource;
 
@@ -33,70 +31,46 @@ public class OrderController {
         return DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
     }
 
-    /**
-     * Show current Order and its Goods.
-     */
     @RequestMapping(value = {"/cart"}, method = RequestMethod.GET)
     public String cart(ModelMap model, HttpSession httpSession) {
-
         Order order = (Order) httpSession.getAttribute("order");
         model.addAttribute("order", order);
 
         return "cart";
     }
 
-    /**
-     * Confirm current Order.
-     */
-    @RequestMapping(value = {"/cart"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cart/confirm"}, method = RequestMethod.GET)
     public String confirmOrderFromCart(HttpSession httpSession, ModelMap model, Locale locale) {
-
         Order order = (Order) httpSession.getAttribute("order");
-        orderService.confirmOrder(order.getId());
+        orderService.confirmOrder(order);
         httpSession.removeAttribute("order");
-
         model.addAttribute("success",
                 messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
 
         return "successPage";
     }
 
-    /**
-     * Show all Orders.
-     */
     @RequestMapping(value = {"/myOrders"}, method = RequestMethod.GET)
     public String myOrders(ModelMap model) {
-
         Long userId = userController.getUser().getId();
         List<Order> orders = orderService.findAllByUserIdFetchOrderedGoods(userId);
-
         model.addAttribute("orders", orders);
 
         return "myOrders";
     }
 
-    /**
-     * Pay Order.
-     */
     @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
     public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
-
         orderService.payOrder(orderId);
-
         model.addAttribute("success",
                 messageSource.getMessage("success.order.pay", new Object[] {}, locale));
 
         return "successPage";
     }
 
-    /**
-     * Confirm Order by Id.
-     */
     @RequestMapping(value = {"/myOrders/confirm-{orderId}"}, method = RequestMethod.GET)
     public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
-
         orderService.confirmOrder(orderId);
-
         model.addAttribute("success",
                 messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
 

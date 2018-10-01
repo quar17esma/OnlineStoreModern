@@ -15,8 +15,7 @@ import java.util.Optional;
 
 @Service("orderService")
 @Transactional
-public class OrderServiceImpl implements OrderService {
-
+public class OrderServiceImpl extends AbstractCRUDService<Order> implements OrderService {
     @Autowired
     private OrderRepository repository;
 
@@ -31,16 +30,17 @@ public class OrderServiceImpl implements OrderService {
         for (Order order : orders) {
             Hibernate.initialize(order.getOrderedGoods());
         }
+
         return orders;
     }
 
     @Override
     @Transactional
-    public void confirmOrder(Long orderId) {
-
-        Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
+    public void confirmOrder(Long id) {
+        Optional<Order> order = Optional.ofNullable(repository.findOne(id));
         if (order.isPresent() && order.get().getStatus() == OrderStatus.NEW) {
             order.get().setStatus(OrderStatus.CONFIRMED);
+            setOrderedAtIfNull(order.get());
             repository.save(order.get());
         } else {
             throw new RuntimeException("Order not found. Confirmation failed");
@@ -49,16 +49,32 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void saveOrder(Order order) {
-        if (order.getOrderedAt() == null) {
-            order.setOrderedAt(LocalDateTime.now());
+    public void confirmOrder(Order order) {
+        if (order.getStatus() == OrderStatus.NEW) {
+            order.setStatus(OrderStatus.CONFIRMED);
+            setOrderedAtIfNull(order);
+            repository.save(order);
+        } else {
+            throw new IllegalStateException("Can't confirm order, that hasn't status 'NEW'.");
         }
-        repository.save(order);
     }
 
     @Override
-    public void payOrder(Long orderId) {
-        Optional<Order> order = Optional.ofNullable(repository.findOne(orderId));
+    @Transactional
+    public void save(Order order) {
+        setOrderedAtIfNull(order);
+        repository.save(order);
+    }
+
+    private void setOrderedAtIfNull(Order order) {
+        if (order.getOrderedAt() == null) {
+            order.setOrderedAt(LocalDateTime.now());
+        }
+    }
+
+    @Override
+    public void payOrder(Long id) {
+        Optional<Order> order = Optional.ofNullable(repository.findOne(id));
         if (order.isPresent()) {
             order.get().setStatus(OrderStatus.PAID);
             repository.save(order.get());
