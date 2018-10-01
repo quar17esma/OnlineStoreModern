@@ -24,25 +24,25 @@
             <c:choose>
                 <c:when test="${order != null}">
                     <form:form method="POST">
-                            <c:forEach items="${order.orderedGoods}" var="good">
-                                <div class="well">
-                                    <div>
-                                        <h5><b><c:out value="${good.key.name}"/></b></h5>
-                                    </div>
-                                    <div>
-                                        <label><spring:message code="label.description"/></label>
-                                        <c:out value="${good.key.description}"/>
-                                    </div>
-                                    <div>
-                                        <label><spring:message code="label.price"/></label>
-                                        <c:out value="${good.key.price}"/>
-                                    </div>
-                                    <div>
-                                        <label><spring:message code="label.ordered.quantity"/></label>
-                                        <c:out value="${good.value}"/>
-                                    </div>
+                        <c:forEach items="${order.orderedGoods}" var="good">
+                            <div class="well">
+                                <div>
+                                    <h5><b><c:out value="${good.key.name}"/></b></h5>
                                 </div>
-                            </c:forEach>
+                                <div>
+                                    <label><spring:message code="label.description"/></label>
+                                    <c:out value="${good.key.description}"/>
+                                </div>
+                                <div>
+                                    <label><spring:message code="label.price"/></label>
+                                    <c:out value="${good.key.price}"/>
+                                </div>
+                                <div>
+                                    <label><spring:message code="label.ordered.quantity"/></label>
+                                    <c:out value="${good.value}"/>
+                                </div>
+                            </div>
+                        </c:forEach>
 
                         <div class="row">
                             <div class="form-actions floatRight">
@@ -53,13 +53,16 @@
                     </form:form>
                 </c:when>
                 <c:otherwise>
-                    <div class="alert alert-info lead">
-                        <spring:message code="empty.cart"/>
-                    </div>
+                        <div class="alert alert-info lead">
+                            <spring:message code="empty.cart"/>
+                        </div>
+                        <br><br>
                 </c:otherwise>
             </c:choose>
         </div>
     </div>
+
+    <jsp:include page="footer.jsp"/>
 </div>
 
 </body>
