@@ -19,47 +19,58 @@
 
     <jsp:include page="header.jsp"/>
 
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <c:choose>
-                <c:when test="${order != null}">
-                    <form:form method="POST">
-                            <c:forEach items="${order.orderedGoods}" var="good">
-                                <div class="well">
-                                    <div>
-                                        <h5><b><c:out value="${good.key.name}"/></b></h5>
-                                    </div>
-                                    <div>
-                                        <label><spring:message code="label.description"/></label>
-                                        <c:out value="${good.key.description}"/>
-                                    </div>
-                                    <div>
-                                        <label><spring:message code="label.price"/></label>
-                                        <c:out value="${good.key.price}"/>
-                                    </div>
-                                    <div>
-                                        <label><spring:message code="label.ordered.quantity"/></label>
-                                        <c:out value="${good.value}"/>
-                                    </div>
-                                </div>
-                            </c:forEach>
-
+    <div class="container">
+        <c:choose>
+            <c:when test="${order != null}">
+                <div class="well">
+                    <c:forEach items="${order.orderedGoods}" var="good">
                         <div class="row">
-                            <div class="form-actions floatRight">
-                                <input type="submit" value="<spring:message code='button.confirm.order'/>"
-                                       class="btn btn-primary btn-sm"/>
+                            <div class="col-md-12">
+                                <h2><b><c:out value="${good.key.name}"/></b></h2><br>
                             </div>
+                            <div class="col-md-3">
+                                <img src="${pageContext.request.contextPath}/goods/imageController/${good.key.id}"
+                                     class="img-thumbnail" alt="${good.key.name}">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <label><spring:message code="label.quantity"/></label>
+                                    <c:out value="${good.value}"/>
+                                </div>
+                                <div class="row">
+                                    <label><spring:message code="label.price"/></label>
+                                    <c:out value="${good.key.price}"/>
+                                </div>
+                                <div class="row">
+                                    <label><spring:message code="label.description"/></label>
+                                    <p><c:out value="${good.key.description}"/></p><br>
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </form:form>
-                </c:when>
-                <c:otherwise>
-                    <div class="alert alert-info lead">
-                        <spring:message code="empty.cart"/>
+                        <br>
+                    </c:forEach>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="${pageContext.request.contextPath}/orders/cart/confirm"
+                               class="btn btn-success">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <spring:message code='button.confirm.order'/>
+                            </a>
+                        </div>
                     </div>
-                </c:otherwise>
-            </c:choose>
-        </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="alert alert-info lead">
+                    <spring:message code="empty.cart"/>
+                </div>
+                <br><br>
+            </c:otherwise>
+        </c:choose>
     </div>
+
+    <jsp:include page="footer.jsp"/>
 </div>
 
 </body>

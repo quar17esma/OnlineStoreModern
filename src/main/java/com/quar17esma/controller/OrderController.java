@@ -17,14 +17,12 @@ import java.util.List;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/orders")
 public class OrderController {
     @Autowired
     private UserController userController;
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private MessageSource messageSource;
 
@@ -41,10 +39,10 @@ public class OrderController {
         return "cart";
     }
 
-    @RequestMapping(value = {"/cart"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cart/confirm"}, method = RequestMethod.GET)
     public String confirmOrderFromCart(HttpSession httpSession, ModelMap model, Locale locale) {
         Order order = (Order) httpSession.getAttribute("order");
-        orderService.confirmOrder(order.getId());
+        orderService.confirmOrder(order);
         httpSession.removeAttribute("order");
         model.addAttribute("success",
                 messageSource.getMessage("success.order.confirm", new Object[] {}, locale));

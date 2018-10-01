@@ -82,7 +82,7 @@
                 <input type="submit" value="<spring:message code="button.register"/>"
                        class="btn btn-primary btn-sm"/>
                 <spring:message code="text.or"/>
-                <a href="./list"><spring:message code="link.cancel"/></a>
+                <a href="${pageContext.request.contextPath}/goods/list"><spring:message code="link.cancel"/></a>
             </div>
         </div>
     </form:form>

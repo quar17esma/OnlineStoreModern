@@ -17,66 +17,53 @@
 
     <jsp:include page="header.jsp"/>
 
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+    <div class="container">
+        <div class="row">
             <c:forEach items="${goods}" var="good">
-                <div class="well col-md-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h5><b><c:out value="${good.name}"/></b></h5>
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><b><c:out value="${good.name}"/></b></div>
+                        <div class="panel-body">
+                            <img src="${pageContext.request.contextPath}/goods/imageController/${good.id}"
+                                 class="img-responsive" style="width:100%" alt="${good.name}">
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <img src="./imageController/${good.id}" alt="${good.name}" class="img-thumbnail"/>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div>
-                                <label><spring:message code="label.price"/></label>
-                                <c:out value="${good.price}"/>
-                            </div>
-                            <div>
+                        <div class="panel-footer">
+                            <label><spring:message code="label.price"/></label>
+                            <c:out value="${good.price}"/>
+                            <br>
+                            <sec:authorize access="hasRole('ADMIN')">
                                 <label><spring:message code="label.quantity"/></label>
                                 <c:out value="${good.quantity}"/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <a href="<c:url value='/buy-good-${good.id}' />" class="btn btn-success floatRight">
-                                    <spring:message code="button.buy"/>
-                                </a>
-                            </div>
-                            <sec:authorize access="hasRole('ADMIN')">
-                                <br/>
-                                <div class="row">
-                                    <a href="<c:url value='/edit-good-${good.id}' />"
-                                       class="btn btn-warning floatRight">
-                                        <spring:message code="button.edit"/>
-                                    </a>
-                                </div>
                             </sec:authorize>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="#desc${good.id}" data-toggle="collapse">
-                                <spring:message code="label.description"/>
+
+                            <a href="<c:url value='../goods/buy-good-${good.id}' />"
+                               class="btn btn-success btn-block">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> <spring:message
+                                    code="button.buy"/>
                             </a>
-                            <br/>
-                            <br/>
-                            <div id="desc${good.id}" class="collapse">
-                                <c:out value="${good.description}"/>
-                            </div>
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <a href="<c:url value='../goods/edit-good-${good.id}'/>"
+                                   class="btn btn-warning btn-block">
+                                    <span class="glyphicon glyphicon-pencil"></span> <spring:message
+                                        code="button.edit"/>
+                                </a>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <a href="<c:url value='../goods/delete-good-${good.id}'/>"
+                                   class="btn btn-danger btn-block">
+                                    <span class="glyphicon glyphicon-trash"></span> <spring:message
+                                        code="button.delete"/>
+                                </a>
+                            </sec:authorize>
                         </div>
                     </div>
                 </div>
             </c:forEach>
-            <br/>
         </div>
     </div>
+    <br><br>
+
+    <jsp:include page="footer.jsp"/>
 </div>
 </body>
 </html>

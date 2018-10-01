@@ -19,7 +19,7 @@
 
     <span class="well floatRight">
         <spring:message code="text.go.to"/>
-        <a href="${pageContext.request.contextPath}/list"><spring:message code="link.goods.list"/></a>
+        <a href="${pageContext.request.contextPath}/goods/list"><spring:message code="link.goods.list"/></a>
     </span>
 </div>
 

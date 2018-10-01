@@ -40,6 +40,7 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
         Optional<Order> order = Optional.ofNullable(repository.findOne(id));
         if (order.isPresent() && order.get().getStatus() == OrderStatus.NEW) {
             order.get().setStatus(OrderStatus.CONFIRMED);
+            setOrderedAtIfNull(order.get());
             repository.save(order.get());
         } else {
             throw new RuntimeException("Order not found. Confirmation failed");
@@ -48,11 +49,27 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
 
     @Override
     @Transactional
-    public void saveOrder(Order order) {
+    public void confirmOrder(Order order) {
+        if (order.getStatus() == OrderStatus.NEW) {
+            order.setStatus(OrderStatus.CONFIRMED);
+            setOrderedAtIfNull(order);
+            repository.save(order);
+        } else {
+            throw new IllegalStateException("Can't confirm order, that hasn't status 'NEW'.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void save(Order order) {
+        setOrderedAtIfNull(order);
+        repository.save(order);
+    }
+
+    private void setOrderedAtIfNull(Order order) {
         if (order.getOrderedAt() == null) {
             order.setOrderedAt(LocalDateTime.now());
         }
-        repository.save(order);
     }
 
     @Override
