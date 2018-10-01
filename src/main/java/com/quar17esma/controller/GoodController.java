@@ -135,6 +135,21 @@ public class GoodController {
         return "successPage";
     }
 
+    @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
+    public String deleteGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+        Good good = goodService.findById(goodId);
+        if (good == null) {
+            model.addAttribute("failMessage",
+                    messageSource.getMessage("fail.good.find", new Object[]{good.getId()}, locale));
+            return "failPage";
+        }
+        goodService.delete(goodId);
+        model.addAttribute("success",
+                messageSource.getMessage("success.good.delete", new Object[]{good.getId()}, locale));
+
+        return "editGood";
+    }
+
     @RequestMapping(value = "/imageController/{goodId}")
     @ResponseBody
     public byte[] getGoodPicById(@PathVariable long goodId) {
