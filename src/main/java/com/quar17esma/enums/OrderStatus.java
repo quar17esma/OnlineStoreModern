@@ -1,5 +1,5 @@
 package com.quar17esma.enums;
 
 public enum  OrderStatus {
-    NEW, CONFIRMED, PAID;
+    NEW, CONFIRMED, PAID, CANCELED;
 }
