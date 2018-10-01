@@ -33,7 +33,7 @@ public class Order implements Serializable {
     @Column(name = "order_status", nullable = false)
     private OrderStatus status = OrderStatus.NEW;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
