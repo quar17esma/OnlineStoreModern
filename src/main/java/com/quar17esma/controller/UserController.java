@@ -57,6 +57,13 @@ public class UserController {
     }
 
     /**
+     * This method returns logged-in user.
+     */
+    public User getUser() {
+        return userService.findByEmail(getPrincipal());
+    }
+
+    /**
      * This method handles login GET requests.
      * If users is already logged-in and tries to goto login page again, will be redirected to list page.
      */
@@ -117,24 +124,6 @@ public class UserController {
 
     private boolean isEmailBusy(@Valid User user) {
         return userService.isEmailBusy(user.getEmail());
-    }
-
-    /**
-     * This method returns logged-in user.
-     */
-    public User getUser() {
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-
-        User user = userService.findByEmail(userName);
-
-        return user;
     }
 
     @RequestMapping(value = {"/contact"}, method = RequestMethod.GET)
