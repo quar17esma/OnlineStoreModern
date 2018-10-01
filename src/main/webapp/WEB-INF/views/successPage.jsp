@@ -12,15 +12,24 @@
 </head>
 <body>
 
-<div class="generic-container">
-    <div class="alert alert-success lead">
-        ${success}
+<div class="container-fluid">
+
+    <jsp:include page="header.jsp"/>
+
+    <div class="container">
+        <div class="alert alert-success lead">
+            ${success}
+        </div>
+
+        <div class="well">
+            <spring:message code="text.go.to"/>
+            <a href="${pageContext.request.contextPath}/goods/list">
+                <spring:message code="link.goods.list"/>
+            </a>
+        </div>
     </div>
 
-    <span class="well floatRight">
-        <spring:message code="text.go.to"/>
-        <a href="${pageContext.request.contextPath}/goods/list"><spring:message code="link.goods.list"/></a>
-    </span>
+    <jsp:include page="footer.jsp"/>
 </div>
 
 </body>
