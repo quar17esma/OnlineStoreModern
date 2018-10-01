@@ -1,7 +1,10 @@
 package com.quar17esma.controller;
 
+import com.quar17esma.enums.OrderStatus;
 import com.quar17esma.model.Order;
+import com.quar17esma.model.User;
 import com.quar17esma.service.OrderService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -62,6 +65,24 @@ public class OrderController {
     @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
     public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.payOrder(orderId);
+        model.addAttribute("success",
+                messageSource.getMessage("success.order.pay", new Object[] {}, locale));
+
+        return "successPage";
+    }
+
+    @RequestMapping(value = {"/myOrders/cancel-{orderId}"}, method = RequestMethod.GET)
+    public String cancelOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
+        Order order = orderService.findById(orderId);
+        User user = userController.getUser();
+
+        if (!order.getUser().equals(user) || order.getStatus() != OrderStatus.CONFIRMED) {
+            model.addAttribute("failMessage",
+                    messageSource.getMessage("fail.order.cancel", new Object[] {orderId}, locale));
+            return "failPage";
+        }
+
+        orderService.cancelOrder(orderId);
         model.addAttribute("success",
                 messageSource.getMessage("success.order.pay", new Object[] {}, locale));
 

@@ -14,4 +14,6 @@ public interface OrderService extends CRUDService<Order> {
     void confirmOrder(Order order);
 
     void payOrder(Long id);
+
+    void cancelOrder(Long orderId);
 }

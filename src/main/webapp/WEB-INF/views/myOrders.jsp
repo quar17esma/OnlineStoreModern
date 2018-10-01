@@ -66,6 +66,10 @@
                                            class="btn btn-success">
                                             <spring:message code='button.pay.order'/>
                                         </a>
+                                        <a href="${pageContext.request.contextPath}/orders/myOrders/cancel-${order.id}"
+                                           class="btn btn-danger">
+                                            <spring:message code='button.cancel'/>
+                                        </a>
                                     </c:if>
                                     <c:if test="${order.status == 'NEW'}">
                                         <a href="${pageContext.request.contextPath}/orders/myOrders/confirm-${order.id}"

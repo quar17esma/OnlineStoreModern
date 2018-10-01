@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -80,6 +81,17 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
             repository.save(order.get());
         } else {
             throw new RuntimeException("Order not found. Payment failed");
+        }
+    }
+
+    @Override
+    public void cancelOrder(Long orderId) throws EntityNotFoundException {
+        Order order = repository.findOne(orderId);
+        if (order != null) {
+            order.setStatus(OrderStatus.CANCELED);
+            repository.save(order);
+        } else {
+            throw new EntityNotFoundException("Order with ID(" + orderId + ") not found. Failed to cancel order");
         }
     }
 }
