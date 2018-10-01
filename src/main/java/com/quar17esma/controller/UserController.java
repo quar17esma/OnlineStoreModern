@@ -142,6 +142,11 @@ public class UserController {
         return "contact";
     }
 
+    @RequestMapping(value = {"/stores"}, method = RequestMethod.GET)
+    public String showStores() {
+        return "stores";
+    }
+
     @Autowired
     public void setAuthenticationTrustResolver(AuthenticationTrustResolver authenticationTrustResolver) {
         this.authenticationTrustResolver = authenticationTrustResolver;

@@ -62,7 +62,9 @@
                         <li><a href="${pageContext.request.contextPath}/goods/new-good"><spring:message
                                 code="link.add.good"/></a></li>
                     </sec:authorize>
-                    <li><a href="#">Stores</a></li>
+                    <li><a href="${pageContext.request.contextPath}/stores">
+                        <spring:message code="link.stores"/>
+                    </a></li>
                     <li><a href="${pageContext.request.contextPath}/contact">
                         <spring:message code="link.contact"/></a>
                     </li>
