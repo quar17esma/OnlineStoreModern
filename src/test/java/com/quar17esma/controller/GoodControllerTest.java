@@ -66,6 +66,7 @@ public class GoodControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setValidator(validator)
                 .setViewResolvers(viewResolver)
+                .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
 
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
