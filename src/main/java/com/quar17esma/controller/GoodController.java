@@ -6,10 +6,13 @@ import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
@@ -82,13 +85,7 @@ public class GoodController {
                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
                                 HttpSession httpSession, ModelMap model, Locale locale) {
         Order cart = getOrderFromSessionOrCreate(httpSession);
-        try {
-            goodService.addGoodToCart(cart, goodId, orderedQuantity);
-        } catch (NotEnoughGoodException e) {
-            handleNotEnoughGoodException(goodId, model, locale);
-            return "buyNow";
-        }
-
+        goodService.addGoodToCart(cart, goodId, orderedQuantity);
         String goodName = goodService.findById(goodId).getName();
         model.addAttribute("success",
                 messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
@@ -104,14 +101,6 @@ public class GoodController {
             httpSession.setAttribute("order", order);
         }
         return order;
-    }
-
-    private void handleNotEnoughGoodException(@PathVariable Long goodId, ModelMap model, Locale locale) {
-        Good good = goodService.findById(goodId);
-        model.addAttribute("good", good);
-        model.addAttribute("errorNotEnoughGood",
-                messageSource.getMessage("not.enough.good",
-                        new Object[]{good.getName(), good.getQuantity()}, locale));
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)

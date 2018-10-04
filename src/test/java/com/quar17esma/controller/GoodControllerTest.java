@@ -250,7 +250,7 @@ public class GoodControllerTest {
         verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
     }
 
-//        @Ignore
+        @Ignore
     @Test
     public void addGoodToCartNotEnoughGoodException() throws Exception {
         Long goodId = 13L;
