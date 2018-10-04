@@ -37,7 +37,7 @@ public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodSe
 
     private void checkEnoughGood(int orderedQuantity, Good good) throws NotEnoughGoodException {
         if (isNotEnoughGood(orderedQuantity, good)) {
-            throw new NotEnoughGoodException();
+            throw new NotEnoughGoodException(good.getId());
         }
     }
 
