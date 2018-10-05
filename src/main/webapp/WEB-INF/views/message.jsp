@@ -13,14 +13,19 @@
 <body>
 
 <div class="container-fluid">
-
     <jsp:include page="header.jsp"/>
 
     <div class="container">
-        <div class="alert alert-success lead">
-            ${success}
-        </div>
-
+        <c:if test="${successMessage != null}">
+            <div class="alert alert-success lead">
+                    ${successMessage}
+            </div>
+        </c:if>
+        <c:if test="${failMessage != null}">
+            <div class="alert alert-danger lead">
+                    ${failMessage}
+            </div>
+        </c:if>
         <div class="well">
             <spring:message code="text.go.to"/>
             <a href="${pageContext.request.contextPath}/goods/list">
