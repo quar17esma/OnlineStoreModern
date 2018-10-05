@@ -54,7 +54,7 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="${pageContext.request.contextPath}/goods/list"><spring:message
+                    <li><a href="${pageContext.request.contextPath}/goods/list"><spring:message
                             code="link.goods.list"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/orders/myOrders"><spring:message
                             code="link.my.orders"/></a></li>
