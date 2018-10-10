@@ -7,10 +7,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default rounded borders and increase the bottom margin */
+        .navbar {
+            margin-bottom: 25px;
+            border-radius: 0;
+        }
+
+        /* Remove the jumbotron's default bottom margin */
+        .jumbotron {
+            margin-bottom: 0;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            background-color: #f2f2f2;
+            padding: 25px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
-    <!--<div th:include="hader.html"></div>-->
+    <div th:replace="header.html :: header"></div>
 
     <div class="container">
         <div class="row">
@@ -29,24 +47,16 @@
                                 <label><span th:text="#{label.quantity}" /></label>
                                 <span th:text="${good.quantity}"/>
                             </div>
-                            <div sec:authorize="hasRole('ADMIN')">
-                                <label><span th:text="#{label.quantity}" /></label>
-                                <span th:text="${good.quantity}"/>
-                            </div>
 
                             <a th:href="@{/goods/buy-good-${good.id}}" class="btn btn-success btn-block">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> <span th:text="#{button.buy}"/>
                             </a>
-                            <div sec:authorize="hasRole('ADMIN')">
-                                <a th:href="@{/goods/edit-good-${good.id}}" class="btn btn-warning btn-block">
+                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/edit-good-${good.id}}" class="btn btn-warning btn-block">
                                     <span class="glyphicon glyphicon-pencil"></span> <span th:text="#{button.edit}"/>
                                 </a>
-                            </div>
-                            <div sec:authorize="hasRole('ADMIN')">
-                                <a th:href="@{/goods/delete-good-${good.id}}" class="btn btn-danger btn-block">
+                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/delete-good-${good.id}}" class="btn btn-danger btn-block">
                                     <span class="glyphicon glyphicon-trash"></span> <span th:text="#{button.delete}"/>
                                 </a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,7 +65,7 @@
     </div>
     <br><br>
 
-    <!--<div th:include="footer.html"></div>-->
+    <div th:replace="footer.html :: footer"></div>
 </div>
 </body>
 </html>
