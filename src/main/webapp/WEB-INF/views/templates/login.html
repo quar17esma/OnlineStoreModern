@@ -37,7 +37,7 @@
         <h2><span th:text="#{title.login}"/></h2>
         <div class="panel panel-default">
             <div class="panel-body">
-                <form name="loginForm" method="POST" action="@{/login}">
+                <form action="#" th:action="@{/login}" method="POST">
                     <div class="form-group">
                         <div class="input-group">
                             <label class="input-group-addon" for="email">
