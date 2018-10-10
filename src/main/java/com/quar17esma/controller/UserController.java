@@ -37,7 +37,8 @@ public class UserController {
 
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
-        model.addAttribute("loggedinuser", getPrincipal());
+        User user = userService.findByEmail(getPrincipal());
+        model.addAttribute("userFirstName", user.getFirstName());
         return "accessDenied";
     }
 
