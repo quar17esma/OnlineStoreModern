@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="#{title.all.goods}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <!--<div th:include="hader.html"></div>-->
+
+    <div class="container">
+        <div class="row">
+            <div th:each="good: ${goods}">
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><b><span th:text="${good.name}"/></b></div>
+                        <div class="panel-body">
+                            <img th:src="@{/goods/imageController/{goodId}(goodId=${good.id})}" class="img-responsive" th:alt="${good.id}"/>
+                        </div>
+                        <div class="panel-footer">
+                            <label><span th:text="#{label.price}"/></label>
+                            <span th:text="${good.price}"/>
+                            <br>
+                            <div sec:authorize="hasRole('ADMIN')">
+                                <label><span th:text="#{label.quantity}" /></label>
+                                <span th:text="${good.quantity}"/>
+                            </div>
+                            <div sec:authorize="hasRole('ADMIN')">
+                                <label><span th:text="#{label.quantity}" /></label>
+                                <span th:text="${good.quantity}"/>
+                            </div>
+
+                            <a th:href="@{/goods/buy-good-${good.id}}" class="btn btn-success btn-block">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> <span th:text="#{button.buy}"/>
+                            </a>
+                            <div sec:authorize="hasRole('ADMIN')">
+                                <a th:href="@{/goods/edit-good-${good.id}}" class="btn btn-warning btn-block">
+                                    <span class="glyphicon glyphicon-pencil"></span> <span th:text="#{button.edit}"/>
+                                </a>
+                            </div>
+                            <div sec:authorize="hasRole('ADMIN')">
+                                <a th:href="@{/goods/delete-good-${good.id}}" class="btn btn-danger btn-block">
+                                    <span class="glyphicon glyphicon-trash"></span> <span th:text="#{button.delete}"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    <!--<div th:include="footer.html"></div>-->
+</div>
+</body>
+</html>
