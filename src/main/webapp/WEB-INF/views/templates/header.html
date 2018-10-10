@@ -28,49 +28,50 @@
 </head>
 <body>
 <div th:fragment="header">
-        <div class="row">
-            <div class="jumbotron">
-                <div class="container text-center">
-                    <h1><span th:text="#{title.online.store}"/></h1>
-                    <p>Mission, Vision & Values</p>
+    <div class="row">
+        <div class="jumbotron">
+            <div class="container text-center">
+                <h1><span th:text="#{title.online.store}"/></h1>
+                <p>Mission, Vision & Values</p>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><span th:text="#{label.online.store}"/></a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a th:href="@{/goods/list}"><span th:text="#{link.goods.list}"/></a></li>
+                        <li><a th:href="@{/orders/myOrders}"><span th:text="#{link.my.orders}"/></a></li>
+                        <li sec:authorize="hasRole('ADMIN')">
+                            <a th:href="@{/goods/new-good}"><span th:text="#{link.add.good}"/></a>
+                        </li>
+                        <li><a th:href="@{/stores}"><span th:text="#{link.stores}"/></a></li>
+                        <li><a th:href="@{/contact}"><span th:text="#{link.contact}"/></a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a th:href="@{/orders/cart}">
+                            <span class="glyphicon glyphicon-shopping-cart"/> <span th:text="#{link.cart}"/></a>
+                        </li>
+                        <li><a th:href="@{/logout}">
+                            <span class="glyphicon glyphicon-user"/> <span sec:authentication="name"/>
+                        </a>
+                        </li>
+                        <li><a th:href="@{/logout}">
+                            <span class="glyphicon glyphicon-log-out"/> <span th:text="#{link.logout}"/></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#"><span th:text="#{label.online.store}"/></a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="myNavbar">
-                        <ul class="nav navbar-nav">
-                            <li><a th:href="@{/goods/list}"><span th:text="#{link.goods.list}"/></a></li>
-                            <li><a th:href="@{/orders/myOrders}"><span th:text="#{link.my.orders}"/></a></li>
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a th:href="@{/goods/new-good}"><span th:text="#{link.add.good}"/></a>
-                            </li>
-                            <li><a th:href="@{/stores}"><span th:text="#{link.stores}"/></a></li>
-                            <li><a th:href="@{/contact}"><span th:text="#{link.contact}"/></a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a th:href="@{/orders/cart}">
-                                <span class="glyphicon glyphicon-shopping-cart"/> <span th:text="#{link.cart}"/></a>
-                            </li>
-                            <li><a href="#">
-                                <span class="glyphicon glyphicon-user"/> <span
-                                    th:text="${session.getAttribute('loggedInUser')}"/>
-                            </a></li>
-                            <li><a th:href="@{/logout}">
-                                <span class="glyphicon glyphicon-log-out"/> <span th:text="#{link.logout}"/></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
+        </nav>
+    </div>
 </div>
 </body>
 </html>
