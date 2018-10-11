@@ -37,26 +37,29 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><b><span th:text="${good.name}"/></b></div>
                         <div class="panel-body">
-                            <img th:src="@{/goods/imageController/{goodId}(goodId=${good.id})}" class="img-responsive" th:alt="${good.id}"/>
+                            <img th:src="@{/goods/imageController/{goodId}(goodId=${good.id})}" class="img-responsive"
+                                 th:alt="${good.id}"/>
                         </div>
                         <div class="panel-footer">
                             <label><span th:text="#{label.price}"/></label>
                             <span th:text="${good.price}"/>
                             <br>
                             <div sec:authorize="hasRole('ADMIN')">
-                                <label><span th:text="#{label.quantity}" /></label>
+                                <label><span th:text="#{label.quantity}"/></label>
                                 <span th:text="${good.quantity}"/>
                             </div>
 
-                            <a th:href="@{/goods/buy-good-${good.id}}" class="btn btn-success btn-block">
+                            <a th:href="@{/goods/buy-good-{goodId}(goodId=${good.id})}" class="btn btn-success btn-block">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> <span th:text="#{button.buy}"/>
                             </a>
-                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/edit-good-${good.id}}" class="btn btn-warning btn-block">
-                                    <span class="glyphicon glyphicon-pencil"></span> <span th:text="#{button.edit}"/>
-                                </a>
-                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/delete-good-${good.id}}" class="btn btn-danger btn-block">
-                                    <span class="glyphicon glyphicon-trash"></span> <span th:text="#{button.delete}"/>
-                                </a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/edit-good-{goodId}(goodId=${good.id})}"
+                               class="btn btn-warning btn-block">
+                                <span class="glyphicon glyphicon-pencil"></span> <span th:text="#{button.edit}"/>
+                            </a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/delete-good-{goodId}(goodId=${good.id})}"
+                               class="btn btn-danger btn-block">
+                                <span class="glyphicon glyphicon-trash"></span> <span th:text="#{button.delete}"/>
+                            </a>
                         </div>
                     </div>
                 </div>
