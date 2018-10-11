@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{title.my.cart}"/></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default rounded borders and increase the bottom margin */
+        .navbar {
+            margin-bottom: 25px;
+            border-radius: 0;
+        }
+
+        /* Remove the jumbotron's default bottom margin */
+        .jumbotron {
+            margin-bottom: 0;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            background-color: #f2f2f2;
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div th:replace="fragments/header.html :: header"></div>
+
+    <div class="container">
+        <div th:if="${order != null}" class="well">
+            <div th:each="good: ${order.orderedGoods}">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2><b><span th:text="${good.key.name}"/></b></h2>
+                    </div>
+                    <div class="col-md-3">
+                        <img th:src="@{/goods/imageController/{goodId}(goodId=${good.key.id})}"
+                             class="img-thumbnail" th:alt="${good.key.name}">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <label><span th:text="#{label.quantity}"/></label>
+                            <span th:text="${good.value}"/>
+                        </div>
+                        <div class="row">
+                            <label><span th:text="#{label.price}"/></label>
+                            <span th:text="${good.key.price}"/>
+                        </div>
+                        <div class="row">
+                            <label><span th:text="#{label.description}"/></label>
+                            <p><span th:text="${good.key.description}"/></p>
+                            <br>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <br>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a th:href="@{/orders/cart/confirm}" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> <span th:text="#{button.confirm.order}"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${order != null}" class="alert alert-info lead">
+            <span th:text="#{empty.cart}"/>
+        </div>
+        <br><br>
+    </div>
+
+    <div th:replace="fragments/footer.html :: footer"></div>
+</div>
+
+</body>
+</html>
