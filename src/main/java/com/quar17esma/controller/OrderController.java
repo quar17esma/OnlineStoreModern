@@ -1,6 +1,8 @@
 package com.quar17esma.controller;
 
+import com.quar17esma.enums.OrderStatus;
 import com.quar17esma.model.Order;
+import com.quar17esma.model.User;
 import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -44,10 +46,10 @@ public class OrderController {
         Order order = (Order) httpSession.getAttribute("order");
         orderService.confirmOrder(order);
         httpSession.removeAttribute("order");
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
 
-        return "successPage";
+        return "message";
     }
 
     @RequestMapping(value = {"/myOrders"}, method = RequestMethod.GET)
@@ -62,18 +64,36 @@ public class OrderController {
     @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
     public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.payOrder(orderId);
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.order.pay", new Object[] {}, locale));
 
-        return "successPage";
+        return "message";
+    }
+
+    @RequestMapping(value = {"/myOrders/cancel-{orderId}"}, method = RequestMethod.GET)
+    public String cancelOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
+        Order order = orderService.findById(orderId);
+        User user = userController.getUser();
+
+        if (!order.getUser().equals(user) || order.getStatus() != OrderStatus.CONFIRMED) {
+            model.addAttribute("failMessage",
+                    messageSource.getMessage("fail.order.cancel", new Object[] {orderId}, locale));
+            return "message";
+        }
+
+        orderService.cancelOrder(orderId);
+        model.addAttribute("successMessage",
+                messageSource.getMessage("success.order.pay", new Object[] {}, locale));
+
+        return "message";
     }
 
     @RequestMapping(value = {"/myOrders/confirm-{orderId}"}, method = RequestMethod.GET)
     public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.confirmOrder(orderId);
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
 
-        return "successPage";
+        return "message";
     }
 }

@@ -54,7 +54,7 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="${pageContext.request.contextPath}/goods/list"><spring:message
+                    <li><a href="${pageContext.request.contextPath}/goods/list"><spring:message
                             code="link.goods.list"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/orders/myOrders"><spring:message
                             code="link.my.orders"/></a></li>
@@ -62,8 +62,12 @@
                         <li><a href="${pageContext.request.contextPath}/goods/new-good"><spring:message
                                 code="link.add.good"/></a></li>
                     </sec:authorize>
-                    <li><a href="#">Stores</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="${pageContext.request.contextPath}/stores">
+                        <spring:message code="link.stores"/>
+                    </a></li>
+                    <li><a href="${pageContext.request.contextPath}/contact">
+                        <spring:message code="link.contact"/></a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="${pageContext.request.contextPath}/orders/cart"><span

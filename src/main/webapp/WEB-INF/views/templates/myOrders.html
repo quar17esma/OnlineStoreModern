@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{title.my.orders}"/></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default rounded borders and increase the bottom margin */
+        .navbar {
+            margin-bottom: 25px;
+            border-radius: 0;
+        }
+
+        /* Remove the jumbotron's default bottom margin */
+        .jumbotron {
+            margin-bottom: 0;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            background-color: #f2f2f2;
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="fragments/header.html :: header"></div>
+
+    <div class="container">
+        <h2><b><span th:text="#{title.my.orders}"/></b></h2><br>
+        <div th:if="${orders.size() > 0}" class="row">
+            <div th:each="order: ${orders}">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label><span th:text="#{label.number}"/></label>
+                                        <a data-toggle="collapse" th:href="'#collapse' + ${order.id}">
+                                            <span th:text="${order.id}"/>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label><span th:text="#{label.create.time}"/></label>
+                                        <span th:text="${localDateTimeFormat.format(order.orderedAt)}"/>
+                                    </div>
+                                </div>
+                            </h4>
+                        </div>
+                        <div th:id="'collapse' + ${order.id}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div th:each="good: ${order.orderedGoods}">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <img th:src="@{/goods/imageController/{goodId}(goodId=${good.key.id})}"
+                                                 class="img-responsive" style="width:100%" th:alt="${good.key.name}">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label><span th:text="${good.key.name}"/></label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label><span th:text="#{label.price}"/></label>
+                                            <span th:text="${good.key.price}"/>$
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label><span th:text="#{label.quantity}"/></label>
+                                            <span th:text="${good.value}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <a th:if="${order.status ==  T(com.quar17esma.enums.OrderStatus).CONFIRMED}"
+                                   th:href="@{/orders/myOrders/pay-{orderId}(orderId=${order.id})}"
+                                   class="btn btn-success">
+                                    <span th:text="#{button.pay.order}"/>
+                                </a>
+                                <a th:if="${order.status == T(com.quar17esma.enums.OrderStatus).CONFIRMED}"
+                                   th:href="@{/orders/myOrders/cancel-{orderId}(orderId=${order.id})}"
+                                   class="btn btn-danger">
+                                    <span th:text="#{button.cancel}"/>
+                                </a>
+                                <a th:if="${order.status == T(com.quar17esma.enums.OrderStatus).NEW}"
+                                   th:href="@{/orders/myOrders/confirm-{orderId}(orderId=${order.id})}"
+                                   class="btn btn-success btn-sm">
+                                    <span th:text="#{button.confirm.order}"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${orders.size()} > 0" class="alert alert-info lead">
+            <span th:text="#{alert.no.orders}"/>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer.html :: footer"></div>
+</div>
+</body>
+</html>

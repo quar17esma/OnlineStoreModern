@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="#{title.registration.form}"/></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="well lead"><span th:text="#{title.registration.form}"/></div>
+
+    <form action="#" th:action="@{/new_user}" th:object="${user}" method="POST" class="form-horizontal">
+        <input type="hidden" th:field="*{id}" id="id"/>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="firstName">
+                    <span th:text="#{label.first.name}"/>
+                </label>
+                <div class="col-md-6">
+                    <input type="text" th:field="*{firstName}" required="required" id="firstName" class="form-control"/>
+                </div>
+                <div class="has-error">
+                    <span th:errors="*{firstName}" class="help-inline"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="lastName">
+                    <span th:text="#{label.last.name}"/>
+                </label>
+                <div class="col-md-6">
+                    <input type="text" th:field="*{lastName}" required="required" id="lastName" class="form-control"/>
+                </div>
+                <div class="has-error">
+                    <span th:errors="*{lastName}" class="help-inline"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="password">
+                    <span th:text="#{label.password}"/>
+                </label>
+                <div class="col-md-6">
+                    <input type="password" th:field="*{password}" required="required" id="password" class="form-control"/>
+                </div>
+                <div class="has-error">
+                    <span th:errors="*{password}" class="help-inline"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="col-md-3 control-lable" for="email">
+                    <span th:text="#{label.email}"/>
+                </label>
+                <div class="col-md-6">
+                    <input type="email" th:field="*{email}" required="required" id="email" class="form-control"/>
+                </div>
+                <div class="has-error">
+                    <span th:errors="*{email}" class="help-inline"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-actions floatRight">
+                <input type="submit" th:value="#{button.register}" class="btn btn-primary"/>
+                <span th:text="#{text.or}"/>
+                <a th:href="@{/goods/list}">
+                    <span th:text="#{link.cancel}"/>
+                </a>
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

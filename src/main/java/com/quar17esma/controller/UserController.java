@@ -37,7 +37,8 @@ public class UserController {
 
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
     public String accessDeniedPage(ModelMap model) {
-        model.addAttribute("loggedinuser", getPrincipal());
+        User user = userService.findByEmail(getPrincipal());
+        model.addAttribute("userFirstName", user.getFirstName());
         return "accessDenied";
     }
 
@@ -54,6 +55,13 @@ public class UserController {
         }
 
         return userName;
+    }
+
+    /**
+     * This method returns logged-in user.
+     */
+    public User getUser() {
+        return userService.findByEmail(getPrincipal());
     }
 
     /**
@@ -119,22 +127,14 @@ public class UserController {
         return userService.isEmailBusy(user.getEmail());
     }
 
-    /**
-     * This method returns logged-in user.
-     */
-    public User getUser() {
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @RequestMapping(value = {"/contact"}, method = RequestMethod.GET)
+    public String showContactForm() {
+        return "contact";
+    }
 
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails) principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-
-        User user = userService.findByEmail(userName);
-
-        return user;
+    @RequestMapping(value = {"/stores"}, method = RequestMethod.GET)
+    public String showStores() {
+        return "stores";
     }
 
     @Autowired

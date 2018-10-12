@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{title.edit.good}"/></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default rounded borders and increase the bottom margin */
+        .navbar {
+            margin-bottom: 25px;
+            border-radius: 0;
+        }
+
+        /* Remove the jumbotron's default bottom margin */
+        .jumbotron {
+            margin-bottom: 0;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            background-color: #f2f2f2;
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="fragments/header.html :: header"></div>
+
+    <div class="container">
+        <div class="well">
+            <form action="#" th:action="@{''}" method="POST" th:object="${good}">
+                <input type="hidden" th:field="*{id}" id="id"/>
+                <input type="hidden" th:field="*{goodPic}" id="goodPic"/>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="name">
+                            <span th:text="#{label.name}"/>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" th:field="*{name}" id="name" th:value="*{name}"
+                                        class="form-control input-sm"/>
+                            <div class="has-error">
+                                <span th:errors="*{name}" class="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="description">
+                            <span th:text="#{label.description}"/>
+                        </label>
+                        <div class="col-md-7">
+                            <textarea type="text" th:field="*{description}" id="description"
+                                           th:value="*{description}" class="form-control"/>
+                            <div class="has-error">
+                                <span th:errors="*{description}" class="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="price">
+                            <span th:text="#{label.price}"/>
+                        </label>
+                        <div class="col-md-2">
+                            <input type="number" th:field="*{price}" id="price"
+                                        th:value="*{price}" class="form-control input-sm"/>
+                            <div class="has-error">
+                                <span th:errors="*{price}" class="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-label" for="quantity">
+                            <span th:text="#{label.quantity}"/>
+                        </label>
+                        <div class="col-md-2">
+                            <input type="number" th:field="*{quantity}" id="quantity"
+                                        th:value="*{quantity}" class="form-control"/>
+                            <div class="has-error">
+                                <span th:errors="*{quantity}" class="help-inline"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-actions floatRight">
+                        <input type="submit" th:value="#{button.confirm}" class="btn btn-primary"/>
+                        <span th:text="#{text.or}"/>
+                        <a th:href="@{/goods/list}"><span th:text="#{link.cancel}"/></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer.html :: footer"></div>
+</div>
+</div>
+</body>
+</html>
