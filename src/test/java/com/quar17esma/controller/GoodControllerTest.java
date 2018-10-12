@@ -196,7 +196,7 @@ public class GoodControllerTest {
         mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyNow"))
-                .andExpect(forwardedUrl("/WEB-INF/views/buyNow.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/buyGood.jsp"))
                 .andExpect(model().attribute("good", is(good)));
 
         verify(goodServiceMock, times(1)).findById(goodId);
@@ -274,7 +274,7 @@ public class GoodControllerTest {
                         .param("orderedQuantity", String.valueOf(orderedQuantity)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyNow"))
-                .andExpect(forwardedUrl("/WEB-INF/views/buyNow.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/buyGood.jsp"))
                 .andExpect(model().attributeExists("errorNotEnoughGood"))
                 .andExpect(model().attribute("good", is(good)))
                 .andExpect(model().attributeDoesNotExist("successMessage"));

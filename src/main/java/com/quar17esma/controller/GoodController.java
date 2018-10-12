@@ -73,7 +73,7 @@ public class GoodController {
         }
         model.addAttribute("good", good);
 
-        return "buyNow";
+        return "buyGood";
     }
 
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
