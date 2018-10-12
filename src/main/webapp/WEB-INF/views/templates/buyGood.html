@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{title.buy.good}"/></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* Remove the navbar's default rounded borders and increase the bottom margin */
+        .navbar {
+            margin-bottom: 25px;
+            border-radius: 0;
+        }
+
+        /* Remove the jumbotron's default bottom margin */
+        .jumbotron {
+            margin-bottom: 0;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+            background-color: #f2f2f2;
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div th:replace="fragments/header.html :: header"></div>
+
+    <div class="container">
+        <div class="row">
+            <div th:if="${errorNotEnoughGood != null}" class="alert alert-danger">
+                <span th:text="${errorNotEnoughGood}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="well">
+                <form action="#" th:action="${#httpServletRequest.requestURI}" method="POST" class="form-inline">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h2><b><span th:text="${good.name}"/></b></h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img th:src="@{/goods/imageController/{goodId}(goodId=${good.id})}"
+                                 class="img-responsive" style="width:100%" th:alt="${good.name}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="orderedQuantity" class="control-label">
+                                    <span th:text="#{label.quantity}"/>
+                                </label>
+                                <input type="number" min="1" value="1"
+                                       name="orderedQuantity" id="orderedQuantity" required="required"
+                                       class="form-control"/>
+                                <div class="has-error">
+                                    <span th:errors="${good.quantity}" class="help-inline"/>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <label><span th:text="#{label.price}"/></label>
+                                <span th:text="${good.price}"/>
+                            </div>
+                            <div class="row">
+                                <label><span th:text="#{label.description}"/></label>
+                                <p><span th:text="${good.description}"/></p>
+                                <br>
+                            </div>
+                            <div class="row">
+                                <div class="form-actions floatRight">
+                                    <input type="submit" th:value="#{button.buy}" class="btn btn-primary"/>
+                                    <span th:text="#{text.or}"/>
+                                    <a th:href="@{/goods/list}"><span th:text="#{link.cancel}"/></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br/>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/footer.html :: footer"></div>
+</div>
+</body>
+</html>
