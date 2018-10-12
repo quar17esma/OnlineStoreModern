@@ -1,6 +1,5 @@
 package com.quar17esma.controller;
 
-import com.quar17esma.exceptions.NotEnoughGoodException;
 import com.quar17esma.model.Good;
 import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
@@ -56,10 +55,10 @@ public class GoodController {
             return "editGood";
         }
         goodService.save(good);
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.good.added", new Object[]{good.getName()}, locale));
 
-        return "successPage";
+        return "message";
     }
 
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
@@ -70,11 +69,11 @@ public class GoodController {
         } catch (EntityNotFoundException ex) {
             model.addAttribute("failMessage",
                     messageSource.getMessage("fail.good.find", new Object[]{goodId}, locale));
-            return "failPage";
+            return "message";
         }
         model.addAttribute("good", good);
 
-        return "buyNow";
+        return "buyGood";
     }
 
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
@@ -82,18 +81,12 @@ public class GoodController {
                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
                                 HttpSession httpSession, ModelMap model, Locale locale) {
         Order cart = getOrderFromSessionOrCreate(httpSession);
-        try {
-            goodService.addGoodToCart(cart, goodId, orderedQuantity);
-        } catch (NotEnoughGoodException e) {
-            handleNotEnoughGoodException(goodId, model, locale);
-            return "buyNow";
-        }
-
+        goodService.addGoodToCart(cart, goodId, orderedQuantity);
         String goodName = goodService.findById(goodId).getName();
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
 
-        return "successPage";
+        return "message";
     }
 
     private Order getOrderFromSessionOrCreate(HttpSession httpSession) {
@@ -104,14 +97,6 @@ public class GoodController {
             httpSession.setAttribute("order", order);
         }
         return order;
-    }
-
-    private void handleNotEnoughGoodException(@PathVariable Long goodId, ModelMap model, Locale locale) {
-        Good good = goodService.findById(goodId);
-        model.addAttribute("good", good);
-        model.addAttribute("errorNotEnoughGood",
-                messageSource.getMessage("not.enough.good",
-                        new Object[]{good.getName(), good.getQuantity()}, locale));
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
@@ -129,10 +114,10 @@ public class GoodController {
             return "editGood";
         }
         goodService.save(good);
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.good.edited", new Object[]{good.getName()}, locale));
 
-        return "successPage";
+        return "message";
     }
 
     @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
@@ -141,10 +126,10 @@ public class GoodController {
         if (good == null) {
             model.addAttribute("failMessage",
                     messageSource.getMessage("fail.good.find", new Object[]{good.getId()}, locale));
-            return "failPage";
+            return "message";
         }
         goodService.delete(goodId);
-        model.addAttribute("success",
+        model.addAttribute("successMessage",
                 messageSource.getMessage("success.good.delete", new Object[]{good.getId()}, locale));
 
         return "editGood";

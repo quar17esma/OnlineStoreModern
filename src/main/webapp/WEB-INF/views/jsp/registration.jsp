@@ -69,7 +69,7 @@
                     <spring:message code="label.email"/>
                 </label>
                 <div class="col-md-7">
-                    <form:input type="text" path="email" id="email" class="form-control input-sm"/>
+                    <form:input type="email" path="email" id="email" class="form-control input-sm"/>
                     <div class="has-error">
                         <form:errors path="email" class="help-inline"/>
                     </div>
