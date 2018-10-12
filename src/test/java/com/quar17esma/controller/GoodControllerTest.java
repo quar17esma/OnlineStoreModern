@@ -195,7 +195,7 @@ public class GoodControllerTest {
 
         mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
                 .andExpect(status().isOk())
-                .andExpect(view().name("buyNow"))
+                .andExpect(view().name("buyGood"))
                 .andExpect(forwardedUrl("/WEB-INF/views/buyGood.jsp"))
                 .andExpect(model().attribute("good", is(good)));
 
