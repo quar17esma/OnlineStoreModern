@@ -13,6 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "password")
+@Builder
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
