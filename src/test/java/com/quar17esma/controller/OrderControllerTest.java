@@ -78,8 +78,6 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("cart"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/cart.html"))
-                .andExpect(model().attribute("order", instanceOf(Order.class)))
-                .andExpect(model().attribute("order", hasProperty("id", is(13L))))
                 .andExpect(model().attribute("order", is(order)));
     }
 
