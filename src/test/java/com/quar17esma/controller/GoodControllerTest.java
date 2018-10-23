@@ -58,8 +58,8 @@ public class GoodControllerTest {
         MockitoAnnotations.initMocks(this);
 
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
+        viewResolver.setPrefix("/WEB-INF/views/templates/");
+        viewResolver.setSuffix(".html");
 
         LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
 
@@ -82,7 +82,7 @@ public class GoodControllerTest {
         mockMvc.perform(get("/goods/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("allGoods"))
-                .andExpect(forwardedUrl("/WEB-INF/views/allGoods.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/allGoods.html"))
                 .andExpect(model().attribute("goods", hasSize(goods.size())))
                 .andExpect(model().attribute("goods", goods));
         verify(goodServiceMock, times(1)).findAll();
@@ -108,7 +108,7 @@ public class GoodControllerTest {
         mockMvc.perform(get("/goods/new-good"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editGood"))
-                .andExpect(forwardedUrl("/WEB-INF/views/editGood.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/editGood.html"))
                 .andExpect(model().attribute("good", instanceOf(Good.class)))
                 .andExpect(model().attribute("good", hasProperty("id", is(0L))))
                 .andExpect(model().attribute("edit", false));
@@ -132,7 +132,7 @@ public class GoodControllerTest {
                         .param("quantity", String.valueOf(quantity)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editGood"))
-                .andExpect(forwardedUrl("/WEB-INF/views/editGood.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/editGood.html"))
                 .andExpect(model().attributeHasFieldErrors("good", "name"))
                 .andExpect(model().attributeHasFieldErrors("good", "description"))
                 .andExpect(model().attributeHasFieldErrors("good", "price"))
@@ -173,7 +173,7 @@ public class GoodControllerTest {
                         .param("quantity", String.valueOf(quantity)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("message"))
-                .andExpect(forwardedUrl("/WEB-INF/views/message.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
                 .andExpect(model().attributeHasNoErrors("good"))
                 .andExpect(model().attribute("good", is(good)));
 
@@ -196,7 +196,7 @@ public class GoodControllerTest {
         mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyGood"))
-                .andExpect(forwardedUrl("/WEB-INF/views/buyGood.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/buyGood.html"))
                 .andExpect(model().attribute("good", is(good)));
 
         verify(goodServiceMock, times(1)).findById(goodId);
@@ -213,7 +213,7 @@ public class GoodControllerTest {
         mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("message"))
-                .andExpect(forwardedUrl("/WEB-INF/views/message.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
                 .andExpect(model().attributeExists("failMessage"))
                 .andExpect(model().attributeDoesNotExist("good"));
 
@@ -245,7 +245,7 @@ public class GoodControllerTest {
                         .param("orderedQuantity", String.valueOf(orderedQuantity)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("message"))
-                .andExpect(forwardedUrl("/WEB-INF/views/message.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
                 .andExpect(model().attributeExists("successMessage"))
                 .andExpect(model().attributeDoesNotExist("errorNotEnoughGood"));
         verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
@@ -274,7 +274,7 @@ public class GoodControllerTest {
                         .param("orderedQuantity", String.valueOf(orderedQuantity)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyNow"))
-                .andExpect(forwardedUrl("/WEB-INF/views/buyGood.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/buyGood.html"))
                 .andExpect(model().attributeExists("errorNotEnoughGood"))
                 .andExpect(model().attribute("good", is(good)))
                 .andExpect(model().attributeDoesNotExist("successMessage"));
@@ -293,7 +293,7 @@ public class GoodControllerTest {
         mockMvc.perform(get("/goods/edit-good-{goodId}", goodId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editGood"))
-                .andExpect(forwardedUrl("/WEB-INF/views/editGood.jsp"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/editGood.html"))
                 .andExpect(model().attribute("good", is(good)))
                 .andExpect(model().attribute("edit", true));
         verify(goodServiceMock, times(1)).findById(goodId);
