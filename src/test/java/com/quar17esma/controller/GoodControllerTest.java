@@ -47,8 +47,6 @@ public class GoodControllerTest {
     private UserController userControllerMock;
     @Mock
     private MessageSource messageSourceMock;
-    @Mock
-    private HttpSession sessionMock;
 
     @InjectMocks
     private GoodController controller;
@@ -234,7 +232,6 @@ public class GoodControllerTest {
                 .build();
         int orderedQuantity = 5;
         Order order = new Order();
-        when(sessionMock.getAttribute("order")).thenReturn(order);
         when(goodServiceMock.findById(goodId)).thenReturn(good);
         when(messageSourceMock.getMessage(matches("success.good.ordered"), any(), any()))
                 .thenReturn("Test success message");
@@ -242,7 +239,8 @@ public class GoodControllerTest {
         mockMvc.perform(
                 post("/goods/buy-good-{goodId}", goodId)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("orderedQuantity", String.valueOf(orderedQuantity)))
+                        .param("orderedQuantity", String.valueOf(orderedQuantity))
+                        .sessionAttr("order", order))
                 .andExpect(status().isOk())
                 .andExpect(view().name("message"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
@@ -251,7 +249,7 @@ public class GoodControllerTest {
         verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
     }
 
-        @Ignore
+    @Ignore
     @Test
     public void addGoodToCartNotEnoughGoodException() throws Exception {
         Long goodId = 13L;
@@ -261,7 +259,6 @@ public class GoodControllerTest {
                 .build();
         int orderedQuantity = 5;
         Order order = new Order();
-        when(sessionMock.getAttribute("order")).thenReturn(order);
         when(goodServiceMock.findById(goodId)).thenReturn(good);
         when(messageSourceMock.getMessage(matches("not.enough.good"), any(), any()))
                 .thenReturn("Test error message");
@@ -271,7 +268,8 @@ public class GoodControllerTest {
         mockMvc.perform(
                 post("/goods/buy-good-{goodId}", goodId)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("orderedQuantity", String.valueOf(orderedQuantity)))
+                        .param("orderedQuantity", String.valueOf(orderedQuantity))
+                        .sessionAttr("order", order))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyNow"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/buyGood.html"))
