@@ -44,36 +44,37 @@
                             <h2><b><span th:text="${good.name}"/></b></h2>
                         </div>
                     </div>
+                    <br>
                     <div class="row">
                         <div class="col-md-4">
                             <img th:src="@{/goods/imageController/{goodId}(goodId=${good.id})}"
                                  class="img-responsive" style="width:100%" th:alt="${good.name}">
                         </div>
                         <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="orderedQuantity" class="control-label">
+                            <div class="form-group col-md-12">
+                                <label for="orderedQuantity" class="control-label col-md-2">
                                     <span th:text="#{label.quantity}"/>
                                 </label>
-                                <input type="number" min="1" value="1"
+                                <input type="number" min="1" value="1" autofocus="autofocus"
                                        name="orderedQuantity" id="orderedQuantity" required="required"
-                                       class="form-control"/>
-                                <div class="has-error">
+                                       class="form-control input-sm"/>
+                                <div class="has-error ">
                                     <span th:errors="${good.quantity}" class="help-inline"/>
                                 </div>
                             </div>
-                            <br><br>
-                            <div class="row">
-                                <label><span th:text="#{label.price}"/></label>
-                                <span th:text="${good.price}"/>
+                            <div class="form-group col-md-12">
+                                <label class="control-label col-md-2"><span th:text="#{label.price}"/></label>
+                                <span class="form-control-static" th:text="${good.price}"/></span>
                             </div>
-                            <div class="row">
-                                <label><span th:text="#{label.description}"/></label>
-                                <p><span th:text="${good.description}"/></p>
+                            <div class="form-group col-md-12">
+                                <label class="control-label col-md-12"><span th:text="#{label.description}"/></label>
+                                <p class="form-control-static col-md-12"><span th:text="${good.description}"/></p>
                                 <br>
                             </div>
-                            <div class="row">
-                                <div class="form-actions floatRight">
-                                    <input type="submit" th:value="#{button.buy}" class="btn btn-primary"/>
+                            <br>
+                            <div class="form-group col-md-12">
+                                <div class="form-actions floatRight col-md-12">
+                                    <input type="submit" th:value="#{button.buy}" class="btn btn-success"/>
                                     <span th:text="#{text.or}"/>
                                     <a th:href="@{/goods/list}"><span th:text="#{link.cancel}"/></a>
                                 </div>
