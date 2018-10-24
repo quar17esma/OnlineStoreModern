@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.MessageSource;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,18 +21,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.servlet.http.HttpSession;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.matches;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -153,6 +148,30 @@ public class OrderControllerTest {
 
     @Test
     public void cancelOrder() throws Exception {
+        Order order = createTestOrder();
+        order.setStatus(OrderStatus.CONFIRMED);
+
+        when(orderServiceMock.findById(order.getId())).thenReturn(order);
+        when(userControllerMock.getUser()).thenReturn(order.getUser());
+        when(messageSourceMock.getMessage(matches("success.order.cancel"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(
+                get("/orders/myOrders/cancel-{orderId}", order.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("message"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
+                .andExpect(model().attributeExists("successMessage"))
+                .andExpect(model().attributeDoesNotExist("failMessage"));
+        verify(orderServiceMock, times(1)).cancelOrder(order.getId());
+    }
+
+    @Test
+    public void cancelOrderWrongUser() throws Exception {
+    }
+
+    @Test
+    public void cancelOrderWrongStatus() throws Exception {
     }
 
     @Test
