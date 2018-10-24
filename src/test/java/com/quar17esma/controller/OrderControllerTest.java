@@ -2,6 +2,7 @@ package com.quar17esma.controller;
 
 import com.quar17esma.configuration.AppConfig;
 import com.quar17esma.enums.OrderStatus;
+import com.quar17esma.enums.UserProfileType;
 import com.quar17esma.model.Order;
 import com.quar17esma.model.User;
 import com.quar17esma.service.OrderService;
@@ -24,6 +25,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import javax.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
@@ -85,8 +88,18 @@ public class OrderControllerTest {
                     .id(13L)
                     .orderedAt(LocalDateTime.now())
                     .status(OrderStatus.NEW)
-                    .user(User.builder().id(10L).email("test@gmail.com").build())
+                    .user(createTestUser())
                     .build();
+    }
+
+    private User createTestUser() {
+        return  User.builder()
+                .id(10L)
+                .email("test@gmail.com")
+                .firstName("John")
+                .lastName("Smith")
+                .userProfileType(UserProfileType.USER)
+                .build();
     }
 
     @Test
@@ -108,6 +121,19 @@ public class OrderControllerTest {
 
     @Test
     public void myOrders() throws Exception {
+        User user = createTestUser();
+        List<Order> orders = new ArrayList<>();
+        when(userControllerMock.getUser()).thenReturn(user);
+        when(orderServiceMock.findAllByUserIdFetchOrderedGoods(user.getId())).thenReturn(orders);
+
+        mockMvc.perform(
+                get("/orders/myOrders"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("myOrders"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/myOrders.html"))
+                .andExpect(model().attribute("orders", is(orders)));
+        verify(userControllerMock, times(1)).getUser();
+        verify(orderServiceMock, times(1)).findAllByUserIdFetchOrderedGoods(user.getId());
     }
 
     @Test
