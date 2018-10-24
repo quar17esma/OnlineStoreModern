@@ -145,6 +145,11 @@ public class UserControllerTest {
 
     @Test
     public void showStores() throws Exception {
+        mockMvc.perform(
+                get("/stores"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("stores"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/stores.html"));
     }
 
 }
