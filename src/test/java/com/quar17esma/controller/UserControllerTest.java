@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.context.MessageSource;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -35,6 +36,8 @@ public class UserControllerTest {
     private UserService userService;
     @Mock
     private MessageSource messageSourceMock;
+    @Mock
+    private AuthenticationTrustResolver authenticationTrustResolver;
 
     @Spy
     @InjectMocks
@@ -84,6 +87,13 @@ public class UserControllerTest {
 
     @Test
     public void loginPage() throws Exception {
+        when(authenticationTrustResolver.isAnonymous(any())).thenReturn(true);
+
+        mockMvc.perform(
+                get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("login"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/login.html"));
     }
 
     @Test
