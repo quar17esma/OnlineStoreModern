@@ -138,6 +138,17 @@ public class OrderControllerTest {
 
     @Test
     public void payOrder() throws Exception {
+        Long orderId = 13L;
+        when(messageSourceMock.getMessage(matches("success.order.pay"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(
+                get("/orders/myOrders/pay-{orderId}", orderId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("message"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
+                .andExpect(model().attributeExists("successMessage"));
+        verify(orderServiceMock, times(1)).payOrder(orderId);
     }
 
     @Test
