@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,9 +22,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -112,6 +116,17 @@ public class UserControllerTest {
 
     @Test
     public void newUser() throws Exception {
+        mockMvc.perform(
+                get("/new_user"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registration"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/registration.html"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("user", hasProperty("id", is(nullValue()))))
+                .andExpect(model().attribute("user", hasProperty("firstName", is(nullValue()))))
+                .andExpect(model().attribute("user", hasProperty("lastName", is(nullValue()))))
+                .andExpect(model().attribute("user", hasProperty("email", is(nullValue()))))
+                .andExpect(model().attribute("user", hasProperty("userProfileType", is(UserProfileType.USER))));
     }
 
     @Test
