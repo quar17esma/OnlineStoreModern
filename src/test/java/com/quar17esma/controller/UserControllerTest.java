@@ -97,6 +97,16 @@ public class UserControllerTest {
     }
 
     @Test
+    public void loginPageAuthenticationIsNotAnonymous() throws Exception {
+        when(authenticationTrustResolver.isAnonymous(any())).thenReturn(false);
+
+        mockMvc.perform(
+                get("/login"))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/goods/list"));
+    }
+
+    @Test
     public void logoutPage() throws Exception {
     }
 
