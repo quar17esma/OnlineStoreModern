@@ -172,6 +172,24 @@ public class OrderControllerTest {
 
     @Test
     public void cancelOrderWrongStatus() throws Exception {
+        Order order = createTestOrder();
+        order.setStatus(OrderStatus.NEW);
+
+        when(orderServiceMock.findById(order.getId())).thenReturn(order);
+        when(userControllerMock.getUser()).thenReturn(order.getUser());
+        when(messageSourceMock.getMessage(matches("success.order.cancel"), any(), any()))
+                .thenReturn("Test success message");
+        when(messageSourceMock.getMessage(matches("fail.order.cancel"), any(), any()))
+                .thenReturn("Test fail message");
+
+        mockMvc.perform(
+                get("/orders/myOrders/cancel-{orderId}", order.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("message"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
+                .andExpect(model().attributeDoesNotExist("successMessage"))
+                .andExpect(model().attributeExists("failMessage"));
+        verify(orderServiceMock, never()).cancelOrder(order.getId());
     }
 
     @Test
