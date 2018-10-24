@@ -168,6 +168,26 @@ public class OrderControllerTest {
 
     @Test
     public void cancelOrderWrongUser() throws Exception {
+        Order order = createTestOrder();
+        order.setStatus(OrderStatus.CONFIRMED);
+        User sessionUser = createTestUser();
+        sessionUser.setId(128L);
+
+        when(orderServiceMock.findById(order.getId())).thenReturn(order);
+        when(userControllerMock.getUser()).thenReturn(sessionUser);
+        when(messageSourceMock.getMessage(matches("success.order.cancel"), any(), any()))
+                .thenReturn("Test success message");
+        when(messageSourceMock.getMessage(matches("fail.order.cancel"), any(), any()))
+                .thenReturn("Test fail message");
+
+        mockMvc.perform(
+                get("/orders/myOrders/cancel-{orderId}", order.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("message"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
+                .andExpect(model().attributeDoesNotExist("successMessage"))
+                .andExpect(model().attributeExists("failMessage"));
+        verify(orderServiceMock, never()).cancelOrder(order.getId());
     }
 
     @Test
