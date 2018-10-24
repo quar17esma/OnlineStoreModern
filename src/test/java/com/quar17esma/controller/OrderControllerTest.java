@@ -26,6 +26,10 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.matches;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -87,6 +91,19 @@ public class OrderControllerTest {
 
     @Test
     public void confirmOrderFromCart() throws Exception {
+        Order order = createTestOrder();
+        when(messageSourceMock.getMessage(matches("success.order.confirm"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(
+                get("/orders/cart/confirm")
+                        .sessionAttr("order", order))
+                .andExpect(status().isOk())
+                .andExpect(view().name("message"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
+                .andExpect(model().attributeExists("successMessage"))
+                .andExpect(model().attributeDoesNotExist("order"));
+        verify(orderServiceMock, times(1)).confirmOrder(order);
     }
 
     @Test
