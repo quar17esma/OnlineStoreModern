@@ -135,6 +135,12 @@ public class UserControllerTest {
 
     @Test
     public void showContactForm() throws Exception {
+        mockMvc.perform(
+                get("/contact"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("contact"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/contact.html"));
+
     }
 
     @Test
