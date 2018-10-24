@@ -65,12 +65,7 @@ public class OrderControllerTest {
 
     @Test
     public void cart() throws Exception {
-        Order order = Order.builder()
-                .id(13L)
-                .orderedAt(LocalDateTime.now())
-                .status(OrderStatus.NEW)
-                .user(User.builder().id(10L).email("test@gmail.com").build())
-                .build();
+        Order order = createTestOrder();
 
         mockMvc.perform(
                 get("/orders/cart")
@@ -79,6 +74,15 @@ public class OrderControllerTest {
                 .andExpect(view().name("cart"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/cart.html"))
                 .andExpect(model().attribute("order", is(order)));
+    }
+
+    private Order createTestOrder() {
+        return Order.builder()
+                    .id(13L)
+                    .orderedAt(LocalDateTime.now())
+                    .status(OrderStatus.NEW)
+                    .user(User.builder().id(10L).email("test@gmail.com").build())
+                    .build();
     }
 
     @Test
