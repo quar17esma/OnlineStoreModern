@@ -80,11 +80,12 @@ public class UserControllerTest {
     }
 
     private User createTestUser() {
-        return  User.builder()
+        return User.builder()
                 .id(10L)
                 .email("test@gmail.com")
                 .firstName("John")
                 .lastName("Smith")
+                .password("password")
                 .userProfileType(UserProfileType.USER)
                 .build();
     }
@@ -131,6 +132,34 @@ public class UserControllerTest {
 
     @Test
     public void saveUser() throws Exception {
+        User user = createTestUser();
+        user.setId(null);
+        when(userService.isEmailBusy(user.getEmail())).thenReturn(false);
+        when(messageSourceMock.getMessage(matches("success.user.register"), any(), any()))
+                .thenReturn("Test success message");
+        doReturn(user.getEmail()).when(controller).getPrincipal();
+
+
+        mockMvc.perform(
+                post("/new_user")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("firstName", user.getFirstName())
+                        .param("lastName", user.getLastName())
+                        .param("email", user.getEmail())
+                        .param("password", user.getPassword()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("login"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/login.html"))
+                .andExpect(model().attributeHasNoErrors("user"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("successRegistrationMessage"))
+                .andExpect(model().attribute("loggedinuser", is(user.getEmail())));
+        verify(userService, times(1)).save(user);
+    }
+
+    @Test
+    public void saveUserValidationFail() throws Exception {
+
     }
 
     @Test
