@@ -295,4 +295,40 @@ public class GoodControllerTest {
                 .andExpect(flash().attributeExists("successMessage"));
         verify(goodServiceMock, times(1)).save(good);
     }
+
+    @Test
+    public void saveEditedGoodValidationFail() throws Exception {
+        Good good = createTestGoodWrongData();
+        good.setId(132L);
+        when(messageSourceMock.getMessage(matches("success.good.edited"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(
+                post("/goods/edit-good-{goodId}", good.getId())
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", String.valueOf(good.getId()))
+                        .param("name", good.getName())
+                        .param("description", good.getDescription())
+                        .param("price", String.valueOf(good.getPrice()))
+                        .param("quantity", String.valueOf(good.getQuantity())))
+                .andExpect(status().isOk())
+                .andExpect(view().name("editGood"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/editGood.html"))
+                .andExpect(model().attributeHasFieldErrors("good", "name"))
+                .andExpect(model().attributeHasFieldErrors("good", "description"))
+                .andExpect(model().attributeHasFieldErrors("good", "price"))
+                .andExpect(model().attributeHasFieldErrors("good", "quantity"))
+                .andExpect(model().attributeErrorCount("good", 4));
+        verify(goodServiceMock, never()).save(good);
+    }
+
+    private Good createTestGoodWrongData() {
+        return Good.builder()
+                .id(null)
+                .name(StringUtils.repeat("a", 101))
+                .description(StringUtils.repeat("a", 1001))
+                .price(-1L)
+                .quantity(-1)
+                .build();
+    }
 }
