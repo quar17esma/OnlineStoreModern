@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -106,7 +107,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/new_user"}, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result, ModelMap model, Locale locale) {
+    public String saveUser(@Valid User user, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
             return "registration";
         } else if (isEmailBusy(user)) {
@@ -116,11 +117,12 @@ public class UserController {
             return "registration";
         }
         userService.save(user);
-        model.addAttribute("successRegistrationMessage",
-                messageSource.getMessage("success.user.register", new String[]{user.getFirstName(), user.getLastName()}, locale));
-        model.addAttribute("loggedinuser", getPrincipal());
+        model.addFlashAttribute("successRegistrationMessage",
+                messageSource.getMessage("success.user.register",
+                        new String[]{user.getFirstName(), user.getLastName()}, locale));
+        model.addFlashAttribute("loggedinuser", getPrincipal());
 
-        return "login";
+        return "redirect:/login";
     }
 
     private boolean isEmailBusy(@Valid User user) {

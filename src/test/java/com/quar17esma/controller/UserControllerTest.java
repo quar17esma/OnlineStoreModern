@@ -136,7 +136,6 @@ public class UserControllerTest {
                 .thenReturn("Test success message");
         doReturn(user.getEmail()).when(controller).getPrincipal();
 
-
         mockMvc.perform(
                 post("/new_user")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -144,13 +143,10 @@ public class UserControllerTest {
                         .param("lastName", user.getLastName())
                         .param("email", user.getEmail())
                         .param("password", user.getPassword()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("login"))
-                .andExpect(forwardedUrl("/WEB-INF/views/templates/login.html"))
-                .andExpect(model().attributeHasNoErrors("user"))
-                .andExpect(model().attributeExists("user"))
-                .andExpect(model().attributeExists("successRegistrationMessage"))
-                .andExpect(model().attribute("loggedinuser", is(user.getEmail())));
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/login"))
+                .andExpect(flash().attributeExists("successRegistrationMessage"))
+                .andExpect(flash().attribute("loggedinuser", is(user.getEmail())));
         verify(userService, times(1)).save(user);
     }
 
