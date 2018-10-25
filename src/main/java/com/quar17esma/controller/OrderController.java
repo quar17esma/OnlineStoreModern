@@ -83,7 +83,7 @@ public class OrderController {
 
         orderService.cancelOrder(orderId);
         model.addAttribute("successMessage",
-                messageSource.getMessage("success.order.pay", new Object[] {}, locale));
+                messageSource.getMessage("success.order.cancel", new Object[] {}, locale));
 
         return "message";
     }

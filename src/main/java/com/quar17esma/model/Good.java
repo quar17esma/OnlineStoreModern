@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class Good implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Length(min = 5, max = 100)
@@ -48,15 +48,15 @@ public class Good implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Good)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Good good = (Good) o;
 
-        return getId() == good.getId();
+        return id != null ? id.equals(good.id) : good.id == null;
     }
 
     @Override
     public int hashCode() {
-        return (int) (getId() ^ (getId() >>> 32));
+        return id != null ? id.hashCode() : 0;
     }
 }

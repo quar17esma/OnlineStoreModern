@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
@@ -50,15 +51,15 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
-    public String saveNewGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
+    public String saveNewGood(@Valid Good good, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
         goodService.save(good);
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.added", new Object[]{good.getName()}, locale));
 
-        return "message";
+        return "redirect:/message";
     }
 
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
@@ -79,14 +80,14 @@ public class GoodController {
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToCart(@PathVariable Long goodId,
                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
-                                HttpSession httpSession, ModelMap model, Locale locale) {
+                                HttpSession httpSession, RedirectAttributes model, Locale locale) {
         Order cart = getOrderFromSessionOrCreate(httpSession);
         goodService.addGoodToCart(cart, goodId, orderedQuantity);
         String goodName = goodService.findById(goodId).getName();
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
 
-        return "message";
+        return "redirect:/message";
     }
 
     private Order getOrderFromSessionOrCreate(HttpSession httpSession) {
@@ -109,19 +110,19 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
-    public String saveEditedGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
+    public String saveEditedGood(@Valid Good good, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
         goodService.save(good);
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.edited", new Object[]{good.getName()}, locale));
 
-        return "message";
+        return "redirect:/message";
     }
 
     @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
-    public String deleteGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+    public String deleteGood(@PathVariable Long goodId, RedirectAttributes model, Locale locale) {
         Good good = goodService.findById(goodId);
         if (good == null) {
             model.addAttribute("failMessage",
@@ -129,10 +130,10 @@ public class GoodController {
             return "message";
         }
         goodService.delete(goodId);
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.delete", new Object[]{good.getId()}, locale));
 
-        return "editGood";
+        return "redirect:/message";
     }
 
     @RequestMapping(value = "/imageController/{goodId}")

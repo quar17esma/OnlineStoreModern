@@ -24,7 +24,8 @@
                     <span th:text="#{label.first.name}"/>
                 </label>
                 <div class="col-md-6">
-                    <input type="text" th:field="*{firstName}" required="required" id="firstName" class="form-control"/>
+                    <input type="text" th:field="*{firstName}" maxlength="50" required="required"
+                           id="firstName" class="form-control"/>
                 </div>
                 <div class="has-error">
                     <span th:errors="*{firstName}" class="help-inline"/>
@@ -38,7 +39,8 @@
                     <span th:text="#{label.last.name}"/>
                 </label>
                 <div class="col-md-6">
-                    <input type="text" th:field="*{lastName}" required="required" id="lastName" class="form-control"/>
+                    <input type="text" th:field="*{lastName}" maxlength="50" required="required"
+                           id="lastName" class="form-control"/>
                 </div>
                 <div class="has-error">
                     <span th:errors="*{lastName}" class="help-inline"/>
@@ -52,7 +54,8 @@
                     <span th:text="#{label.password}"/>
                 </label>
                 <div class="col-md-6">
-                    <input type="password" th:field="*{password}" required="required" id="password" class="form-control"/>
+                    <input type="password" th:field="*{password}" maxlength="100" required="required"
+                           id="password" class="form-control"/>
                 </div>
                 <div class="has-error">
                     <span th:errors="*{password}" class="help-inline"/>
@@ -66,7 +69,8 @@
                     <span th:text="#{label.email}"/>
                 </label>
                 <div class="col-md-6">
-                    <input type="email" th:field="*{email}" required="required" id="email" class="form-control"/>
+                    <input type="email" th:field="*{email}" maxlength="50" required="required"
+                           id="email" class="form-control"/>
                 </div>
                 <div class="has-error">
                     <span th:errors="*{email}" class="help-inline"/>
