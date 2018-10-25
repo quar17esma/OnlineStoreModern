@@ -4,6 +4,7 @@ import com.quar17esma.configuration.AppConfig;
 import com.quar17esma.enums.UserProfileType;
 import com.quar17esma.model.User;
 import com.quar17esma.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -159,7 +160,38 @@ public class UserControllerTest {
 
     @Test
     public void saveUserValidationFail() throws Exception {
+        User user = createTestUserWrongData();
 
+        mockMvc.perform(
+                post("/new_user")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("firstName", user.getFirstName())
+                        .param("lastName", user.getLastName())
+                        .param("email", user.getEmail())
+                        .param("password", user.getPassword()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registration"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/registration.html"))
+                .andExpect(model().attributeHasFieldErrors("user", "firstName"))
+                .andExpect(model().attributeHasFieldErrors("user", "lastName"))
+                .andExpect(model().attributeHasFieldErrors("user", "email"))
+                .andExpect(model().attributeHasFieldErrors("user", "password"))
+                .andExpect(model().attributeErrorCount("user", 4))
+                .andExpect(model().attributeDoesNotExist("successRegistrationMessage"))
+                .andExpect(model().attributeDoesNotExist("loggedinuser"));
+        verify(userService, never()).isEmailBusy(anyString());
+        verify(userService, never()).save(user);
+    }
+
+    private User createTestUserWrongData() {
+        return User.builder()
+                .id(null)
+                .email("testgmail.com")
+                .firstName(StringUtils.repeat("a", 51))
+                .lastName(StringUtils.repeat("a", 51))
+                .password(StringUtils.repeat("a", 101))
+                .userProfileType(UserProfileType.USER)
+                .build();
     }
 
     @Test
