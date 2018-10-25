@@ -162,6 +162,9 @@ public class GoodControllerTest {
                 .quantity(quantity)
                 .build();
 
+        when(messageSourceMock.getMessage(matches("success.good.added"), any(), any()))
+                .thenReturn("Test success message");
+
         mockMvc.perform(
                 post("/goods/new-good")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -169,17 +172,11 @@ public class GoodControllerTest {
                         .param("description", description)
                         .param("price", String.valueOf(price))
                         .param("quantity", String.valueOf(quantity)))
-                .andExpect(status().isOk())
-                .andExpect(view().name("message"))
-                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
-                .andExpect(model().attributeHasNoErrors("good"))
-                .andExpect(model().attribute("good", is(good)));
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/message"))
+                .andExpect(flash().attributeExists("successMessage"));
 
         verify(goodServiceMock, times(1)).save(good);
-        verifyNoMoreInteractions(goodServiceMock);
-        verify(messageSourceMock, times(1))
-                .getMessage(matches("success.good.added"), any(), any());
-        verifyNoMoreInteractions(messageSourceMock);
     }
 
     //    @Ignore

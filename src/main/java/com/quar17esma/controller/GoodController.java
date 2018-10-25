@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
@@ -50,15 +51,15 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
-    public String saveNewGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
+    public String saveNewGood(@Valid Good good, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
         goodService.save(good);
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.added", new Object[]{good.getName()}, locale));
 
-        return "message";
+        return "redirect:/message";
     }
 
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
