@@ -23,7 +23,7 @@ public class User implements Serializable {
     private Long id;
 
     @NotEmpty
-    @Length(min = 1, max = 100)
+    @Length(min = 5, max = 100)
     @Column(name = "password", nullable = false)
     private String password;
 
