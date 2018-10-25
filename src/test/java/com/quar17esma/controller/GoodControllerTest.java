@@ -223,10 +223,9 @@ public class GoodControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("orderedQuantity", String.valueOf(orderedQuantity))
                         .sessionAttr("order", order))
-                .andExpect(status().isOk())
-                .andExpect(view().name("message"))
-                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
-                .andExpect(model().attributeExists("successMessage"))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/message"))
+                .andExpect(flash().attributeExists("successMessage"))
                 .andExpect(model().attributeDoesNotExist("errorNotEnoughGood"));
         verify(goodServiceMock, times(1)).addGoodToCart(order, good.getId(), orderedQuantity);
     }

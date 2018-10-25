@@ -80,14 +80,14 @@ public class GoodController {
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToCart(@PathVariable Long goodId,
                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
-                                HttpSession httpSession, ModelMap model, Locale locale) {
+                                HttpSession httpSession, RedirectAttributes model, Locale locale) {
         Order cart = getOrderFromSessionOrCreate(httpSession);
         goodService.addGoodToCart(cart, goodId, orderedQuantity);
         String goodName = goodService.findById(goodId).getName();
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.ordered", new Object[]{goodName, orderedQuantity}, locale));
 
-        return "message";
+        return "redirect:/message";
     }
 
     private Order getOrderFromSessionOrCreate(HttpSession httpSession) {
