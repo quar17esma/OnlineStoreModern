@@ -113,10 +113,6 @@ public class UserControllerTest {
     }
 
     @Test
-    public void logoutPage() throws Exception {
-    }
-
-    @Test
     public void newUser() throws Exception {
         mockMvc.perform(
                 get("/new_user"))
@@ -192,6 +188,33 @@ public class UserControllerTest {
                 .password(StringUtils.repeat("a", 101))
                 .userProfileType(UserProfileType.USER)
                 .build();
+    }
+
+    @Test
+    public void saveUserEmailBusyFail() throws Exception {
+        User user = createTestUser();
+        user.setId(null);
+        when(userService.isEmailBusy(user.getEmail())).thenReturn(true);
+        when(messageSourceMock.getMessage(matches("error.busy.email"), any(), any()))
+                .thenReturn("Test error message");
+
+        mockMvc.perform(
+                post("/new_user")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("firstName", user.getFirstName())
+                        .param("lastName", user.getLastName())
+                        .param("email", user.getEmail())
+                        .param("password", user.getPassword()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("registration"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/registration.html"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeHasFieldErrors("user", "email"))
+                .andExpect(model().attributeErrorCount("user", 1))
+                .andExpect(model().attributeDoesNotExist("successRegistrationMessage"))
+                .andExpect(model().attributeDoesNotExist("loggedinuser"));
+        verify(userService, times(1)).isEmailBusy(user.getEmail());
+        verify(userService, never()).save(user);
     }
 
     @Test
