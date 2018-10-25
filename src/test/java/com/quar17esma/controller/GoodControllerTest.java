@@ -331,4 +331,18 @@ public class GoodControllerTest {
                 .quantity(-1)
                 .build();
     }
+
+    @Test
+    public void deleteGood() throws Exception {
+        Good good = createTestGood();
+        when(goodServiceMock.findById(good.getId())).thenReturn(good);
+        when(messageSourceMock.getMessage(matches("success.good.delete"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(get("/goods/delete-good-{goodId}", good.getId()))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/message"))
+                .andExpect(flash().attributeExists("successMessage"));
+        verify(goodServiceMock, times(1)).delete(good.getId());
+    }
 }
