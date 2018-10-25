@@ -274,4 +274,25 @@ public class GoodControllerTest {
                 .andExpect(model().attribute("edit", true));
         verify(goodServiceMock, times(1)).findById(good.getId());
     }
+
+    @Test
+    public void saveEditedGood() throws Exception {
+        Good good = createTestGood();
+        good.setId(132L);
+        when(messageSourceMock.getMessage(matches("success.good.edited"), any(), any()))
+                .thenReturn("Test success message");
+
+        mockMvc.perform(
+                post("/goods/edit-good-{goodId}", good.getId())
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", String.valueOf(good.getId()))
+                        .param("name", good.getName())
+                        .param("description", good.getDescription())
+                        .param("price", String.valueOf(good.getPrice()))
+                        .param("quantity", String.valueOf(good.getQuantity())))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/message"))
+                .andExpect(flash().attributeExists("successMessage"));
+        verify(goodServiceMock, times(1)).save(good);
+    }
 }
