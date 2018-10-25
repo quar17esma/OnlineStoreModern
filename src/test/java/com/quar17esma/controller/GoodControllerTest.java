@@ -70,7 +70,6 @@ public class GoodControllerTest {
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
     }
 
-    //    @Ignore
     @Test
     public void listGoods() throws Exception {
         List<Good> goods = createDummyGoodsList();
@@ -100,7 +99,6 @@ public class GoodControllerTest {
         return goods;
     }
 
-    //    @Ignore
     @Test
     public void showNewGoodForm() throws Exception {
         mockMvc.perform(get("/goods/new-good"))
@@ -112,7 +110,6 @@ public class GoodControllerTest {
                 .andExpect(model().attribute("edit", false));
     }
 
-    //    @Ignore
     @Test
     public void saveNewGoodValidationFail() throws Exception {
         String name = StringUtils.repeat("a", 101);
@@ -146,58 +143,50 @@ public class GoodControllerTest {
         verifyZeroInteractions(messageSourceMock);
     }
 
-    //    @Ignore
     @Test
     public void saveNewGood() throws Exception {
-        Long id = null;
-        String name = "Samsung s9";
-        String description = "Very expensive phone";
-        Long price = 1200L;
-        Integer quantity = 35;
-        Good good = Good.builder()
-                .id(id)
-                .name(name)
-                .description(description)
-                .price(price)
-                .quantity(quantity)
-                .build();
-
+        Good good = createTestGood();
         when(messageSourceMock.getMessage(matches("success.good.added"), any(), any()))
                 .thenReturn("Test success message");
 
         mockMvc.perform(
                 post("/goods/new-good")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("name", name)
-                        .param("description", description)
-                        .param("price", String.valueOf(price))
-                        .param("quantity", String.valueOf(quantity)))
+                        .param("name", good.getName())
+                        .param("description", good.getDescription())
+                        .param("price", String.valueOf(good.getPrice()))
+                        .param("quantity", String.valueOf(good.getQuantity())))
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/message"))
                 .andExpect(flash().attributeExists("successMessage"));
-
         verify(goodServiceMock, times(1)).save(good);
     }
 
-    //    @Ignore
+    private Good createTestGood() {
+        return Good.builder()
+                    .id(null)
+                    .name("Samsung s9")
+                    .description("Very expensive phone")
+                    .price(1200L)
+                    .quantity(35)
+                    .build();
+    }
+
     @Test
     public void showBuyGoodForm() throws Exception {
-        Long goodId = 13L;
-        Good good = Good.builder()
-                .id(goodId)
-                .build();
-        when(goodServiceMock.findById(goodId)).thenReturn(good);
+        Good good = createTestGood();
+        good.setId(13L);
+        when(goodServiceMock.findById(good.getId())).thenReturn(good);
 
-        mockMvc.perform(get("/goods/buy-good-{goodId}", goodId))
+        mockMvc.perform(get("/goods/buy-good-{goodId}", good.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("buyGood"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/buyGood.html"))
                 .andExpect(model().attribute("good", is(good)));
 
-        verify(goodServiceMock, times(1)).findById(goodId);
+        verify(goodServiceMock, times(1)).findById(good.getId());
     }
 
-    //    @Ignore
     @Test
     public void showBuyGoodFormEntityNotFoundException() throws Exception {
         Long goodId = 13L;
@@ -219,22 +208,18 @@ public class GoodControllerTest {
         verifyNoMoreInteractions(messageSourceMock);
     }
 
-    //    @Ignore
     @Test
     public void addGoodToCart() throws Exception {
-        Long goodId = 13L;
-        Good good = Good.builder()
-                .id(goodId)
-                .name("Samsung s9")
-                .build();
+        Good good = createTestGood();
+        good.setId(13L);
         int orderedQuantity = 5;
         Order order = new Order();
-        when(goodServiceMock.findById(goodId)).thenReturn(good);
+        when(goodServiceMock.findById(good.getId())).thenReturn(good);
         when(messageSourceMock.getMessage(matches("success.good.ordered"), any(), any()))
                 .thenReturn("Test success message");
 
         mockMvc.perform(
-                post("/goods/buy-good-{goodId}", goodId)
+                post("/goods/buy-good-{goodId}", good.getId())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("orderedQuantity", String.valueOf(orderedQuantity))
                         .sessionAttr("order", order))
@@ -243,7 +228,7 @@ public class GoodControllerTest {
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"))
                 .andExpect(model().attributeExists("successMessage"))
                 .andExpect(model().attributeDoesNotExist("errorNotEnoughGood"));
-        verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
+        verify(goodServiceMock, times(1)).addGoodToCart(order, good.getId(), orderedQuantity);
     }
 
     @Ignore
@@ -276,21 +261,18 @@ public class GoodControllerTest {
         verify(goodServiceMock, times(1)).addGoodToCart(order, goodId, orderedQuantity);
     }
 
-    //    @Ignore
     @Test
     public void showEditGoodForm() throws Exception {
-        Long goodId = 13L;
-        Good good = Good.builder()
-                .id(goodId)
-                .build();
-        when(goodServiceMock.findById(goodId)).thenReturn(good);
+        Good good = createTestGood();
+        good.setId(13L);
+        when(goodServiceMock.findById(good.getId())).thenReturn(good);
 
-        mockMvc.perform(get("/goods/edit-good-{goodId}", goodId))
+        mockMvc.perform(get("/goods/edit-good-{goodId}", good.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editGood"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/editGood.html"))
                 .andExpect(model().attribute("good", is(good)))
                 .andExpect(model().attribute("edit", true));
-        verify(goodServiceMock, times(1)).findById(goodId);
+        verify(goodServiceMock, times(1)).findById(good.getId());
     }
 }
