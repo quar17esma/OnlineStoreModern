@@ -31,73 +31,64 @@
     <div th:replace="fragments/header.html :: header"></div>
 
     <div class="container">
+        <h2><b><span th:text="#{title.edit.good}"/></b></h2><br>
         <div class="well">
-            <form action="#" th:action="@{''}" method="POST" th:object="${good}">
+            <form action="#" th:action="@{''}" method="POST" th:object="${good}" class="form-horizontal">
                 <input type="hidden" th:field="*{id}" id="id"/>
                 <input type="hidden" th:field="*{goodPic}" id="goodPic"/>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-label" for="name">
-                            <span th:text="#{label.name}"/>
-                        </label>
-                        <div class="col-md-7">
-                            <input type="text" th:field="*{name}" id="name" th:value="*{name}"
-                                        class="form-control input-sm"/>
-                            <div class="has-error">
-                                <span th:errors="*{name}" class="help-inline"/>
-                            </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="name">
+                        <span th:text="#{label.name}"/>
+                    </label>
+                    <div class="col-md-7">
+                        <input type="text" th:field="*{name}" id="name" th:value="*{name}"
+                               th:placeholder="#{placeholder.enter.name}" autofocus="autofocus" class="form-control"/>
+                        <div class="has-error">
+                            <span th:errors="*{name}" class="help-inline"/>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-label" for="description">
-                            <span th:text="#{label.description}"/>
-                        </label>
-                        <div class="col-md-7">
-                            <textarea type="text" th:field="*{description}" id="description"
-                                           th:value="*{description}" class="form-control"/>
-                            <div class="has-error">
-                                <span th:errors="*{description}" class="help-inline"/>
-                            </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="description">
+                        <span th:text="#{label.description}"/>
+                    </label>
+                    <div class="col-md-7">
+                            <textarea type="text" th:field="*{description}" id="description" th:value="*{description}"
+                                      th:placeholder="#{placeholder.enter.description}" class="form-control"/>
+                        <div class="has-error">
+                            <span th:errors="*{description}" class="help-inline"/>
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-label" for="price">
-                            <span th:text="#{label.price}"/>
-                        </label>
-                        <div class="col-md-2">
-                            <input type="number" th:field="*{price}" id="price"
-                                        th:value="*{price}" class="form-control input-sm"/>
-                            <div class="has-error">
-                                <span th:errors="*{price}" class="help-inline"/>
-                            </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="price">
+                        <span th:text="#{label.price}"/>
+                    </label>
+                    <div class="col-md-2">
+                        <input type="number" th:field="*{price}" id="price" th:value="*{price}"
+                               class="form-control"/>
+                        <div class="has-error">
+                            <span th:errors="*{price}" class="help-inline"/>
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-label" for="quantity">
-                            <span th:text="#{label.quantity}"/>
-                        </label>
-                        <div class="col-md-2">
-                            <input type="number" th:field="*{quantity}" id="quantity"
-                                        th:value="*{quantity}" class="form-control"/>
-                            <div class="has-error">
-                                <span th:errors="*{quantity}" class="help-inline"/>
-                            </div>
+                <div class="form-group">
+                    <label class="col-md-2" for="quantity">
+                        <span th:text="#{label.quantity}"/>
+                    </label>
+                    <div class="col-md-2">
+                        <input type="number" th:field="*{quantity}" id="quantity"
+                               th:value="*{quantity}" class="form-control"/>
+                        <div class="has-error">
+                            <span th:errors="*{quantity}" class="help-inline"/>
                         </div>
                     </div>
                 </div>
-
+                <br>
                 <div class="row">
-                    <div class="form-actions floatRight">
-                        <input type="submit" th:value="#{button.confirm}" class="btn btn-primary"/>
+                    <div class="form-actions floatRight col-md-12">
+                        <input type="submit" th:value="#{button.confirm}" class="btn btn-success"/>
                         <span th:text="#{text.or}"/>
                         <a th:href="@{/goods/list}"><span th:text="#{link.cancel}"/></a>
                     </div>

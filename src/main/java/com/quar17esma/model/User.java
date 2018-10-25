@@ -3,6 +3,7 @@ package com.quar17esma.model;
 import com.quar17esma.enums.UserProfileType;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "password")
+@Builder
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -21,18 +23,22 @@ public class User implements Serializable {
     private Long id;
 
     @NotEmpty
+    @Length(min = 5, max = 100)
     @Column(name = "password", nullable = false)
     private String password;
 
     @NotEmpty
+    @Length(min = 1, max = 50)
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @NotEmpty
+    @Length(min = 1, max = 50)
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @NotEmpty
+    @Length(min = 5, max = 50)
     @Email
     @Column(name = "email", nullable = false)
     private String email;
