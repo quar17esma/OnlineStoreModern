@@ -23,7 +23,7 @@ import java.util.Map;
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Convert(converter = LocalDateTimeConverter.class)
     @Column(name = "ordered_at", nullable = false)

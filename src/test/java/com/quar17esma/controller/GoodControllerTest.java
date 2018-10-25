@@ -89,7 +89,7 @@ public class GoodControllerTest {
 
     private List<Good> createDummyGoodsList() {
         List<Good> goods = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (long i = 1; i <= 20; i++) {
             goods.add(
                     Good.builder()
                             .id(i)
@@ -108,7 +108,7 @@ public class GoodControllerTest {
                 .andExpect(view().name("editGood"))
                 .andExpect(forwardedUrl("/WEB-INF/views/templates/editGood.html"))
                 .andExpect(model().attribute("good", instanceOf(Good.class)))
-                .andExpect(model().attribute("good", hasProperty("id", is(0L))))
+                .andExpect(model().attribute("good", hasProperty("id", is(nullValue()))))
                 .andExpect(model().attribute("edit", false));
     }
 
@@ -119,7 +119,7 @@ public class GoodControllerTest {
         String description = StringUtils.repeat("a", 1001);
         Long price = -1L;
         Integer quantity = -1;
-        Long id = 0L;
+        Long id = null;
 
         mockMvc.perform(
                 post("/goods/new-good")
@@ -136,7 +136,7 @@ public class GoodControllerTest {
                 .andExpect(model().attributeHasFieldErrors("good", "price"))
                 .andExpect(model().attributeHasFieldErrors("good", "quantity"))
                 .andExpect(model().attributeErrorCount("good", 4))
-                .andExpect(model().attribute("good", hasProperty("id", is(id))))
+                .andExpect(model().attribute("good", hasProperty("id", is(nullValue()))))
                 .andExpect(model().attribute("good", hasProperty("name", is(name))))
                 .andExpect(model().attribute("good", hasProperty("description", is(description))))
                 .andExpect(model().attribute("good", hasProperty("price", is(price))))
@@ -149,7 +149,7 @@ public class GoodControllerTest {
     //    @Ignore
     @Test
     public void saveNewGood() throws Exception {
-        Long id = 0L;
+        Long id = null;
         String name = "Samsung s9";
         String description = "Very expensive phone";
         Long price = 1200L;
