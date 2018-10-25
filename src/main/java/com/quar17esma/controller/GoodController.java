@@ -122,7 +122,7 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
-    public String deleteGood(@PathVariable Long goodId, ModelMap model, Locale locale) {
+    public String deleteGood(@PathVariable Long goodId, RedirectAttributes model, Locale locale) {
         Good good = goodService.findById(goodId);
         if (good == null) {
             model.addAttribute("failMessage",
@@ -130,10 +130,10 @@ public class GoodController {
             return "message";
         }
         goodService.delete(goodId);
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.delete", new Object[]{good.getId()}, locale));
 
-        return "editGood";
+        return "redirect:/message";
     }
 
     @RequestMapping(value = "/imageController/{goodId}")
