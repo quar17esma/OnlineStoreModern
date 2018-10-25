@@ -110,15 +110,15 @@ public class GoodController {
     }
 
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
-    public String saveEditedGood(@Valid Good good, BindingResult result, ModelMap model, Locale locale) {
+    public String saveEditedGood(@Valid Good good, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
             return "editGood";
         }
         goodService.save(good);
-        model.addAttribute("successMessage",
+        model.addFlashAttribute("successMessage",
                 messageSource.getMessage("success.good.edited", new Object[]{good.getName()}, locale));
 
-        return "message";
+        return "redirect:/message";
     }
 
     @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
