@@ -72,12 +72,11 @@ public class OrderController {
         return "message";
     }
 
+    @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
     @RequestMapping(value = {"/myOrders/cancel-{orderId}"}, method = RequestMethod.GET)
     public String cancelOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         Order order = orderService.findById(orderId);
-        User user = userController.getUser();
-
-        if (!order.getUser().equals(user) || order.getStatus() != OrderStatus.CONFIRMED) {
+        if (order.getStatus() != OrderStatus.CONFIRMED) {
             model.addAttribute("failMessage",
                     messageSource.getMessage("fail.order.cancel", new Object[] {orderId}, locale));
             return "message";
