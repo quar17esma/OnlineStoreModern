@@ -90,6 +90,7 @@ public class OrderController {
         return "message";
     }
 
+    @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
     @RequestMapping(value = {"/myOrders/confirm-{orderId}"}, method = RequestMethod.GET)
     public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.confirmOrder(orderId);
