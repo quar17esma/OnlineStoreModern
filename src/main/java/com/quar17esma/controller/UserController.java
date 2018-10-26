@@ -5,6 +5,7 @@ import com.quar17esma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -129,11 +130,13 @@ public class UserController {
         return userService.isEmailBusy(user.getEmail());
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/contact"}, method = RequestMethod.GET)
     public String showContactForm() {
         return "contact";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/stores"}, method = RequestMethod.GET)
     public String showStores() {
         return "stores";
