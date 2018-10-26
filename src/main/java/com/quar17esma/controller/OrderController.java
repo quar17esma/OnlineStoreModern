@@ -6,6 +6,7 @@ import com.quar17esma.model.User;
 import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -61,6 +62,7 @@ public class OrderController {
         return "myOrders";
     }
 
+    @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
     @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
     public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.payOrder(orderId);
