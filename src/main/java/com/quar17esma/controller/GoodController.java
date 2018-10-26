@@ -34,6 +34,7 @@ public class GoodController {
         return userController.getPrincipal();
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public String listGoods(ModelMap model) {
         List<Good> goods = goodService.findAll();
@@ -65,6 +66,7 @@ public class GoodController {
         return "redirect:/message";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.GET)
     public String showBuyGoodForm(@PathVariable Long goodId, ModelMap model, Locale locale) {
         Good good;
@@ -80,6 +82,7 @@ public class GoodController {
         return "buyGood";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/buy-good-{goodId}"}, method = RequestMethod.POST)
     public String addGoodToCart(@PathVariable Long goodId,
                                 @RequestParam(value = "orderedQuantity", defaultValue = "1") Integer orderedQuantity,
