@@ -6,6 +6,7 @@ import com.quar17esma.model.User;
 import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,6 +35,7 @@ public class OrderController {
         return DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/cart"}, method = RequestMethod.GET)
     public String cart(ModelMap model, HttpSession httpSession) {
         Order order = (Order) httpSession.getAttribute("order");
@@ -42,6 +44,7 @@ public class OrderController {
         return "cart";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/cart/confirm"}, method = RequestMethod.GET)
     public String confirmOrderFromCart(HttpSession httpSession, ModelMap model, Locale locale) {
         Order order = (Order) httpSession.getAttribute("order");
@@ -53,6 +56,7 @@ public class OrderController {
         return "message";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/myOrders"}, method = RequestMethod.GET)
     public String myOrders(ModelMap model) {
         Long userId = userController.getUser().getId();
@@ -62,6 +66,7 @@ public class OrderController {
         return "myOrders";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
     @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
     public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
@@ -72,6 +77,7 @@ public class OrderController {
         return "message";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
     @RequestMapping(value = {"/myOrders/cancel-{orderId}"}, method = RequestMethod.GET)
     public String cancelOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
@@ -89,6 +95,7 @@ public class OrderController {
         return "message";
     }
 
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
     @RequestMapping(value = {"/myOrders/confirm-{orderId}"}, method = RequestMethod.GET)
     public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
