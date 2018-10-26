@@ -69,7 +69,7 @@ public class UserController {
      * This method handles login GET requests.
      * If users is already logged-in and tries to goto login page again, will be redirected to list page.
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String loginPage() {
         if (isCurrentAuthenticationAnonymous()) {
             return "login";
