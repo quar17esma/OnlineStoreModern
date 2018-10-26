@@ -90,6 +90,11 @@ public class CommonControllerTest {
 
     @Test
     public void showMessage() throws Exception {
+        mockMvc.perform(
+                get("/message"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("message"))
+                .andExpect(forwardedUrl("/WEB-INF/views/templates/message.html"));
     }
 
     private User createTestUser() {
