@@ -37,16 +37,6 @@ public class UserController {
     private PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
     private AuthenticationTrustResolver authenticationTrustResolver;
 
-    @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
-    public String accessDeniedPage(ModelMap model) {
-        User user = userService.findByEmail(getPrincipal());
-        model.addAttribute("userFirstName", user.getFirstName());
-        return "accessDenied";
-    }
-
-    /**
-     * This method returns the principal[user-name] of logged-in user.
-     */
     public String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -59,17 +49,10 @@ public class UserController {
         return userName;
     }
 
-    /**
-     * This method returns logged-in user.
-     */
     public User getUser() {
         return userService.findByEmail(getPrincipal());
     }
 
-    /**
-     * This method handles login GET requests.
-     * If users is already logged-in and tries to goto login page again, will be redirected to list page.
-     */
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String loginPage() {
         if (isCurrentAuthenticationAnonymous()) {
@@ -77,14 +60,6 @@ public class UserController {
         } else {
             return "redirect:/goods/list";
         }
-    }
-
-    /**
-     * This method returns true if users is already authenticated [logged-in], else false.
-     */
-    private boolean isCurrentAuthenticationAnonymous() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authenticationTrustResolver.isAnonymous(authentication);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -130,21 +105,9 @@ public class UserController {
         return userService.isEmailBusy(user.getEmail());
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @RequestMapping(value = {"/contact"}, method = RequestMethod.GET)
-    public String showContactForm() {
-        return "contact";
-    }
-
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @RequestMapping(value = {"/stores"}, method = RequestMethod.GET)
-    public String showStores() {
-        return "stores";
-    }
-
-    @RequestMapping(value = {"/message"}, method = RequestMethod.GET)
-    public String showMessage() {
-        return "message";
+    private boolean isCurrentAuthenticationAnonymous() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authenticationTrustResolver.isAnonymous(authentication);
     }
 
     @Autowired
