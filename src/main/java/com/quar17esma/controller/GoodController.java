@@ -5,6 +5,7 @@ import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,7 @@ public class GoodController {
         return "allGoods";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.GET)
     public String showNewGoodForm(ModelMap model) {
         Good good = new Good();
@@ -50,6 +52,7 @@ public class GoodController {
         return "editGood";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = {"/new-good"}, method = RequestMethod.POST)
     public String saveNewGood(@Valid Good good, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
@@ -100,6 +103,7 @@ public class GoodController {
         return order;
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.GET)
     public String showEditGoodForm(@PathVariable Long goodId, ModelMap model) {
         Good good = goodService.findById(goodId);
@@ -109,6 +113,7 @@ public class GoodController {
         return "editGood";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = {"/edit-good-{goodId}"}, method = RequestMethod.POST)
     public String saveEditedGood(@Valid Good good, BindingResult result, RedirectAttributes model, Locale locale) {
         if (result.hasErrors()) {
@@ -121,6 +126,7 @@ public class GoodController {
         return "redirect:/message";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = {"/delete-good-{goodId}"}, method = RequestMethod.GET)
     public String deleteGood(@PathVariable Long goodId, RedirectAttributes model, Locale locale) {
         Good good = goodService.findById(goodId);
