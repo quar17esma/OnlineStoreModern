@@ -78,7 +78,7 @@ public class OrderController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
+    @PreAuthorize("hasPermission(#orderId, 'com.quar17esma.model.Order', 'cancel')")
     @RequestMapping(value = {"/myOrders/cancel-{orderId}"}, method = RequestMethod.GET)
     public String cancelOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         Order order = orderService.findById(orderId);
@@ -96,7 +96,7 @@ public class OrderController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
+    @PreAuthorize("hasPermission(#orderId, 'com.quar17esma.model.Order', 'confirm')")
     @RequestMapping(value = {"/myOrders/confirm-{orderId}"}, method = RequestMethod.GET)
     public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.confirmOrder(orderId);
