@@ -2,7 +2,6 @@ package com.quar17esma.controller;
 
 import com.quar17esma.enums.OrderStatus;
 import com.quar17esma.model.Order;
-import com.quar17esma.model.User;
 import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -23,6 +22,7 @@ import java.util.Locale;
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
+
     @Autowired
     private UserController userController;
     @Autowired
@@ -31,7 +31,7 @@ public class OrderController {
     private MessageSource messageSource;
 
     @ModelAttribute("localDateTimeFormat")
-    public DateTimeFormatter getLocalDateTimeFormat () {
+    public DateTimeFormatter getLocalDateTimeFormat() {
         return DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
     }
 
@@ -51,7 +51,7 @@ public class OrderController {
         orderService.confirmOrder(order);
         httpSession.removeAttribute("order");
         model.addAttribute("successMessage",
-                messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
+                messageSource.getMessage("success.order.confirm", new Object[]{}, locale));
 
         return "message";
     }
@@ -67,12 +67,12 @@ public class OrderController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("@orderService.findById(#orderId).user.email.equals(authentication.principal.username)")
+    @PreAuthorize("hasPermission(#orderId, 'com.quar17esma.model.Order', 'pay')")
     @RequestMapping(value = {"/myOrders/pay-{orderId}"}, method = RequestMethod.GET)
     public String payOrder(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.payOrder(orderId);
         model.addAttribute("successMessage",
-                messageSource.getMessage("success.order.pay", new Object[] {}, locale));
+                messageSource.getMessage("success.order.pay", new Object[]{}, locale));
 
         return "message";
     }
@@ -84,13 +84,13 @@ public class OrderController {
         Order order = orderService.findById(orderId);
         if (order.getStatus() != OrderStatus.CONFIRMED) {
             model.addAttribute("failMessage",
-                    messageSource.getMessage("fail.order.cancel", new Object[] {orderId}, locale));
+                    messageSource.getMessage("fail.order.cancel", new Object[]{orderId}, locale));
             return "message";
         }
 
         orderService.cancelOrder(orderId);
         model.addAttribute("successMessage",
-                messageSource.getMessage("success.order.cancel", new Object[] {}, locale));
+                messageSource.getMessage("success.order.cancel", new Object[]{}, locale));
 
         return "message";
     }
@@ -101,7 +101,7 @@ public class OrderController {
     public String confirmOrderById(@PathVariable("orderId") Long orderId, ModelMap model, Locale locale) {
         orderService.confirmOrder(orderId);
         model.addAttribute("successMessage",
-                messageSource.getMessage("success.order.confirm", new Object[] {}, locale));
+                messageSource.getMessage("success.order.confirm", new Object[]{}, locale));
 
         return "message";
     }
