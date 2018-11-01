@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/rest/goods")
 public class RestGoodController {
@@ -15,11 +17,34 @@ public class RestGoodController {
     @Autowired
     private GoodService goodService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Good> findAll() {
+        return goodService.findAll();
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Good goodById(@PathVariable long id) {
         Good good = goodService.findById(id);
         if (good == null) { throw new GoodNotFoundException(id); }
         return good;
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveGood(@RequestBody Good good) {
+        goodService.save(good);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void update(@PathVariable("id") Long id, @RequestBody Good good) {
+        goodService.save(good);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("id") Long id) {
+        goodService.delete(id);
     }
 
     @ExceptionHandler(GoodNotFoundException.class)
