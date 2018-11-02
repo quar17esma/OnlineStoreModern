@@ -25,7 +25,9 @@ public class RestGoodController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Good goodById(@PathVariable long id) {
         Good good = goodService.findById(id);
-        if (good == null) { throw new GoodNotFoundException(id); }
+        if (good == null) {
+            throw new GoodNotFoundException(id);
+        }
         return good;
     }
 
@@ -38,12 +40,18 @@ public class RestGoodController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable("id") Long id, @RequestBody Good good) {
+        if (goodService.findById(good.getId()) == null) {
+            throw new GoodNotFoundException(good.getId());
+        }
         goodService.save(good);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") Long id) {
+        if (goodService.findById(id) == null) {
+            throw new GoodNotFoundException(id);
+        }
         goodService.delete(id);
     }
 
