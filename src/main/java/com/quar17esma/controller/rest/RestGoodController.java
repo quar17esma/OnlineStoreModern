@@ -29,7 +29,7 @@ public class RestGoodController {
         return good;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void saveGood(@RequestBody Good good) {
         goodService.save(good);
