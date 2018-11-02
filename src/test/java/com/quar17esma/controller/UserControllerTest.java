@@ -36,14 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class UserControllerTest {
     private MockMvc mockMvc;
-
     @Mock
     private UserService userService;
     @Mock
     private MessageSource messageSourceMock;
     @Mock
     private AuthenticationTrustResolver authenticationTrustResolver;
-
     @Spy
     @InjectMocks
     private UserController controller;
@@ -63,21 +61,6 @@ public class UserControllerTest {
                 .setViewResolvers(viewResolver)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-    }
-
-    @Test
-    public void accessDeniedPage() throws Exception {
-        User user = createTestUser();
-        when(userService.findByEmail(user.getEmail())).thenReturn(user);
-        doReturn(user.getEmail()).when(controller).getPrincipal();
-
-        mockMvc.perform(
-                get("/Access_Denied"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("accessDenied"))
-                .andExpect(forwardedUrl("/WEB-INF/views/templates/accessDenied.html"))
-                .andExpect(model().attribute("userFirstName", is(user.getFirstName())));
-        verify(userService, times(1)).findByEmail(user.getEmail());
     }
 
     private User createTestUser() {
@@ -211,25 +194,6 @@ public class UserControllerTest {
                 .andExpect(model().attributeDoesNotExist("loggedinuser"));
         verify(userService, times(1)).isEmailBusy(user.getEmail());
         verify(userService, never()).save(user);
-    }
-
-    @Test
-    public void showContactForm() throws Exception {
-        mockMvc.perform(
-                get("/contact"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("contact"))
-                .andExpect(forwardedUrl("/WEB-INF/views/templates/contact.html"));
-
-    }
-
-    @Test
-    public void showStores() throws Exception {
-        mockMvc.perform(
-                get("/stores"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("stores"))
-                .andExpect(forwardedUrl("/WEB-INF/views/templates/stores.html"));
     }
 
 }
