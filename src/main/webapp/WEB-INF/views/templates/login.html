@@ -33,7 +33,7 @@
 
     <div class="container">
         <br>
-        <div class="row">
+        <div class="row text-right">
             <div class="btn-group">
                 <a th:href="@{''(lang=en_US)}" class="btn btn-info" role="button">
                     <span th:text="#{link.english}"/>
@@ -44,6 +44,7 @@
             </div>
         </div>
         <div class="row">
+            <br>
             <div th:if="${successRegistrationMessage != null}" class="alert alert-success">
                 <span th:text="${successRegistrationMessage}"/>
             </div>
@@ -55,7 +56,7 @@
             </div>
         </div>
         <div class="row">
-            <h2><span th:text="#{title.login}"/></h2>
+            <h2><b><span th:text="#{title.login}"/></b></h2><br>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="#" th:action="@{/login}" method="POST">
