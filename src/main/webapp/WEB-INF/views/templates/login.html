@@ -5,87 +5,98 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/signin.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-<div class="container">
-    <br>
-    <div class="row">
-        <div class="btn-group">
-            <a th:href="@{''(lang=en_US)}" class="btn btn-info" role="button">
-                <span th:text="#{link.english}"/>
-            </a>
-            <a th:href="@{''(lang=ru_RU)}" class="btn btn-info" role="button">
-                <span th:text="#{link.russian}"/>
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div th:if="${successRegistrationMessage != null}" class="alert alert-success">
-            <span th:text="${successRegistrationMessage}"/>
-        </div>
-        <div th:if="${param.logout != null}" class="alert alert-success">
-            <span th:text="#{logged.out.success}"/>
-        </div>
-        <div th:if="${param.error != null}" class="alert alert-danger">
-            <span th:text="#{invalid.username.or.password}"/>
-        </div>
-    </div>
-    <div class="row">
-        <h2><span th:text="#{title.login}"/></h2>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form action="#" th:action="@{/login}" method="POST">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <label class="input-group-addon" for="email">
-                                <span class="glyphicon glyphicon-user"/>
-                            </label>
-                            <input class="form-control" type="email" name="email" value="" id="email"
-                                   th:placeholder="#{placeholder.enter.email}"/>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="text-danger">
-                                <span th:text="${errorNoSuchUser}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <label class="input-group-addon" for="password">
-                                <span class="glyphicon glyphicon-lock"/>
-                            </label>
-                            <input class="form-control" type="password" name="password" value="" id="password"
-                                   th:placeholder="#{placeholder.enter.password}"/>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="text-danger">
-                                <span th:text="${errorWrongPassword}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="rememberme" name="remember-me">
-                                <span th:text="#{label.remember.me}"/>
-                            </label>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <input type="submit" th:value="#{button.log.in}" class="btn btn-default"/>
-                        <input type="reset" th:value="#{button.reset}" class="btn btn-default"/>
-                    </div>
-                </form>
+<div class="container-fluid">
+    <div th:replace="fragments/header.html :: header"></div>
+
+    <div class="container">
+        <br>
+        <div class="row text-right">
+            <div class="btn-group">
+                <a th:href="@{''(lang=en_US)}" class="btn btn-info" role="button">
+                    <span th:text="#{link.english}"/>
+                </a>
+                <a th:href="@{''(lang=ru_RU)}" class="btn btn-info" role="button">
+                    <span th:text="#{link.russian}"/>
+                </a>
             </div>
         </div>
-        <hr/>
-        <a th:href="@{/new_user}" th:text="#{link.register}"/>
+        <div class="row">
+            <br>
+            <div th:if="${successRegistrationMessage != null}" class="alert alert-success">
+                <span th:text="${successRegistrationMessage}"/>
+            </div>
+            <div th:if="${param.logout != null}" class="alert alert-success">
+                <span th:text="#{logged.out.success}"/>
+            </div>
+            <div th:if="${param.error != null}" class="alert alert-danger">
+                <span th:text="#{invalid.username.or.password}"/>
+            </div>
+        </div>
+        <div class="row">
+            <h2><b><span th:text="#{title.login}"/></b></h2><br>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="#" th:action="@{/login}" method="POST">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="email">
+                                    <span class="glyphicon glyphicon-user"/>
+                                </label>
+                                <input class="form-control" type="email" name="email" value="" id="email"
+                                       th:placeholder="#{placeholder.enter.email}"/>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-danger">
+                                    <span th:text="${errorNoSuchUser}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-addon" for="password">
+                                    <span class="glyphicon glyphicon-lock"/>
+                                </label>
+                                <input class="form-control" type="password" name="password" value="" id="password"
+                                       th:placeholder="#{placeholder.enter.password}"/>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="text-danger">
+                                    <span th:text="${errorWrongPassword}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="rememberme" name="remember-me">
+                                    <span th:text="#{label.remember.me}"/>
+                                </label>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <input type="submit" th:value="#{button.log.in}" class="btn btn-default"/>
+                            <input type="reset" th:value="#{button.reset}" class="btn btn-default"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr/>
+            <div class="row text-center">
+                <a th:href="@{/new_user}" th:text="#{link.register}"/>
+            </div>
+        </div>
     </div>
+    <br><br>
+
+    <div th:replace="fragments/footer.html :: footer"></div>
 </div>
 </body>
 </html>
