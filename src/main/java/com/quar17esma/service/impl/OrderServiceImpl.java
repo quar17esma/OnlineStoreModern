@@ -38,7 +38,7 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
     @Override
     @Transactional
     public void confirmOrder(Long id) {
-        Optional<Order> order = Optional.ofNullable(repository.findOne(id));
+        Optional<Order> order = Optional.ofNullable(repository.getOne(id));
         if (order.isPresent() && order.get().getStatus() == OrderStatus.NEW) {
             order.get().setStatus(OrderStatus.CONFIRMED);
             setOrderedAtIfNull(order.get());
@@ -75,7 +75,7 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
 
     @Override
     public void payOrder(Long id) {
-        Optional<Order> order = Optional.ofNullable(repository.findOne(id));
+        Optional<Order> order = Optional.ofNullable(repository.getOne(id));
         if (order.isPresent()) {
             order.get().setStatus(OrderStatus.PAID);
             repository.save(order.get());
@@ -86,7 +86,7 @@ public class OrderServiceImpl extends AbstractCRUDService<Order> implements Orde
 
     @Override
     public void cancelOrder(Long orderId) throws EntityNotFoundException {
-        Order order = repository.findOne(orderId);
+        Order order = repository.getOne(orderId);
         if (order != null) {
             order.setStatus(OrderStatus.CANCELED);
             repository.save(order);

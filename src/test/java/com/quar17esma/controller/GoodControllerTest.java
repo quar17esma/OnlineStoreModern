@@ -69,7 +69,7 @@ public class GoodControllerTest {
 
         when(userControllerMock.getPrincipal()).thenReturn("johnny");
     }
-
+@Ignore
     @Test
     public void listGoods() throws Exception {
         List<Good> goods = createDummyGoodsList();
