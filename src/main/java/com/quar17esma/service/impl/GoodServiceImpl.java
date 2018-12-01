@@ -7,12 +7,16 @@ import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import com.quar17esma.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("goodService")
 @Transactional
-public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodService {
+public class GoodServiceImpl extends AbstractPagingAndSortingService<Good> implements GoodService {
     @Autowired
     private GoodRepository repository;
     @Autowired
@@ -20,7 +24,7 @@ public class GoodServiceImpl extends AbstractCRUDService<Good> implements GoodSe
 
     @Override
     public void addGoodToCart(Order cart, Long goodId, int orderedQuantity) throws NotEnoughGoodException {
-        Good good = repository.findOne(goodId);
+        Good good = repository.getOne(goodId);
         int totalQuantity = countTotalOrderedQuantity(cart, orderedQuantity, good);
         checkEnoughGood(totalQuantity, good);
         cart.getOrderedGoods().put(good, totalQuantity);
