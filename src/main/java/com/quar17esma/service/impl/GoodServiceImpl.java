@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service("goodService")
 @Transactional
 public class GoodServiceImpl extends AbstractPagingAndSortingService<Good> implements GoodService {
@@ -60,5 +62,9 @@ public class GoodServiceImpl extends AbstractPagingAndSortingService<Good> imple
         } else {
             throw new RuntimeException("There is not enough good quantity");
         }
+    }
+
+    public List<Good> findByNameContains(String searchString) {
+        return repository.findByNameContains(searchString);
     }
 }

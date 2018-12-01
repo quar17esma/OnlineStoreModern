@@ -44,6 +44,19 @@ public class GoodController {
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @RequestMapping(value = {"/search"}, method = RequestMethod.GET)
+    public String listGoods(ModelMap model, @RequestParam("searchString") String searchString) {
+        if (searchString == null || searchString.isEmpty()) {
+            return "redirect:/goods/list";
+        }
+
+        List<Good> goods = goodService.findByNameContains(searchString);
+        model.addAttribute("goods", goods);
+
+        return "allGoods";
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public String listGoods(ModelMap model,
                             @RequestParam("page") Optional<Integer> page,
