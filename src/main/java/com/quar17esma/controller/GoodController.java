@@ -5,6 +5,9 @@ import com.quar17esma.model.Order;
 import com.quar17esma.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,6 +20,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @SessionAttributes("loggedInUser")
@@ -29,16 +35,45 @@ public class GoodController {
     @Autowired
     private MessageSource messageSource;
 
+    private static int currentPage = 1;
+    private static int pageSize = 6;
+
     @ModelAttribute("loggedInUser")
     public String getLoggedInUser() {
         return userController.getPrincipal();
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
-    public String listGoods(ModelMap model) {
-        List<Good> goods = goodService.findAll();
+    @RequestMapping(value = {"/search"}, method = RequestMethod.GET)
+    public String listGoods(ModelMap model, @RequestParam("searchString") String searchString) {
+        if (searchString == null || searchString.isEmpty()) {
+            return "redirect:/goods/list";
+        }
+
+        List<Good> goods = goodService.findByNameContains(searchString);
         model.addAttribute("goods", goods);
+
+        return "allGoods";
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    public String listGoods(ModelMap model,
+                            @RequestParam("page") Optional<Integer> page,
+                            @RequestParam("size") Optional<Integer> size) {
+        page.ifPresent(p -> currentPage = p);
+        size.ifPresent(s -> pageSize = s);
+
+        Page<Good> goodPage = goodService.findAll(new PageRequest(currentPage - 1, pageSize));
+        model.addAttribute("goods", goodPage);
+
+        int totalPages = goodPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
 
         return "allGoods";
     }

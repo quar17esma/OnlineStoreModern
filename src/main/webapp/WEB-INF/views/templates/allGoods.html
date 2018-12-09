@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/signin.css}"/>
+    <link rel="stylesheet" th:href="@{/css/basic.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -15,6 +15,20 @@
     <div th:replace="fragments/header.html :: header"></div>
 
     <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="#" th:action="@{/goods/search}">
+                    <div class="input-group">
+                        <input type="text" name="searchString" class="form-control" th:placeholder="#{placeholder.search}">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><br><br><br>
+        </div>
         <div class="row">
             <div th:each="good: ${goods}">
                 <div class="col-sm-4">
@@ -33,14 +47,17 @@
                                 <span th:text="${good.quantity}"/>
                             </div>
 
-                            <a th:href="@{/goods/buy-good-{goodId}(goodId=${good.id})}" class="btn btn-success btn-block">
+                            <a th:href="@{/goods/buy-good-{goodId}(goodId=${good.id})}"
+                               class="btn btn-success btn-block">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> <span th:text="#{button.buy}"/>
                             </a>
-                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/edit-good-{goodId}(goodId=${good.id})}"
+                            <a sec:authorize="hasRole('ADMIN')"
+                               th:href="@{/goods/edit-good-{goodId}(goodId=${good.id})}"
                                class="btn btn-warning btn-block">
                                 <span class="glyphicon glyphicon-pencil"></span> <span th:text="#{button.edit}"/>
                             </a>
-                            <a sec:authorize="hasRole('ADMIN')" th:href="@{/goods/delete-good-{goodId}(goodId=${good.id})}"
+                            <a sec:authorize="hasRole('ADMIN')"
+                               th:href="@{/goods/delete-good-{goodId}(goodId=${good.id})}"
                                class="btn btn-danger btn-block">
                                 <span class="glyphicon glyphicon-trash"></span> <span th:text="#{button.delete}"/>
                             </a>
@@ -49,8 +66,13 @@
                 </div>
             </div>
         </div>
+        <div class="row text-center">
+            <ul th:if="${pageNumbers != null}"
+                class="pagination" th:each="pageNumber : ${pageNumbers}">
+                <li><a th:href="@{/goods/list(page=${pageNumber})}" th:text="${pageNumber}"></a></li>
+            </ul>
+        </div>
     </div>
-    <br><br>
 
     <div th:replace="fragments/footer.html :: footer"></div>
 </div>
