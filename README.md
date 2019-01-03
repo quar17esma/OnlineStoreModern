@@ -15,7 +15,7 @@ Ehcache used for Hibernate second level cache.
 Transactions maintained by Spring declarative transaction management.
 For securing of web application used Spring Security 4 framework. 
 Application supports Internationalization(i18n) and Localization (L10n).
-Application uses POJOs, Servlets and JSPs, HTML5 and JSTL.
+Application uses POJOs, Servlets and JSPs, HTML5 and JSTL, Thymeleaf.
 Servlet Container used in project is Apache Tomcat 8.
 Apache Maven used for building.
 Logging implemented by AOP with AspectJ, Slf4j and Logback.
@@ -29,6 +29,7 @@ Bootstrap 3 used for front-end.
 - Spring 4
 - Spring MVC
 - JSP
+- Thymeleaf
 - Hibernate 5
 - Spring Data JPA
 - Spring Security 4
