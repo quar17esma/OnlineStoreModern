@@ -3,10 +3,12 @@
 ## Description:
 
 Web Application is a typical Online Store, 
-where the administrator maintains(adds new and edit old) the catalog of the goods, 
+where the administrator maintains(add new, edit and delete old) the catalog of the goods, 
 and the customer does and pays the orders for the goods. 
 Customer can see the history of his orders, confirm and pay them. 
 Unregistered users can register in the system.
+
+Application implements REST API for working with goods entities.
  
 Architecture based on Spring MVC and other GoF design patterns.
 Data stored in DB, with access provided using Hibernate and MySQL Connector. 
@@ -15,7 +17,7 @@ Ehcache used for Hibernate second level cache.
 Transactions maintained by Spring declarative transaction management.
 For securing of web application used Spring Security 4 framework. 
 Application supports Internationalization(i18n) and Localization (L10n).
-Application uses POJOs, Servlets and JSPs, HTML5 and JSTL.
+Application uses POJOs, Servlets and JSPs, HTML5 and JSTL, Thymeleaf.
 Servlet Container used in project is Apache Tomcat 8.
 Apache Maven used for building.
 Logging implemented by AOP with AspectJ, Slf4j and Logback.
@@ -29,6 +31,7 @@ Bootstrap 3 used for front-end.
 - Spring 4
 - Spring MVC
 - JSP
+- Thymeleaf
 - Hibernate 5
 - Spring Data JPA
 - Spring Security 4
@@ -47,13 +50,13 @@ Bootstrap 3 used for front-end.
 
 ## Application Screenshots:
  Login page:
- ![Sample screen from this application](other/onlineStoreModernPic_1.jpg)
- 
- User registration form:
- ![Sample screen from this application](other/onlineStoreModernPic_2.jpg)
+ ![Sample screen from this application](other/onlineStoreModernPic_1.png)
  
  All goods page:
- ![Sample screen from this application](other/onlineStoreModernPic_3.jpg)
+ ![Sample screen from this application](other/onlineStoreModernPic_3.png)
+ 
+ Orders history:
+ ![Sample screen from this application](other/onlineStoreModernPic_4.png)
  
 ## Installation:
  
