@@ -50,13 +50,13 @@ Bootstrap 3 used for front-end.
 
 ## Application Screenshots:
  Login page:
- ![Sample screen from this application](other/onlineStoreModernPic_1.jpg)
- 
- User registration form:
- ![Sample screen from this application](other/onlineStoreModernPic_2.jpg)
+ ![Sample screen from this application](other/onlineStoreModernPic_1.png)
  
  All goods page:
- ![Sample screen from this application](other/onlineStoreModernPic_3.jpg)
+ ![Sample screen from this application](other/onlineStoreModernPic_3.png)
+ 
+ Orders history:
+ ![Sample screen from this application](other/onlineStoreModernPic_4.png)
  
 ## Installation:
  
