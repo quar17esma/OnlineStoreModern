@@ -3,10 +3,12 @@
 ## Description:
 
 Web Application is a typical Online Store, 
-where the administrator maintains(adds new and edit old) the catalog of the goods, 
+where the administrator maintains(add new, edit and delete old) the catalog of the goods, 
 and the customer does and pays the orders for the goods. 
 Customer can see the history of his orders, confirm and pay them. 
 Unregistered users can register in the system.
+
+Application implements REST API for working with goods entities.
  
 Architecture based on Spring MVC and other GoF design patterns.
 Data stored in DB, with access provided using Hibernate and MySQL Connector. 
